@@ -1,0 +1,29 @@
+<%= render 'shared/page_title', title: 'Crear predio' %>
+<%= render 'shared/error', obj: @predio %>
+<div class="row">
+  <div class="col-md-12">
+    <%= form_for(@predio, :html => {class: 'form-horizontal', role: 'form'}) do |f| %>
+      <div class="form-group">
+        <div class="control-label col-md-2">
+          <%= f.label :name %>
+        </div>
+        <div class="col-md-8">
+          <%= f.text_field :name, class: 'form-control', placeholder: 'Nombre del predio', autofocus: true %>
+        </div>
+      </div>
+        <div class="form-group">
+          <div class="control-label col-md-2">
+            <%= f.label :no_hectareas %>
+          </div>
+          <div class="col-md-4">
+            <%= f.text_field :no_hectareas, class: 'form-control', placeholder: 'Ingresar numero de hectareas' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-offset-2 col-md-10">
+            <%= f.submit class: 'btn btn-primary btn-lg btn-xlarge' %>
+          </div>
+        </div>
+        <% end %>
+  </div>
+</div>
