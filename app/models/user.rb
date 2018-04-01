@@ -8,4 +8,5 @@ class User < ApplicationRecord
   has_many :predios
   has_secure_password
   validates :password, presence: true, length: { minimum: 5}, allow_nil: true
+  has_many :materials
 end

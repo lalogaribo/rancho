@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :require_same_user, only: [:edit, :update, :destroy]
+  before_action :require_same_user, only: [:edit, :update, :destroy, :show]
 
   def index
     @users = User.all
@@ -13,7 +13,8 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      flash[:success] = 'Usuario creado exitosamente'
+      session[:user_id] = @user.id
+      flash[:success] = "Bienvenido #{@user.name}"
       redirect_to user_path(@user)
     else
       render 'new'
@@ -50,13 +51,6 @@ class UsersController < ApplicationController
 
   def set_user
     @user = User.find(params[:id])
-  end
-
-  def require_same_user
-    if current_user !=@user
-      flash[:danger] = 'Solo puedes editar o borrar tu informacion'
-      redirect_to predios_path
-    end
   end
 end
 

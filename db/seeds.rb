@@ -5,8 +5,12 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-10.times do |usr|
-  User.create!(name: "Productor #{usr}", email: "eduardo#{usr}@hotmail.com")
+# 10.times do |usr|
+#   User.create!(name: "Productor #{usr}", email: "eduardo#{usr}@hotmail.com")
+# end
+
+10.times do |prod|
+  Material.create!(name: "Producto#{prod}", price: "25#{prod}", quantity: 25 )
 end
 
-puts "Created #{User.count} productores"
+puts "Created #{Material.count} productos"
