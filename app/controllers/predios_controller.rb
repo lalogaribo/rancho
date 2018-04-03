@@ -1,7 +1,7 @@
 class PrediosController < ApplicationController
-
+  before_action :require_user, except: [:show]
   def index
-    @predios = Predio.all
+    @predios = current_user.predios
   end
 
   def new
@@ -26,5 +26,12 @@ class PrediosController < ApplicationController
   private
     def predio_params
       params.require(:predio).permit(:name, :no_hectareas)
+    end
+
+    def require_same_user
+      if current_user != @predio.user
+        flash[:danger] = "Solo puedes editar tus propios predios"
+        redirect_to predios_path
+      end
     end
 end

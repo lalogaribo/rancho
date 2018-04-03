@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 root 'pages#home'
 resources :predios
+resources :materials
 get '/signup', to: 'users#new'
 resources :users, except: [:new]
   get 'login', to: 'sessions#new'

@@ -1,0 +1,7 @@
+<%= render 'shared/page_title', title: "#{@material.name}" %>
+<div class="col-md-4 text-center well">
+  <h2>Nombre : <%= @material.name %></h2>
+  <p>Precio : <%= @material.price %></p>
+  <p>Cantidad: <%= @material.quantity %></p>
+  <%= link_to 'Todos los productos', materials_path %>
+</div>

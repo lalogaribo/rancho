@@ -1,0 +1,32 @@
+<%= render 'shared/page_title', title: 'Materiales' %>
+<div class="row">
+  <div class="col-md-12">
+    <h3>Producto
+      <%= link_to 'Agregar producto', new_material_path, class: 'btn btn-primary btn-sm' %>
+    </h3>
+    <div >
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Cantidad</th>
+          <th>Total Invertido</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @materials.each do |material| %>
+            <tr>
+              <td><%= link_to material.name, edit_material_path(material) %></td>
+              <td><%= material.price %></td>
+              <td><%= material.quantity %></td>
+              <td><%= material.price * material.quantity %></td>
+              <td><%= link_to 'Edit', edit_material_path(material) %></td>
+              <td><%= link_to 'Delete', material_path(material), method: :delete, data: {confirm: "Eliminar este producto?"}, class: 'pull-right' %> </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
