@@ -10,7 +10,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180401225813) do
+ActiveRecord::Schema.define(version: 20180404041623) do
+
+  create_table "info_predio_detalles", force: :cascade do |t|
+    t.integer "material_id"
+    t.integer "cantidad"
+    t.integer "info_predio_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["info_predio_id"], name: "index_info_predio_detalles_on_info_predio_id"
+    t.index ["material_id"], name: "index_info_predio_detalles_on_material_id"
+  end
+
+  create_table "info_predio_nutrientes", force: :cascade do |t|
+    t.integer "info_predio_id"
+    t.integer "nutriente_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["info_predio_id"], name: "index_info_predio_nutrientes_on_info_predio_id"
+    t.index ["nutriente_id"], name: "index_info_predio_nutrientes_on_nutriente_id"
+  end
+
+  create_table "info_predios", force: :cascade do |t|
+    t.decimal "fumigada"
+    t.decimal "pagoTrabaja"
+    t.string "nutricion"
+    t.integer "conteo_racimos"
+    t.string "color_cinta"
+    t.integer "semana"
+    t.integer "predio_id"
+    t.integer "user_id"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["predio_id"], name: "index_info_predios_on_predio_id"
+  end
 
   create_table "materiales", force: :cascade do |t|
     t.string "name"
@@ -27,6 +61,22 @@ ActiveRecord::Schema.define(version: 20180401225813) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
+  end
+
+  create_table "nutrientes", force: :cascade do |t|
+    t.string "nombre"
+    t.decimal "precio"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "otros_gastos", force: :cascade do |t|
+    t.string "nombre"
+    t.decimal "precio"
+    t.integer "info_predio_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["info_predio_id"], name: "index_otros_gastos_on_info_predio_id"
   end
 
   create_table "predios", force: :cascade do |t|

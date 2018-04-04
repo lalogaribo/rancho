@@ -22,6 +22,12 @@ class PrediosController < ApplicationController
     end
   end
 
+  def informacion
+    @predio_id = params[:id]
+    @week = Date.parse(current_date).strftime("%W")
+    @nutrientes = Nutriente.all
+  end
+
 
   private
     def predio_params
@@ -33,5 +39,9 @@ class PrediosController < ApplicationController
         flash[:danger] = "Solo puedes editar tus propios predios"
         redirect_to predios_path
       end
+    end
+
+    def current_date 
+      Time.now.strftime("%Y-%m-%d") # Week from monday to monday
     end
 end

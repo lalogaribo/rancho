@@ -1,0 +1,30 @@
+<%= render 'shared/page_title', title: 'Editar nutriente' %>
+<%= render 'shared/error', obj: @nutriente %>
+
+<div class="row">
+  <div class="col-md-12">
+    <%= form_for(@nutriente, :html => {class: 'form-horizontal', role: 'form'}) do |f| %>
+      <div class="form-group">
+        <div class="control-label col-md-2">
+          <%= f.label :nombre %>
+        </div>
+        <div class="col-md-8">
+          <%= f.text_field :nombre, class: 'form-control', placeholder: 'Nombre del predio', autofocus: true %>
+        </div>
+      </div>
+        <div class="form-group">
+          <div class="control-label col-md-2">
+            <%= f.label :precio %>
+          </div>
+          <div class="col-md-4">
+            <%= f.text_field :precio, class: 'form-control', placeholder: 'Ingresar numero de hectareas' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-offset-2 col-md-10">
+            <%= f.submit "Guardar Cambios", class: 'btn btn-primary btn-lg btn-xlarge' %>
+          </div>
+        </div>
+        <% end %>
+  </div>
+</div>
