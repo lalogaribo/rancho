@@ -2,7 +2,7 @@
   <div class="col-md-4 well text-center" id="predio">
     <p>Nombre <strong><%= predio.name %></strong></p>
     <p><%= predio.no_hectareas %> Hectareas</p>
-    <p><%= link_to 'Informacion Predio', info_predio_path(predio)%></p>
+    <p><%= link_to 'Informacion Predio', info_path(predio)%></p>
     <p>
       <span class="quiet"><small>Creado hace <%= time_ago_in_words(predio.created_at) %></small></span>
     </p>

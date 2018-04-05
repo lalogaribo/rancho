@@ -22,13 +22,6 @@ class PrediosController < ApplicationController
     end
   end
 
-  def informacion
-    @predio_id = params[:id]
-    @week = Date.parse(current_date).strftime("%W")
-    @nutrientes = Nutriente.all
-  end
-
-
   private
     def predio_params
       params.require(:predio).permit(:name, :no_hectareas)

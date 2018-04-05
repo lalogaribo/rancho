@@ -1,0 +1,26 @@
+<% provide(:title, 'nutrientes') %>
+
+<h1>Informacion Predios</h1>
+<div class="row">
+  <div class="col-md-12">
+    <fieldset>
+        <legend>Historial</legend>
+        <div class="row">
+            <div class="col-md-12">
+             <table class="table table-striped">
+              <tbody>
+                <% @info_predios.each do |info_predio| %>
+                  <tr>
+                    <td align="center">Semana <%= info_predio.semana %></td>
+                    <td><%= link_to 'Show', info_predio %></td>
+                    <td><%= link_to 'Edit', edit_info_predio_path(info_predio) %></td>
+                    <td><%= link_to 'Destroy', info_predio, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+            </div>
+        </div>
+    </fieldset>
+ </div>
+</div>

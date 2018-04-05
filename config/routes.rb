@@ -3,7 +3,8 @@ root 'pages#home'
 resources :predios
 resources :materials
 resources :nutrientes
-get 'predios/:id/info', to: 'predios#informacion', as: 'info_predio'
+resources :info_predio
+get 'predios/:id/info', to: 'info_predio#new', as: 'info'
 get '/signup', to: 'users#new'
 resources :users, except: [:new]
   get 'login', to: 'sessions#new'

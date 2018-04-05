@@ -1,15 +1,15 @@
 <%= render 'shared/page_title', title: 'Actualizar informacion del predio' %>
-
+<%= render 'shared/error', obj: @info_predio %>
 <div class="row form-group">
   <div class="col-md-12">
     <fieldset>
         <legend>Informacion Predio</legend>
         <div class="row">
             <div class="col-md-12">
-                <%= form_tag("/predio_info", method: "post") do %>
-                    <%= hidden_field_tag 'predio_id', @predio_id %>
-                    <%= hidden_field_tag 'semana', @week %>
-                    <%= hidden_field_tag 'user_id', 1 %>
+                <%= form_tag("/info_predio", method: "post") do %>
+                    <%= hidden_field_tag 'info_predio[predio_id]', @predio_id %>
+                    <%= hidden_field_tag 'info_predio[semana]', @week %>
+                    <%= hidden_field_tag 'info_predio[user_id]', @user.id  %>
                     <div class="row">
                         <div class="col-md-6"> 
                             <div class="row form-group">
@@ -17,7 +17,7 @@
                                     <%= label_tag(:rafia, "Rafia") %>
                                 </div>
                                 <div class="col-md-3 text-left">
-                                    <%= number_field_tag(:rafia , nil, in: 1...10, class: 'form-control' ) %>
+                                    <%= number_field_tag('info_predio[rafia]' , nil, in: 1...10, class: 'form-control' ) %>
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -25,15 +25,15 @@
                                     <%= label_tag(:cinta, "Cinta") %>
                                 </div>
                                 <div class="col-md-3 text-left">
-                                    <%= number_field_tag(:cinta , nil, in: 1...10, class: 'form-control' ) %>
+                                    <%= number_field_tag('info_predio[cinta]' , nil, in: 1...10, class: 'form-control' ) %>
                                 </div>
                             </div>
                             <div class="row form-group">
                                 <div class="col-md-4 text-right">
                                     <%= label_tag(:bolsa, "Bolsa") %>
                                 </div>
-                                <div class="col-md-3 text-left">
-                                    <%= number_field_tag(:bolsa , nil, in: 1...10, class: 'form-control' ) %>
+                                <div class="col-md-3 text-left">                                    
+                                    <%= number_field_tag('info_predio[bolsa]' , nil, in: 1...10, class: 'form-control' ) %>
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -41,7 +41,7 @@
                                     <%= label_tag(:fumigada, "Fumigada") %>
                                 </div>
                                 <div class="col-md-8 text-left">
-                                    <%= text_field_tag 'fumigada' , nil, class: 'form-control'  %>
+                                    <%= text_field_tag 'info_predio[fumigada]' , nil, class: 'form-control'  %>
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -49,7 +49,7 @@
                                     <%= label_tag(:pago_trabaja, "Pago Trabaja") %>
                                 </div>
                                 <div class="col-md-8 text-left">
-                                    <%= text_field_tag 'pago_trabaja', nil , class: 'form-control'  %>
+                                    <%= text_field_tag 'info_predio[pago_trabaja]' , nil, class: 'form-control'  %>                                
                                 </div>
                             </div>
                         </div>
@@ -58,10 +58,7 @@
                                 <div class="col-md-4 text-right">
                                     <%= label_tag(:otros_pagos, "Otros Pagos") %>
                                 </div>
-                                <div class="col-md-6 text-left">
-                                    <%= text_field_tag 'otros_pagos', nil , class: 'form-control'  %>
-                                </div>
-                                <div class="col-md-2 text-right">
+                                <div class="col-md-2 text-left">
                                     <button type="button" class="btn btn-primary" id='add-otros-pagos'>
                                         <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
                                     </button>
@@ -72,7 +69,7 @@
                                     <%= label_tag(:nutricion, "Nutricion") %>
                                 </div>
                                 <div class="col-md-8 text-left">
-                                    <%= select_tag "nutricion", 
+                                    <%= select_tag "info_predio[nutriente_id]", 
                                     options_from_collection_for_select(@nutrientes, "id", "nombre"),
                                     multiple: false, class: 'form-control', id: 'nutricion' %>
                                 </div>
@@ -82,7 +79,7 @@
                                     <%=label_tag(:conteo_racimos, "Conteo racimos") %>
                                 </div>
                                 <div class="col-md-8 text-left">
-                                    <%= text_field_tag 'conteo_racimos', nil , class: 'form-control'  %>
+                                    <%= text_field_tag 'info_predio[conteo_racimos]' , nil, class: 'form-control'  %> 
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -90,7 +87,7 @@
                                     <%= label_tag(:color_cinta, "Color cinta") %>
                                 </div>
                                 <div class="col-md-8 text-left">
-                                    <%= select_tag "color_cinta", 
+                                    <%= select_tag "info_predio[color_cinta]", 
                                     "<option>Rojo</option><option>Verde</option><option>Amarillo</option><option>Azul</option><option>Naranja</option>".html_safe, 
                                     multiple: false, class: 'form-control', id: 'color_cinta' %>
                                 </div>
