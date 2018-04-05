@@ -1,5 +1,6 @@
 class NutrientesController < ApplicationController
-  before_action :require_user, except: [:show]
+  before_action :set_nutriente, only: [:show, :edit, :update, :destroy]
+
   def index
     @nutrientes = Nutriente.all
   end
@@ -19,15 +20,12 @@ class NutrientesController < ApplicationController
   end
 
   def show
-    @nutriente = Nutriente.find(params[:id])
   end
 
   def edit
-    @nutriente = Nutriente.find(params[:id])
   end
 
   def update
-    @nutriente = Nutriente.find(params[:id])
     if @nutriente.update_attributes(nutriente_params)
       flash[:success] = 'Nutriente actualizado exitosamente'
       redirect_to nutrientes_url
@@ -37,7 +35,7 @@ class NutrientesController < ApplicationController
   end
 
   def destroy
-    Nutriente.find(params[:id]).destroy
+    @nutriente.destroy
     flash[:success] = "Nutriente eliminado"
     redirect_to nutrientes_url
   end
@@ -50,6 +48,10 @@ class NutrientesController < ApplicationController
 
     def current_date 
       Time.now.strftime("%Y-%m-%d") # Week from monday to monday
+    end
+
+    def set_nutriente
+      @nutriente = Nutriente.find(params[:id])
     end
 
 end

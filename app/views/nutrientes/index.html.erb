@@ -22,7 +22,7 @@
         <% @nutrientes.each do |nutriente| %>
           <tr>
             <td align="center"><%= nutriente.nombre %></td>
-            <td align="center"><%= nutriente.precio %></td>
+            <td align="center">$ <%= nutriente.precio %></td>
             <td><%= link_to 'Show', nutriente %></td>
             <td><%= link_to 'Edit', edit_nutriente_path(nutriente) %></td>
             <td><%= link_to 'Destroy', nutriente, method: :delete, data: { confirm: 'Are you sure?' } %></td>
