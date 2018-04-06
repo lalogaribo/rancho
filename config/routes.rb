@@ -1,9 +1,13 @@
 Rails.application.routes.draw do
 root 'pages#home'
-resources :predios
 resources :materials
 resources :nutrientes
 resources :info_predio
+
+resources :predios do
+  resources :info_predio
+end
+
 get 'predios/:id/info', to: 'info_predio#new', as: 'info'
 get '/signup', to: 'users#new'
 resources :users, except: [:new]

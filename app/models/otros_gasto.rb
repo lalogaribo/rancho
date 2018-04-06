@@ -1,3 +1,3 @@
 class OtrosGasto < ApplicationRecord
-    has_one :info_predio
+    belongs_to :info_predio
 end

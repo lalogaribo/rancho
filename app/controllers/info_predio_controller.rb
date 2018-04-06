@@ -11,6 +11,8 @@ class InfoPredioController < ApplicationController
     @nutrientes = Nutriente.all
     @user = current_user
     @info_predio = InfoPredio.new
+    @materials = Material.all
+    @info_predios = InfoPredio.all
   end
 
   def create
@@ -18,16 +20,55 @@ class InfoPredioController < ApplicationController
     @info_predio = InfoPredio.new(info_predio_params)
 
     if @info_predio.save
+      #Nutriente
       infoNutriente = InfoPredioNutriente.new(info_predio_nutrientes_params)
       infoNutriente.info_predio = @info_predio
       infoNutriente.save
 
+      #otros_pagos
+      @otros_pagos = params[:otro_pago]
+      @precio_otros_pagos = params[:otro_pago_precio]
+
+      @otros_pagos.each_with_index { |otro_pago, index|
+        @precio = @precio_otros_pagos[index]
+        @otroGasto = OtrosGasto.new({:nombre => otro_pago, :precio => @precio})
+        @otroGasto.info_predio = @info_predio
+        @otroGasto.save
+      }
+
+      #Materiales
+      @materials = params[:material]
+      @materials_qty = params[:material_quantity]
+      
+      @materials.each_with_index { |material, index|
+        @id = material
+        @qty = @materials_qty[index]
+        @infoMaterial = InfoPredioDetalle.new({:material_id => @id, :cantidad => @qty})
+        @infoMaterial.info_predio = @info_predio
+        
+        # update inventory
+        if @infoMaterial.save
+          material = Material.find(material)
+          old_qty = material.quantity.to_i
+          new_qty = old_qty - @qty.to_i
+          material.quantity = new_qty
+          material.save
+        end
+      }
+
       flash[:success] = 'Informacion del predio guardada exitosamente'
-      redirect_to info_predio_index_url
+      @predio = params[:info_predio]
+      @predio_id = @predio['predio_id']
+      @predio = Predio.find(@predio_id)
+      redirect_to new_predio_info_predio_path(@predio)
     else
+      @predio = params[:info_predio]
+      @predio_id = @predio['predio_id']
       @week = Date.parse(current_date).strftime("%W")
       @nutrientes = Nutriente.all
       @user = current_user
+      @materials = Material.all
+      @info_predios = InfoPredio.all
       render 'new'
     end
   end
@@ -70,5 +111,4 @@ class InfoPredioController < ApplicationController
     def set_info_predio
       @info_predio = InfoPredio.find(params[:id])
     end
-
 end
