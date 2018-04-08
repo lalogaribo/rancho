@@ -1,0 +1,13 @@
+<%= render 'shared/page_title', title: 'Graficas'%>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">Usuarios creados</div>
+        <div class="panel-body">
+          <div class="container text-center">
+            <%= line_chart charts_new_users_path %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
