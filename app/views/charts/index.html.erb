@@ -1,11 +1,66 @@
 <%= render 'shared/page_title', title: 'Graficas'%>
+  <h4 class="text-center">Graficas de
+    <strong>
+      <%= "#{current_user.name}" %>
+    </strong>
+  </h4>
+  <br>
+  <hr>
+  <div class="row form-group">
+    <div class="col-md-2">
+      <%= label_tag(:predio, 'Predios')%>
+    </div>
+    <div class="col-md-4 text-left">
+      <%= select_tag "predio[:predio_id]",
+    options_from_collection_for_select(@predios, "id", "name"),
+    multiple: false, class: 'form-control', id: 'predio'%>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-2">
+      <label for="">Seleccionar grafica</label>
+    </div>
+    <div class="col-md-4 text-left">
+      <select name="select" class="form-control">
+        <option value="value1">Usuarios creados</option>
+        <option value="value2" selected>Materiales creados</option>
+        <option value="value3">Total inventario</option>
+      </select>
+    </div>
+  </div>
   <div class="row">
     <div class="col-md-12">
       <div class="panel panel-default">
         <div class="panel-heading">Usuarios creados</div>
         <div class="panel-body">
           <div class="container text-center">
-            <%= line_chart charts_new_users_path %>
+            <%= column_chart charts_new_users_path, download: 'Usuarios_creados' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">Materiales creados</div>
+        <div class="panel-body">
+          <div class="container text-center">
+            <%= pie_chart charts_new_materials_path, download: 'materiales_grafica' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">Total invertido en materiales</div>
+        <div class="panel-body">
+          <div class="container text-center">
+            <%= pie_chart charts_invertido_materials_path, download: 'materiales_invertido' %>
           </div>
         </div>
       </div>

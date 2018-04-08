@@ -1,14 +1,16 @@
 Rails.application.routes.draw do
-  root 'pages#home'
+  root "pages#home"
   resources :predios
   resources :materials
-  get '/signup', to: 'users#new'
-  get '/charts', to: 'charts#index'
+  get "/signup", to: "users#new"
+  get "/charts", to: "charts#index"
   resources :users, except: [:new]
-  get 'login', to: 'sessions#new'
-  post '/login', to: 'sessions#create'
-  delete 'logout', to: 'sessions#destroy'
+  get "login", to: "sessions#new"
+  post "/login", to: "sessions#create"
+  delete "logout", to: "sessions#destroy"
   namespace :charts do
-    get 'new-users'
+    get "new-users"
+    get "new-materials"
+    get 'invertido-materials'
   end
 end
