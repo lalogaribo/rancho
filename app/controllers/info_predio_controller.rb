@@ -11,7 +11,7 @@ class InfoPredioController < ApplicationController
     @nutrientes = Nutriente.all
     @user = current_user
     @info_predio = InfoPredio.new
-    @materials = Material.all
+    @materials = current_user.materials
     @info_predios = InfoPredio.all
   end
 
