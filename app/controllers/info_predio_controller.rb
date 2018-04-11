@@ -11,7 +11,7 @@ class InfoPredioController < ApplicationController
     @nutrientes = Nutriente.all
     @user = current_user
     @info_predio = InfoPredio.new
-    @materials = current_user.materials
+    @materials = current_user.materials.where(name: ['rafia','bolsa','cinta'])
     @info_predios = InfoPredio.all
   end
 
@@ -110,5 +110,8 @@ class InfoPredioController < ApplicationController
 
     def set_info_predio
       @info_predio = InfoPredio.find(params[:id])
+    end
+
+    def filter_materials
     end
 end

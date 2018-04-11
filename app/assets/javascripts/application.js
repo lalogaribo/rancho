@@ -15,3 +15,6 @@
 //= require rails-ujs
 //= require_tree .
 //= require ./admin/predio_info
+//= require moment
+//= require bootstrap-datetimepicker
+//= require jquery.validate

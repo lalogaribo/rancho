@@ -37,20 +37,16 @@ ActiveRecord::Schema.define(version: 20180404041623) do
     t.integer "conteo_racimos"
     t.string "color_cinta"
     t.integer "semana"
+    t.date "fecha_embarque"
+    t.decimal "precio"
+    t.decimal "venta"
     t.integer "predio_id"
     t.integer "user_id"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["predio_id"], name: "index_info_predios_on_predio_id"
-  end
-
-  create_table "materiales", force: :cascade do |t|
-    t.string "name"
-    t.integer "price"
-    t.integer "quantity"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_info_predios_on_user_id"
   end
 
   create_table "materials", force: :cascade do |t|

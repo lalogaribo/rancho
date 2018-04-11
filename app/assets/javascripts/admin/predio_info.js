@@ -23,19 +23,59 @@ $(document).ready(function() {
     $(document).on('click', '#add-otros-pagos', function() {
         $('#exampleModal').modal('show');
     });
-
+    //Append otro pago and validate
     $(document).on('click', '#save-payment', function() {
         addOtherPayment();
     });
-
     // Initialize responses table
     initBootstrapTable();
+    //Initializa date picker
+    $('.fecha_embarque').datetimepicker({
+        format: 'DD/MM/YYYY'
+    });
+    //Validate predio Form
+    $(document).on('click', '#savePredioInfo', function() {
+        saveForm();
+    });
+
+    //Disabled if not stock
+    $('.number-materials').each(function() {
+        var max = $(this).attr('max');
+
+        if (max <= 0) {
+            $(this).prop('disabled', true);
+        }
+    })
+
+
+    //Event listener input numbers
+    $('.number-materials').change(function() {
+        if (this.getAttribute('value') === this.value) {
+            // setting the original 'lastvalue' data property
+            $(this).data('lastvalue', this.value);
+        } else {
+            console.log(this.value < $(this).data('lastvalue') ? 'decrement' : 'increment');
+            $(this).data('lastvalue', this.value);
+
+            if (this.value) {
+                var price = this.getAttribute('data-price')
+                var estimated_price = (price * this.value);
+                var id = this.getAttribute('id');
+                console.log('.' + id);
+                $('.' + id).text('$' + estimated_price);
+            }
+        }
+    }).change();
 });
 
 function operateFormatterEmail(value, row, index) {
     return ['<div class="table-icons">', '<a rel="tooltip" title="Edit" class="btn btn-simple btn-warning btn-icon table-action edit" href="javascript:void(0)">', '<i class="glyphicon glyphicon-pencil"></i>', '</a>', '<a rel="tooltip" title="Remove" class="btn btn-simple btn-danger btn-icon table-action remove" href="javascript:void(0)">', '<i class="glyphicon glyphicon-remove"></i>', '</a>', '</div>'].join('');
 };
 
+
+function saveForm() {
+    $('.info_predio_form').validate();
+}
 
 /**
  * Initialize Bootstrap table
@@ -85,23 +125,61 @@ function initBootstrapTable() {
 }
 
 function addOtherPayment() {
-    var valuePago = $('#otroPago')
-        .find('#txtNombre')
-        .val();
-    var valuePrice = $('#otroPago')
-        .find('#txtPrecio')
-        .val();
-
-    var other_payment = NOTIFICATION_TEMPLATE.replace('{:nombre_pago}', valuePago).replace('{:price_pago}', valuePrice);
-
-    $('#container-pagos').append(other_payment);
+    $.validator.addMethod('price', function(value, element) {
+        return this.optional(element) || /^\d+(\.\d{1,2})?$/.test(value);
+    }, 'Escribe un precio valido');
 
 
-    $('#exampleModal').modal('hide');
-    $('#otroPago')
-        .find('#txtNombre')
-        .val('');
-    $('#otroPago')
-        .find('#txtPrecio')
-        .val('');
+    $('#otroPago').validate({
+        ignore: [],
+        rules: {
+            nombrePago: {
+                required: true,
+                maxlength: 100,
+            },
+            precioPago: {
+                required: true,
+                price: ['', false],
+            },
+        },
+        messages: {
+            nombrePago: {
+                required: 'Nombre del pago es requerido.',
+                maxlength: 'La longitud maxima es 100 caracteres.',
+            },
+            precioPago: {
+                required: 'El precio del pago es requerido.',
+                price: 'Escribe un precio valido',
+            }
+        },
+        submitHandler: function() {
+            var valuePago = $('#otroPago')
+                .find('#txtNombre')
+                .val();
+            var valuePrice = $('#otroPago')
+                .find('#txtPrecio')
+                .val();
+
+            var other_payment = NOTIFICATION_TEMPLATE.replace(
+                '{:nombre_pago}',
+                valuePago
+            ).replace('{:price_pago}', valuePrice);
+
+            $('#container-pagos').append(other_payment);
+
+            $('#exampleModal').modal('hide');
+            $('#otroPago')
+                .find('#txtNombre')
+                .val('');
+            $('#otroPago')
+                .find('#txtPrecio')
+                .val('');
+        },
+        invalidHandler: function(form, validator) {
+            var errors = validator.numberOfInvalids();
+            console.log(errors);
+            console.log(validator);
+            validator.focusInvalid();
+        },
+    });
 }
