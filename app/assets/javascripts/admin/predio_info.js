@@ -30,8 +30,10 @@ $(document).ready(function() {
     // Initialize responses table
     initBootstrapTable();
     //Initializa date picker
+    dateInit = $('#info_predio_fecha_embarque_hd').val();
     $('.fecha_embarque').datetimepicker({
-        format: 'DD/MM/YYYY'
+        format: 'DD/MM/YYYY',
+        date: dateInit,
     });
     //Validate predio Form
     $(document).on('click', '#savePredioInfo', function() {

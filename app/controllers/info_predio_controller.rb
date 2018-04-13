@@ -1,5 +1,5 @@
 class InfoPredioController < ApplicationController
-  before_action :set_info_predio, only: [:show, :edit, :update, :destroy]
+  before_action :set_info_predio, only: [:show, :update, :destroy]
 
   def index
     @info_predios = InfoPredio.all
@@ -10,9 +10,15 @@ class InfoPredioController < ApplicationController
     @week = Date.parse(current_date).strftime("%W")
     @nutrientes = Nutriente.all
     @user = current_user
-    @info_predio = InfoPredio.new
     @materials = current_user.materials.where(name: ['rafia','bolsa','cinta'])
     @info_predios = InfoPredio.all
+
+    predio_week = InfoPredio.where(semana: @week)
+    if predio_week.empty?
+      @info_predio = InfoPredio.new
+    else
+      redirect_to edit_info_predio_path(@predio_id)
+    end
   end
 
   def create
@@ -29,32 +35,36 @@ class InfoPredioController < ApplicationController
       @otros_pagos = params[:otro_pago]
       @precio_otros_pagos = params[:otro_pago_precio]
 
-      @otros_pagos.each_with_index { |otro_pago, index|
-        @precio = @precio_otros_pagos[index]
-        @otroGasto = OtrosGasto.new({:nombre => otro_pago, :precio => @precio})
-        @otroGasto.info_predio = @info_predio
-        @otroGasto.save
-      }
+      if @otros_pagos.empty? == false
+        @otros_pagos.each_with_index { |otro_pago, index|
+          @precio = @precio_otros_pagos[index]
+          @otroGasto = OtrosGasto.new({:nombre => otro_pago, :precio => @precio})
+          @otroGasto.info_predio = @info_predio
+          @otroGasto.save
+        }
+      end
 
       #Materiales
       @materials = params[:material]
       @materials_qty = params[:material_quantity]
-      
-      @materials.each_with_index { |material, index|
-        @id = material
-        @qty = @materials_qty[index]
-        @infoMaterial = InfoPredioDetalle.new({:material_id => @id, :cantidad => @qty})
-        @infoMaterial.info_predio = @info_predio
-        
-        # update inventory
-        if @infoMaterial.save
-          material = Material.find(material)
-          old_qty = material.quantity.to_i
-          new_qty = old_qty - @qty.to_i
-          material.quantity = new_qty
-          material.save
-        end
-      }
+
+      if @materials.empty? == false
+        @materials.each_with_index { |material, index|
+          @id = material
+          @qty = @materials_qty[index]
+          @infoMaterial = InfoPredioDetalle.new({:material_id => @id, :cantidad => @qty})
+          @infoMaterial.info_predio = @info_predio
+
+          # update inventory
+          if @infoMaterial.save
+            material = Material.find(material)
+            old_qty = material.quantity.to_i
+            new_qty = old_qty - @qty.to_i
+            material.quantity = new_qty
+            material.save
+          end
+        }
+      end
 
       flash[:success] = 'Informacion del predio guardada exitosamente'
       @predio = params[:info_predio]
@@ -77,6 +87,13 @@ class InfoPredioController < ApplicationController
   end
 
   def edit
+    @predio_id = params[:id]
+    @week = Date.parse(current_date).strftime("%W")
+    @nutrientes = Nutriente.all
+    @user = current_user
+    @materials = current_user.materials.where(name: ['rafia','bolsa','cinta'])
+
+    @info_predio = InfoPredio.where(semana: @week)
   end
 
   def update
@@ -97,7 +114,7 @@ class InfoPredioController < ApplicationController
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def info_predio_params
-      params.require(:info_predio).permit(:predio_id, :semana, :user_id, :fumigada, :pago_trabaja, :color_cinta, :conteo_racimos)
+      params.require(:info_predio).permit(:predio_id, :semana, :user_id, :fumigada, :pago_trabaja, :color_cinta, :conteo_racimos, :fecha_embarque, :precio, :venta)
     end
 
     def info_predio_nutrientes_params
@@ -109,9 +126,6 @@ class InfoPredioController < ApplicationController
     end
 
     def set_info_predio
-      @info_predio = InfoPredio.find(params[:id])
-    end
-
-    def filter_materials
+      @info_predio = InfoPredio.where(id: params[:id])
     end
 end
