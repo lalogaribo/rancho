@@ -13,12 +13,13 @@ class InfoPredioController < ApplicationController
     @materials = current_user.materials.where(name: ['rafia','bolsa','cinta'])
     @info_predios = InfoPredio.all
 
-    predio_week = InfoPredio.where(semana: @week)
-    if predio_week.empty?
-      @info_predio = InfoPredio.new
-    else
-      redirect_to edit_info_predio_path(@predio_id)
-    end
+    #predio_week = InfoPredio.where(semana: @week)
+    #if predio_week.empty?
+     # @info_predio = InfoPredio.new
+    #else
+      #redirect_to edit_info_predio_path(@predio_id)
+    #end
+    @info_predio = InfoPredio.new
   end
 
   def create
