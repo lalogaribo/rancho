@@ -36,7 +36,7 @@ class InfoPredioController < ApplicationController
       @otros_pagos = params[:otro_pago]
       @precio_otros_pagos = params[:otro_pago_precio]
 
-      if @otros_pagos.empty? == false
+     unless @otros_pagos.nil? 
         @otros_pagos.each_with_index { |otro_pago, index|
           @precio = @precio_otros_pagos[index]
           @otroGasto = OtrosGasto.new({:nombre => otro_pago, :precio => @precio})
@@ -49,7 +49,7 @@ class InfoPredioController < ApplicationController
       @materials = params[:material]
       @materials_qty = params[:material_quantity]
 
-      if @materials.empty? == false
+      unless @materials.nil? 
         @materials.each_with_index { |material, index|
           @id = material
           @qty = @materials_qty[index]
