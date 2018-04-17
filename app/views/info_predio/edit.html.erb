@@ -11,19 +11,26 @@
                     <%= hidden_field_tag 'info_predio[user_id]', @user.id  %>
                     <div class="row">
                         <div class="col-md-6"> 
+                            
                             <% @materials.each do |material| %>
                                 <div class="row form-group">
                                     <div class="col-md-4 text-right">
                                         <label for="<%= material.name %>"><%= material.name %></label>
                                     </div>
                                     <div class="col-md-3 text-left">
-                                        <input type="number" name="material_quantity[]" id="material_<%= material.name.downcase %>" data-price="<%= material.price %>" class="form-control required number-materials" min="1" max="<%= material.quantity %>">
+                                        <input type="number" name="material_quantity[]" id="material_<%= material.name.downcase %>" data-price="<%= material.price %>" class="form-control required number-materials" min="1" max="<%= material.quantity %>" 
+                                         <% @detalle.each do |detalle_material| %>
+                                            <% if detalle_material.material_id == material.id %>
+                                                value="<%= detalle_material.cantidad %>">
+                                            <% end %>
+                                         <% end %>
                                         <input type="hidden" name="material[]" id="material_hd_<%= material.name.downcase %>" value="<%= material.id %>">
                                     </div>
                                     <div class="col-md-3 text-left material_<%= material.name.downcase %>">
                                     </div>
                                 </div>
                             <% end %>
+                            
                             <div class="row form-group">
                                 <div class="col-md-4 text-right">
                                     <%= label_tag(:fumigada, "Fumigada") %>
@@ -62,7 +69,7 @@
                                 </div>
                                 <div class="col-md-8 text-left">
                                     <%= select_tag "info_predio[nutriente_id]", 
-                                    options_from_collection_for_select(@nutrientes, "id", "nombre"),
+                                    options_from_collection_for_select(@nutrientes, "id", "nombre", @nutriente_predio.nutriente_id),
                                     multiple: false, class: 'form-control required', id: 'nutricion' %>
                                 </div>
                             </div>
@@ -79,8 +86,7 @@
                                     <%= label_tag(:color_cinta, "Color cinta") %>
                                 </div>
                                 <div class="col-md-8 text-left">
-                                    <%= select_tag "info_predio[color_cinta]", 
-                                    "<option>Rojo</option><option>Verde</option><option>Amarillo</option><option>Azul</option><option>Naranja</option>".html_safe, 
+                                    <%= select_tag "info_predio[color_cinta]", options_for_select([ "Rojo", "Verde", "Azul", "Naranja" ], @info_predio.color_cinta), 
                                     multiple: false, class: 'form-control required', id: 'color_cinta' %>
                                 </div>
                             </div>

@@ -13,12 +13,12 @@ class InfoPredioController < ApplicationController
     @materials = current_user.materials.where(name: ['rafia','bolsa','cinta'])
     @info_predios = InfoPredio.all
 
-    #predio_week = InfoPredio.where(semana: @week)
-    #if predio_week.empty?
-     # @info_predio = InfoPredio.new
-    #else
-      #redirect_to edit_info_predio_path(@predio_id)
-    #end
+    predio_week = InfoPredio.where(semana: @week)
+    if predio_week.empty?
+      @info_predio = InfoPredio.new
+    else
+      redirect_to edit_info_predio_path(@predio_id)
+    end
     @info_predio = InfoPredio.new
   end
 
@@ -71,7 +71,7 @@ class InfoPredioController < ApplicationController
       @predio = params[:info_predio]
       @predio_id = @predio['predio_id']
       @predio = Predio.find(@predio_id)
-      redirect_to new_predio_info_predio_path(@predio)
+      redirect_to predio_info_predio_index_path(@predio)
     else
       @predio = params[:info_predio]
       @predio_id = @predio['predio_id']
@@ -85,16 +85,23 @@ class InfoPredioController < ApplicationController
   end
 
   def show
+    @info_predios = InfoPredio.all
   end
 
   def edit
-    @predio_id = params[:id]
+    @predio_info_id = params[:id]
     @week = Date.parse(current_date).strftime("%W")
     @nutrientes = Nutriente.all
     @user = current_user
     @materials = current_user.materials.where(name: ['rafia','bolsa','cinta'])
 
-    @info_predio = InfoPredio.where(semana: @week)
+    @info_predio = InfoPredio.includes(:nutriente, :material)
+                          .find(@predio_info_id)
+                        
+    @detalle =  @info_predio.info_predio_detalle
+    @nutriente_predio = @info_predio.info_predio_nutriente
+    
+    #abort @nutriente.inspect
   end
 
   def update

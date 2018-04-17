@@ -6,5 +6,7 @@
      validates :quantity, numericality: { only_integer: true }
      belongs_to :user
      validates :user_id, presence: true
+     has_many :info_predio_detalle
+     has_many :material, through: :info_predio_detalle
 
    end

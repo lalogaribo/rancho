@@ -1,0 +1,32 @@
+<%= render 'shared/error', obj: @info_predio %>
+<div class="row">
+  <div class="col-md-12">
+    <fieldset>
+        <legend>Historial</legend>
+        <div class="row">
+            <div class="col-md-12">
+                <table id="info-predio-table" class="table" data-side-pagination="client" data-pagination="true" >
+                    <thead>
+                    <tr>
+                        <th data-field="id" data-sortable="true">Id</th>
+                        <th data-field="predio_id" data-sortable="true">predio_id</th>
+                        <th data-field="semana" data-sortable="true">Semana</th>
+                        <th data-field="actions" class="td-actions text-right" data-events="operateEventsEmail" data-formatter="operateFormatterEmail">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                     <% @info_predios.each do |info| %>
+                        <tr>
+                            <td align="center"><%= info.id %></td>
+                            <td align="center"><%= info.predio_id %></td>
+                            <td align="center">Semana <%= info.semana %></td>
+                            <td></td>
+                        </tr>
+                    <% end %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </fieldset>
+ </div>
+</div>
