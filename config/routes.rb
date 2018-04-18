@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+resources :vuelos
 root 'pages#home'
 resources :predios
 resources :materials
