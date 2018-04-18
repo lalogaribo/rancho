@@ -1,14 +1,20 @@
 <%= render 'shared/error', obj: @info_predio %>
+<div class="row">
+  <div class="col-md-12 text-right form-group">
+    <%= link_to 'Mostrar listado de informacion de predios', info_predio_index_path, class: 'btn btn-primary' %>
+  </div>
+</div>
 <div class="row form-group">
   <div class="col-md-12">
     <fieldset>
         <legend>Informacion Predio</legend>
         <div class="row">
             <div class="col-md-12">
-                <%= form_tag("/info_predio", class: 'info_predio_form' , method: "post") do %>
-                    <%= hidden_field_tag 'info_predio[predio_id]', @predio_id %>
-                    <%= hidden_field_tag 'info_predio[semana]', @week %>
+                <%= form_tag({:controller=> "info_predio", :action => "update"}, class: 'info_predio_form' , method: "post") do %>
+                    <%= hidden_field_tag 'info_predio[predio_id]', @info_predio.predio_id %>
+                    <%= hidden_field_tag 'info_predio[semana]', @info_predio.semana %>
                     <%= hidden_field_tag 'info_predio[user_id]', @user.id  %>
+                    <input type="hidden" name="_method" value="patch">
                     <div class="row">
                         <div class="col-md-6"> 
                             

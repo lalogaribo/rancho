@@ -12,9 +12,7 @@
                 <% @info_predios.each do |info_predio| %>
                   <tr>
                     <td align="center">Semana <%= info_predio.semana %></td>
-                    <td><%= link_to 'Show', info_predio %></td>
-                    <td><%= link_to 'Edit', edit_info_predio_path(info_predio) %></td>
-                    <td><%= link_to 'Destroy', info_predio, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                    <td><a rel="tooltip" title="Edit" class="btn btn-simple btn-warning btn-icon table-action edit" href="<%= edit_info_predio_path(info_predio) %>"><i class="glyphicon glyphicon-pencil"></i> </a></td>
                   </tr>
                 <% end %>
               </tbody>

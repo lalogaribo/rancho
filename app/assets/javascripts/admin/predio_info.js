@@ -71,9 +71,23 @@ $(document).ready(function() {
 });
 
 function operateFormatterEmail(value, row, index) {
-    return ['<div class="table-icons">', '<a rel="tooltip" title="Edit" class="btn btn-simple btn-warning btn-icon table-action edit" href="javascript:void(0)">', '<i class="glyphicon glyphicon-pencil"></i>', '</a>', '<a rel="tooltip" title="Remove" class="btn btn-simple btn-danger btn-icon table-action remove" href="javascript:void(0)">', '<i class="glyphicon glyphicon-remove"></i>', '</a>', '</div>'].join('');
+    return ['<div class="table-icons">',
+        '<a rel="tooltip" title="Edit" class="btn btn-simple btn-warning btn-icon table-action edit" href="javascript:void(0)">',
+        '<i class="glyphicon glyphicon-pencil"></i>',
+        '</a>'
+    ].join('');
 };
 
+//icons operations
+window.operateEventsEmail = {
+    'click .edit': function(e, value, row, index) {
+        EDIT_URL = EDIT_URL.replace('{:id}', row.id).replace('{:predio_id}', row.predio_id);
+        window.location = EDIT_URL;
+    },
+    'click .remove': function(e, value, row, index) {
+
+    }
+};
 
 function saveForm() {
     $('.info_predio_form').validate();
@@ -111,19 +125,6 @@ function initBootstrapTable() {
 
     $('#info-predio-table').bootstrapTable('hideColumn', 'id');
     $('#info-predio-table').bootstrapTable('hideColumn', 'predio_id');
-
-
-    //icons operations
-    window.operateEventsEmail = {
-        'click .edit': function(e, value, row, index) {
-            console.log(row);
-            EDIT_URL = EDIT_URL.replace('{:id}', row.id).replace('{:predio_id}', row.predio_id);
-            window.location = DETAIL_URL;
-        },
-        'click .remove': function(e, value, row, index) {
-
-        }
-    };
 }
 
 function addOtherPayment() {

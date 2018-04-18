@@ -13,11 +13,9 @@ class InfoPredioController < ApplicationController
     @materials = current_user.materials.where(name: ['rafia','bolsa','cinta'])
     @info_predios = InfoPredio.all
 
-    predio_week = InfoPredio.where(semana: @week)
-    if predio_week.empty?
-      @info_predio = InfoPredio.new
-    else
-      redirect_to edit_info_predio_path(@predio_id)
+    predio_week = InfoPredio.find_by(semana: @week)
+    unless predio_week.nil? 
+      redirect_to edit_info_predio_path(predio_week.id)
     end
     @info_predio = InfoPredio.new
   end
@@ -84,33 +82,31 @@ class InfoPredioController < ApplicationController
     end
   end
 
-  def show
-    @info_predios = InfoPredio.all
-  end
-
   def edit
-    @predio_info_id = params[:id]
-    @week = Date.parse(current_date).strftime("%W")
+    @info_predio_id = params[:id]
     @nutrientes = Nutriente.all
     @user = current_user
     @materials = current_user.materials.where(name: ['rafia','bolsa','cinta'])
 
     @info_predio = InfoPredio.includes(:nutriente, :material)
-                          .find(@predio_info_id)
-                        
+                          .find(@info_predio_id)
     @detalle =  @info_predio.info_predio_detalle
     @nutriente_predio = @info_predio.info_predio_nutriente
-    
-    #abort @nutriente.inspect
   end
 
   def update
-    if @nutriente.update_attributes(info_predio_params)
+    @info_predio = InfoPredio.find(params[:id])
+    if @info_predio.update_attributes(info_predio_params)
       flash[:success] = 'Informacion del predio guardada exitosamente'
       redirect_to info_predio_index_url
     else
       render 'edit'
     end
+  end
+
+
+  def show
+    @info_predios = InfoPredio.all
   end
 
   def destroy

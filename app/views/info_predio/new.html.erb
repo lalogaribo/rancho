@@ -80,7 +80,7 @@
                                 </div>
                                 <div class="col-md-8 text-left">
                                     <%= select_tag "info_predio[color_cinta]", 
-                                    "<option>Rojo</option><option>Verde</option><option>Amarillo</option><option>Azul</option><option>Naranja</option>".html_safe, 
+                                    options_for_select([ "Rojo", "Verde", "Azul", "Naranja" ]),
                                     multiple: false, class: 'form-control required', id: 'color_cinta' %>
                                 </div>
                             </div>
