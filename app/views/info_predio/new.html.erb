@@ -29,7 +29,7 @@
                                     <%= label_tag(:fumigada, "Fumigada") %>
                                 </div>
                                 <div class="col-md-8 text-left">
-                                    <%= text_field_tag 'info_predio[fumigada]' , nil, class: 'form-control required'  %>
+                                    <%= text_field_tag 'info_predio[fumigada]' , nil, class: 'form-control required onlyPrice', placeholder: '$0.00' %>
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -37,7 +37,7 @@
                                     <%= label_tag(:pago_trabaja, "Pago Trabaja") %>
                                 </div>
                                 <div class="col-md-8 text-left">
-                                    <%= text_field_tag 'info_predio[pago_trabaja]' , nil, class: 'form-control required'  %>                                
+                                    <%= text_field_tag 'info_predio[pago_trabaja]' , nil, class: 'form-control required onlyPrice', placeholder: '$0.00'%>                                
                                 </div>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                                     <%=label_tag(:conteo_racimos, "Conteo racimos") %>
                                 </div>
                                 <div class="col-md-8 text-left">
-                                    <%= text_field_tag 'info_predio[conteo_racimos]' , nil, class: 'form-control required'  %> 
+                                    <%= text_field_tag 'info_predio[conteo_racimos]' , nil, class: 'form-control required onlyNumbers'  %> 
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -97,7 +97,7 @@
                                     <%= label_tag(:precio, "Precio") %>
                                 </div>
                                 <div class="col-md-8 text-left">
-                                    <%= text_field_tag 'info_predio[precio]' , nil, class: 'form-control required'  %> 
+                                    <%= text_field_tag 'info_predio[precio]' , nil, class: 'form-control required onlyPrice',  placeholder: '$0.00'  %> 
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -105,7 +105,7 @@
                                     <%= label_tag(:venta, "Venta") %>
                                 </div>
                                 <div class="col-md-8 text-left">
-                                    <%= text_field_tag 'info_predio[venta]' , nil, class: 'form-control required'  %> 
+                                    <%= text_field_tag 'info_predio[venta]' , nil, class: 'form-control required', readonly: true,  placeholder: '$0.00'  %> 
                                 </div>
                             </div>
                             <div class="row form-group">

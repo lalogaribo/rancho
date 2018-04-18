@@ -5,7 +5,7 @@ var NOTIFICATION_TEMPLATE =
     '<label> Pago </label>\n' +
     '</div>\n' +
     '<div class="col-md-8 text-left">\n' +
-    '<input type="text" name="otro_pago[]" id="otro_pago_1" class="form-control" value="{:nombre_pago}"  >\n' +
+    '<input type="text" name="otro_pago[]" id="otro_pago_1" class="form-control" value="{:nombre_pago}"  readonly="readonly">\n' +
     '</div>\n' +
     '</div>\n' +
     '<div class="row">\n' +
@@ -13,7 +13,7 @@ var NOTIFICATION_TEMPLATE =
     '<label> Precio </label>\n' +
     '</div>\n' +
     '<div class="col-md-8 text-left">\n' +
-    '<input type="text" name="otro_pago_precio[]" id="otro_pago_precio_1" class="form-control" value="{:price_pago}" >\n' +
+    '<input type="text" name="otro_pago_precio[]" id="otro_pago_precio_1" class="form-control" value="{:price_pago}" readonly="readonly" >\n' +
     '</div>\n' +
     '</div>\n' +
     '<hr>';
@@ -49,7 +49,6 @@ $(document).ready(function() {
         }
     })
 
-
     //Event listener input numbers
     $('.number-materials').change(function() {
         if (this.getAttribute('value') === this.value) {
@@ -68,7 +67,44 @@ $(document).ready(function() {
             }
         }
     }).change();
+
+    //Calculate precio info predio
+    $(document).on('blur', '#info_predio_precio', function() {
+        var precio = $(this).val();
+        var racimos = ($('#info_predio_conteo_racimos').val()) ? $('#info_predio_conteo_racimos').val() : 0;
+
+        if (!isNaN(precio) && !isNaN(racimos)) {
+            var venta = precio * racimos;
+            $('#info_predio_venta').val(venta);
+        }
+    });
+
+    onlyNumbers();
+    onlyPrice();
 });
+
+function onlyNumbers() {
+    $('.onlyNumbers').keyup(function(e) {
+        if (/\D/g.test(this.value)) {
+            // Filter non-digits from input value.
+            this.value = this.value.replace(/\D/g, '');
+        }
+    });
+}
+
+function onlyPrice() {
+    $('.onlyPrice')
+        .keypress(function(event) {
+            if ((event.which != 46 || (event.which == 46 && $(this).val() == '') || $(this)
+                    .val()
+                    .indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+                event.preventDefault();
+            }
+        })
+        .on('paste', function(event) {
+            event.preventDefault();
+        });
+}
 
 function operateFormatterEmail(value, row, index) {
     return ['<div class="table-icons">',

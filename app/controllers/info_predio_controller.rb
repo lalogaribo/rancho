@@ -88,10 +88,11 @@ class InfoPredioController < ApplicationController
     @user = current_user
     @materials = current_user.materials.where(name: ['rafia','bolsa','cinta'])
 
-    @info_predio = InfoPredio.includes(:nutriente, :material)
+    @info_predio = InfoPredio.includes(:nutriente, :material, :otros_gasto)
                           .find(@info_predio_id)
     @detalle =  @info_predio.info_predio_detalle
     @nutriente_predio = @info_predio.info_predio_nutriente
+    @otros_pagos = @info_predio.otros_gasto
   end
 
   def update

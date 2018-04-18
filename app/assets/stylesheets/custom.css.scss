@@ -1,33 +1,44 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 #logo {
-  float: left;
-  font-size: 1.7em;
-  color: #717371;
-  letter-spacing: -1px;
-  font-weight: bold;
+    float: left;
+    font-size: 1.7em;
+    color: #717371;
+    letter-spacing: -1px;
+    font-weight: bold;
 }
+
 .jumbotron {
-  background-image: asset_url('cover.png');
-  background-size: cover;
-  height: 500px;
+    background-image: asset_url('cover.png');
+    background-size: cover;
+    height: 500px;
 }
-.jumbotron h1, h2 {
-  color: #fff;
-  text-align: center;
-  margin-bottom: 30px;
-  letter-spacing: -1px;
-  font-weight: bold;
+
+.jumbotron h1,
+h2 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 30px;
+    letter-spacing: -1px;
+    font-weight: bold;
 }
+
 .well a {
-  color: rgb(223, 172, 172)
+    color: rgb(223, 172, 172)
 }
+
 .listing {
-  list-style: none;
-  padding-left: 0;
-  margin: 3px;
+    list-style: none;
+    padding-left: 0;
+    margin: 3px;
 }
 
 .botones {
-  margin-top: 70px;
+    margin-top: 70px;
+}
+
+.error {
+    font-size: smaller;
+    color: #EB5E28;
+    border-color: #EB5E28;
 }
