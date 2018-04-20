@@ -34,7 +34,7 @@ class InfoPredioController < ApplicationController
       @otros_pagos = params[:otro_pago]
       @precio_otros_pagos = params[:otro_pago_precio]
 
-     unless @otros_pagos.nil? 
+      unless @otros_pagos.nil? 
         @otros_pagos.each_with_index { |otro_pago, index|
           @precio = @precio_otros_pagos[index]
           @otroGasto = OtrosGasto.new({:nombre => otro_pago, :precio => @precio})
@@ -98,8 +98,59 @@ class InfoPredioController < ApplicationController
   def update
     @info_predio = InfoPredio.find(params[:id])
     if @info_predio.update_attributes(info_predio_params)
-      flash[:success] = 'Informacion del predio guardada exitosamente'
-      redirect_to info_predio_index_url
+      # update predio nutriente
+      @predio_nutriente = InfoPredioNutriente.find_by(id: params[:nutriente_predio_hd])
+      if @predio_nutriente.update_attributes(info_predio_nutrientes_params)
+        #materials
+        @predio_material_hd = params[:material_predio_hd]
+        @materials_qty = params[:material_quantity]
+        @materials_qty_old = params[:material_quantity_old]
+        unless @predio_material_hd.nil? 
+          @predio_material_hd.each_with_index { |predio_material_id, index|
+            info_predio_detalle = InfoPredioDetalle.find_by(id: predio_material_id)
+            qty = @materials_qty[index]
+            qty_save_old = @materials_qty_old[index]
+            if info_predio_detalle.update_attributes(cantidad: qty)
+              # update inventory
+              qty = qty.to_i - qty_save_old.to_i
+              material = Material.find(info_predio_detalle.material_id)
+              old_qty = material.quantity.to_i
+              if qty >= 0
+                new_qty = old_qty - qty.to_i
+              else
+                new_qty = old_qty + qty.abs
+              end
+              material.quantity = new_qty
+              material.save
+            end
+          }
+        end
+
+        #otros_pagos remove
+        @otros_pagos_remove = params[:otros_pagos_removed]
+        unless @otros_pagos_remove.nil? 
+          @otros_pagos_remove.each_with_index { |otro_pago, index|
+            remove_otro_pago = OtrosGasto.find_by(id: otro_pago)
+            remove_otro_pago.destroy
+          }
+        end
+        #new otros_pagos
+        @otros_pagos = params[:otro_pago]
+        @precio_otros_pagos = params[:otro_pago_precio]
+
+        unless @otros_pagos.nil? 
+          @otros_pagos.each_with_index { |otro_pago, index|
+            @precio = @precio_otros_pagos[index]
+            @otroGasto = OtrosGasto.new({:nombre => otro_pago, :precio => @precio})
+            @otroGasto.info_predio = @info_predio
+            @otroGasto.save
+        }
+        end
+        flash[:success] = 'Informacion del predio guardada exitosamente'
+        redirect_to info_predio_index_url
+      else
+        render 'edit'
+      end
     else
       render 'edit'
     end

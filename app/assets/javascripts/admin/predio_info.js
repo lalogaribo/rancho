@@ -1,5 +1,6 @@
 var EDIT_URL = '/predios/{:predio_id}/info_predio/{:id}/edit';
 var NOTIFICATION_TEMPLATE =
+    '<div class = "row"><div class = "col-md-12"><button type = "button" class="close" aria-label = "Close"><span aria-hidden = "true" > &times; </span> </button> </div> </div> <div class = "otro_pago" >' +
     '<div class="row form-group">\n' +
     '<div class="col-md-4 text-right">\n' +
     '<label> Pago </label>\n' +
@@ -16,13 +17,16 @@ var NOTIFICATION_TEMPLATE =
     '<input type="text" name="otro_pago_precio[]" id="otro_pago_precio_1" class="form-control" value="{:price_pago}" readonly="readonly" >\n' +
     '</div>\n' +
     '</div>\n' +
-    '<hr>';
+    '<hr>' +
+    '</div>';
 
 // Default Type
 $(document).ready(function() {
+
     $(document).on('click', '#add-otros-pagos', function() {
         $('#exampleModal').modal('show');
     });
+
     //Append otro pago and validate
     $(document).on('click', '#save-payment', function() {
         addOtherPayment();
@@ -46,6 +50,11 @@ $(document).ready(function() {
 
         if (max <= 0) {
             $(this).prop('disabled', true);
+        } else {
+            var price = this.getAttribute('data-price')
+            var estimated_price = (price * this.value);
+            var id = this.getAttribute('id');
+            $('.' + id).text('$' + estimated_price);
         }
     })
 
@@ -55,14 +64,12 @@ $(document).ready(function() {
             // setting the original 'lastvalue' data property
             $(this).data('lastvalue', this.value);
         } else {
-            console.log(this.value < $(this).data('lastvalue') ? 'decrement' : 'increment');
             $(this).data('lastvalue', this.value);
 
             if (this.value) {
                 var price = this.getAttribute('data-price')
                 var estimated_price = (price * this.value);
                 var id = this.getAttribute('id');
-                console.log('.' + id);
                 $('.' + id).text('$' + estimated_price);
             }
         }
@@ -79,8 +86,20 @@ $(document).ready(function() {
         }
     });
 
+    //Validations
     onlyNumbers();
     onlyPrice();
+
+    //Remove
+    $(document).on('click', '.close', function() {
+        var containerOtroPago = $(this).parent().parent().next('.otro_pago');
+        var idRemoved = containerOtroPago.attr('data-id');
+        containerOtroPago.remove();
+        $(this).remove();
+        if (typeof idRemoved !== 'undefined') {
+            $('#container-pagos').append('<input type="hidden" name="otros_pagos_removed[]" class="otros_pagos_hidden" value="' + idRemoved + '">');
+        }
+    });
 });
 
 function onlyNumbers() {

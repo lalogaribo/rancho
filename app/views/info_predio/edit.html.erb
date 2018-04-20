@@ -25,15 +25,17 @@
                                     </div>
                                     <div class="col-md-3 text-left">
                                         <input type="number" name="material_quantity[]" id="material_<%= material.name.downcase %>" data-price="<%= material.price %>" class="form-control required number-materials" min="1" max="<%= material.quantity %>" 
-                                         <% @detalle.each do |detalle_material| %>
+                                       
+                                        <% @detalle.each do |detalle_material| %>
                                             <% if detalle_material.material_id == material.id %>
                                                 value="<%= detalle_material.cantidad %>">
+                                                <input type="hidden" name="material_predio_hd[]" value="<%=  detalle_material.id %>">
+                                                <input type="hidden" name="material_quantity_old[]" value="<%=  detalle_material.cantidad %>">
                                             <% end %>
-                                         <% end %>
+                                        <% end %>
                                         <input type="hidden" name="material[]" id="material_hd_<%= material.name.downcase %>" value="<%= material.id %>">
                                     </div>
-                                    <div class="col-md-3 text-left material_<%= material.name.downcase %>">
-                                    </div>
+                                    <div class="col-md-3 text-left material_<%= material.name.downcase %>"></div>
                                 </div>
                             <% end %>
                             
@@ -68,23 +70,32 @@
 
                             <div class="row form-group" id="container-pagos" style="border: 1px solid #ccc;border-radius: 3px;padding: 8px;"> 
                                 <% @otros_pagos.each do |otro_pago| %>
-                                <div class="row form-group">
-                                    <div class="col-md-4 text-right">
-                                        <label> Pago </label>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button type="button" class="close" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="col-md-8 text-left">
-                                        <input type="text" name="otro_pago[]" id="otro_pago_1" class="form-control" value="<%= otro_pago.nombre %>"  readonly="readonly">
+                                    <div class="otro_pago" data-id="<%= otro_pago.id %>">
+                                        <div class="row form-group">
+                                            <div class="col-md-4 text-right">
+                                                <label> Pago </label>
+                                            </div>
+                                            <div class="col-md-8 text-left">
+                                                <input type="text" id="otro_pago_1" class="form-control" value="<%= otro_pago.nombre %>"  readonly="readonly">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 text-right">
+                                                <label> Precio </label>
+                                            </div>
+                                            <div class="col-md-8 text-left">
+                                                <input type="text" id="otro_pago_precio_1" class="form-control" value="<%= otro_pago.precio %>" readonly="readonly" >
+                                            </div>
+                                        </div>
+                                        <hr>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 text-right">
-                                        <label> Precio </label>
-                                    </div>
-                                    <div class="col-md-8 text-left">
-                                        <input type="text" name="otro_pago_precio[]" id="otro_pago_precio_1" class="form-control" value="<%= otro_pago.precio %>" readonly="readonly" >
-                                    </div>
-                                </div>
-                                <hr>
                                  <% end %>
                             </div>
                             
@@ -97,6 +108,7 @@
                                     <%= select_tag "info_predio[nutriente_id]", 
                                     options_from_collection_for_select(@nutrientes, "id", "nombre", @nutriente_predio.nutriente_id),
                                     multiple: false, class: 'form-control required', id: 'nutricion' %>
+                                    <input type="hidden" name="nutriente_predio_hd[]" value="<%=  @nutriente_predio.id %>">
                                 </div>
                             </div>
                             <div class="row form-group">
