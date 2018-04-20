@@ -2,7 +2,13 @@ class InfoPredioController < ApplicationController
   before_action :set_info_predio, only: [:show, :update, :destroy]
 
   def index
-    @info_predios = InfoPredio.all
+    @predio_id = params[:id]
+    unless @predio_id.nil? 
+      @info_predios = InfoPredio.includes(:predio).find_by(predio_id: @predio_id)
+    else
+      @info_predios = InfoPredio.includes(:predio).all
+    end
+    #abort @info_predios.inspect
   end
 
   def new
@@ -11,9 +17,9 @@ class InfoPredioController < ApplicationController
     @nutrientes = Nutriente.all
     @user = current_user
     @materials = current_user.materials.where(name: ['rafia','bolsa','cinta'])
-    @info_predios = InfoPredio.all
+    @info_predios = InfoPredio.find_by(predio_id: @predio_id)
 
-    predio_week = InfoPredio.find_by(semana: @week)
+    predio_week = InfoPredio.find_by(semana: @week, predio_id: @predio_id)
     unless predio_week.nil? 
       redirect_to edit_info_predio_path(predio_week.id)
     end

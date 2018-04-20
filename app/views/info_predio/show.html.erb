@@ -10,6 +10,7 @@
                     <tr>
                         <th data-field="id" data-sortable="true">Id</th>
                         <th data-field="predio_id" data-sortable="true">predio_id</th>
+                        <th data-field="predio_name" data-sortable="true">Nombre del Predio</th>
                         <th data-field="semana" data-sortable="true">Semana</th>
                         <th data-field="actions" class="td-actions text-right" data-events="operateEventsEmail" data-formatter="operateFormatterEmail">Actions</th>
                     </tr>
@@ -19,6 +20,7 @@
                         <tr>
                             <td align="center"><%= info.id %></td>
                             <td align="center"><%= info.predio_id %></td>
+                            <td align="center"><%= info.predio.name %></td>
                             <td align="center">Semana <%= info.semana %></td>
                             <td></td>
                         </tr>
