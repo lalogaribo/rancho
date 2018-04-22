@@ -1,17 +1,32 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Admin</title>
+    <title>Coahuayana produce</title>
     <%= csrf_meta_tags %>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-  <%= render 'layouts/navigation' %>
-  <%= render 'layouts/messages' %>
-    <div class="container">
-      <%= yield %>
+  <div class="site-wrapper">
+    <div class="site-wrapper-inner">
+      <div class="cover-container">
+        <%= video_tag(
+                 'empaque.mp4',
+                 id: 'background',
+                 autoplay: true,
+                 loop: true,
+                 muted: true,
+                 #poster: 'cover.png'
+            )
+        %>
+        <%= render 'layouts/navigation' %>
+        <div class="container">
+          <%= render 'layouts/messages' %>
+          <%= yield %>
+        </div>
+      </div>
     </div>
+  </div>
   </body>
 </html>

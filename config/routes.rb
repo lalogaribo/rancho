@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 root 'pages#home'
+get '/index', to: 'pages#index'
 resources :predios
 resources :materials
 get '/signup', to: 'users#new'
