@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180421215830) do
+ActiveRecord::Schema.define(version: 20180424130708) do
 
   create_table "info_predio_detalles", force: :cascade do |t|
     t.integer "material_id"
