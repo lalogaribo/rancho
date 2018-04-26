@@ -138,13 +138,15 @@
                     </tr>
                     </thead>
                     <tbody>
-                     <% @info_predios.each do |info| %>
-                        <tr>
-                            <td align="center"><%= info.id %></td>
-                            <td align="center"><%= info.predio_id %></td>
-                            <td align="center">Semana <%= info.semana %></td>
-                            <td></td>
-                        </tr>
+                    <% unless @info_predios.nil?  %>
+                        <% @info_predios.each do |info| %>
+                            <tr>
+                                <td align="center"><%= info.id %></td>
+                                <td align="center"><%= info.predio_id %></td>
+                                <td align="center">Semana <%= info.semana %></td>
+                                <td></td>
+                            </tr>
+                        <% end %>
                     <% end %>
                     </tbody>
                 </table>

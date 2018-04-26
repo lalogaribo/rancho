@@ -152,7 +152,7 @@ class InfoPredioController < ApplicationController
             @otroGasto.save
         }
         end
-        flash[:success] = 'Informacion del predio guardada exitosamente'
+        flash[:success] = 'Informacion del predio actualiza exitosamente'
         redirect_to info_predio_index_url
       else
         render 'edit'
