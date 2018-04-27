@@ -1,5 +1,6 @@
 class MaterialsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
+  layout 'dashboard'
   before_action :require_user, except: [:show]
   #before_action :require_same_user, except: [:index, :show]
 

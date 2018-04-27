@@ -1,5 +1,6 @@
 class PrediosController < ApplicationController
   before_action :require_user, except: [:show]
+  layout 'dashboard'
   def index
     @predios = current_user.predios
   end
