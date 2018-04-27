@@ -36,6 +36,9 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'jquery-rails'
 gem "font-awesome-rails"
+gem 'momentjs-rails', '>= 2.9.0'
+gem 'bootstrap3-datetimepicker-rails', '~> 4.17.47'
+gem 'jquery-validation-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

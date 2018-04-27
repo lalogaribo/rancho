@@ -23,7 +23,6 @@ class PrediosController < ApplicationController
     end
   end
 
-
   private
     def predio_params
       params.require(:predio).permit(:name, :no_hectareas)
@@ -34,5 +33,9 @@ class PrediosController < ApplicationController
         flash[:danger] = "Solo puedes editar tus propios predios"
         redirect_to predios_path
       end
+    end
+
+    def current_date 
+      Time.now.strftime("%Y-%m-%d") # Week from monday to monday
     end
 end
