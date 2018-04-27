@@ -10,6 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
+
+
 ActiveRecord::Schema.define(version: 20180425221812) do
 
   create_table "info_predio_detalles", force: :cascade do |t|
@@ -45,12 +48,41 @@ ActiveRecord::Schema.define(version: 20180425221812) do
     t.index ["predio_id"], name: "index_info_predios_on_predio_id"
   end
 
-  create_table "materiales", force: :cascade do |t|
-    t.string "name"
-    t.integer "price"
-    t.integer "quantity"
+  create_table "info_predio_detalles", force: :cascade do |t|
+    t.integer "material_id"
+    t.integer "cantidad"
+    t.integer "info_predio_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["info_predio_id"], name: "index_info_predio_detalles_on_info_predio_id"
+    t.index ["material_id"], name: "index_info_predio_detalles_on_material_id"
+  end
+
+  create_table "info_predio_nutrientes", force: :cascade do |t|
+    t.integer "info_predio_id"
+    t.integer "nutriente_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["info_predio_id"], name: "index_info_predio_nutrientes_on_info_predio_id"
+    t.index ["nutriente_id"], name: "index_info_predio_nutrientes_on_nutriente_id"
+  end
+
+  create_table "info_predios", force: :cascade do |t|
+    t.decimal "fumigada"
+    t.decimal "pago_trabaja"
+    t.integer "conteo_racimos"
+    t.string "color_cinta"
+    t.integer "semana"
+    t.date "fecha_embarque"
+    t.decimal "precio"
+    t.decimal "venta"
+    t.integer "predio_id"
+    t.integer "user_id"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["predio_id"], name: "index_info_predios_on_predio_id"
+    t.index ["user_id"], name: "index_info_predios_on_user_id"
   end
 
   create_table "materials", force: :cascade do |t|

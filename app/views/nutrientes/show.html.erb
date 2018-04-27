@@ -1,0 +1,20 @@
+<%= render 'shared/page_title', title: 'Nutriente' %>
+
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="text-center">Nombre</th>
+          <th class="text-center">Precio</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr>
+            <td align="center"><%= @nutriente.nombre %></td>
+            <td align="center"><%= @nutriente.precio %></td>
+          </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

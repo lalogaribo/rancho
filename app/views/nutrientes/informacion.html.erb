@@ -1,0 +1,130 @@
+<% provide(:title, 'Edit predio') %>
+
+<div class="jumbotron">
+    <fieldset>
+        <legend>Informacion Predio</legend>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="row">
+                    <div class="col-md-12">
+                        <%= form_tag("/predio_info", method: "post") do %>
+                            <%= hidden_field_tag 'predio_id', @predio_id %>
+                            <%= hidden_field_tag 'semana', @week %>
+                            <%= hidden_field_tag 'user_id', 1 %>
+                            <div class="row">
+                                <div class="col-md-6"> 
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <%= label_tag(:rafia, "Rafia") %>
+                                        </div>
+                                        <div class="col-md-3 text-left">
+                                            <%= number_field_tag(:rafia , nil, in: 1...10, class: 'form-control' ) %>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <%= label_tag(:cinta, "Cinta") %>
+                                        </div>
+                                        <div class="col-md-3 text-left">
+                                            <%= number_field_tag(:cinta , nil, in: 1...10, class: 'form-control' ) %>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <%= label_tag(:bolsa, "Bolsa") %>
+                                        </div>
+                                        <div class="col-md-3 text-left">
+                                            <%= number_field_tag(:bolsa , nil, in: 1...10, class: 'form-control' ) %>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <%= label_tag(:fumigada, "Fumigada") %>
+                                        </div>
+                                        <div class="col-md-8 text-left">
+                                            <%= text_field_tag 'fumigada' , nil, class: 'form-control'  %>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <%= label_tag(:pago_trabaja, "Pago Trabaja") %>
+                                        </div>
+                                        <div class="col-md-8 text-left">
+                                            <%= text_field_tag 'pago_trabaja', nil , class: 'form-control'  %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <%= label_tag(:otros_pagos, "Otros Pagos") %>
+                                        </div>
+                                        <div class="col-md-8 text-left">
+                                            <%= text_field_tag 'otros_pagos', nil , class: 'form-control'  %>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <%= label_tag(:nutricion, "Nutricion") %>
+                                        </div>
+                                        <div class="col-md-8 text-left">
+                                            <%= select_tag "nutricion", "<option>Fertilizante</option><option>Urea</option><option>MKS</option><option>Sulfato de amonio</option><option>Enraizador</option>".html_safe, multiple: false, class: 'form-control', id: 'nutricion' %>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <%=label_tag(:conteo_racimos, "Conteo racimos") %>
+                                        </div>
+                                        <div class="col-md-8 text-left">
+                                            <%= text_field_tag 'conteo_racimos', nil , class: 'form-control'  %>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <%= label_tag(:color_cinta, "Color cinta") %>
+                                        </div>
+                                        <div class="col-md-8 text-left">
+                                            <%= select_tag "color_cinta", "<option>Rojo</option><option>Verde</option><option>Amarillo</option><option>Azul</option><option>Naranja</option>".html_safe, multiple: false, class: 'form-control', id: 'nutricion' %>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-offset-4 col-md-8 text-right">
+                                            <%= submit_tag "Completar", class: "btn btn-success" %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </fieldset>
+</div>
+<div class="jumbotron">
+    <fieldset>
+        <legend>Historial</legend>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <table id="table_id" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Semana</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Angel</td>
+                            <td>9</td>
+                        </tr>
+                        <tr>
+                            <td>Nahomi</td>
+                            <td>7</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </fieldset>
+</div>

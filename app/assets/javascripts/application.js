@@ -10,13 +10,18 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
+
 //= require bootstrap-sprockets
 //= require rails-ujs
 //= require turbolinks
 //= require Chart.bundle
 //= require chartkick
 //= require_tree .
+//= require ./admin/predio_info
+//= require moment
+//= require bootstrap-datetimepicker
+//= require jquery.validate
+
 
 // var predio = document.querySelector('.predio-name');
 // var aplicacion = document.querySelector('.aplicacion-nombre');
