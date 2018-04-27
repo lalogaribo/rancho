@@ -59,9 +59,7 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-<<<<<<< HEAD
 gem "chartkick"
 gem 'groupdate'
-=======
 gem 'simple_form'
->>>>>>> 865a47d70b035f8e678fa59a45927daeab195bb9
+
