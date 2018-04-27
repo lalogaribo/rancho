@@ -1,4 +1,5 @@
 class RequestsController < ApplicationController
+  layout 'dashboard'
   def index
     if current_user.admin?
       @requests = Request.all

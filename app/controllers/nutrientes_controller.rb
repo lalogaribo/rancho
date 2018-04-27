@@ -1,4 +1,5 @@
 class NutrientesController < ApplicationController
+  layout 'dashboard'
   before_action :set_nutriente, only: [:show, :edit, :update, :destroy]
 
   def index

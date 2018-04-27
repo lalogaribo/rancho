@@ -1,4 +1,5 @@
 class InfoPredioController < ApplicationController
+  layout 'dashboard'
   before_action :set_info_predio, only: [:show, :update, :destroy]
 
   def index

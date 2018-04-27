@@ -1,4 +1,5 @@
 class VuelosController < ApplicationController
+  layout 'dashboard'
   before_action :set_vuelo, only: [:show, :edit, :update, :destroy]
   def index
     if logged_in? && current_user.admin?
