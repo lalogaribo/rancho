@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  layout 'dashboard'
   before_action :require_same_user, only: [:edit, :update, :destroy, :show]
 
   def index
