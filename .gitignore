@@ -23,3 +23,8 @@
 .idea/
 
 .byebug_history
+It's an empty string!
+The string is nonempty.
+else
+end
+if
