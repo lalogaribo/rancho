@@ -6,6 +6,7 @@
 
 # Ignore bundler config.
 /.bundle
+/.idea
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
@@ -19,5 +20,11 @@
 
 /node_modules
 /yarn-error.log
+.idea/
 
 .byebug_history
+It's an empty string!
+The string is nonempty.
+else
+end
+if

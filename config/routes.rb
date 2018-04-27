@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+resources :vuelos
+resources :requests
 root 'pages#home'
 get '/index', to: 'pages#index'
 resources :predios

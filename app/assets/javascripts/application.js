@@ -15,3 +15,18 @@
 //= require rails-ujs
 //= require turbolinks
 //= require_tree .
+
+// var predio = document.querySelector('.predio-name');
+// var aplicacion = document.querySelector('.aplicacion-nombre');
+// var piloto = document.querySelector('.piloto-name');
+// var precio = document.querySelector('.precio-vuelo');
+// var btnGuardar = document.querySelector('#btn-save');
+//
+// function formValidation() {
+//     if (predio.val() == "" && aplicacion.val() =="" && piloto.val() == "" && precio.val() == "") {
+//             btnGuardar.disabled = true;
+//         else {
+//             btnGuardar.disabled = false;
+//         }
+//     }
+// }
