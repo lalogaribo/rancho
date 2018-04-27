@@ -13,14 +13,17 @@
 
 //= require bootstrap-sprockets
 //= require rails-ujs
+//= require jquery
+//= require jquery_ujs
 //= require turbolinks
 //= require Chart.bundle
 //= require chartkick
-//= require_tree .
 //= require ./admin/predio_info
 //= require moment
 //= require bootstrap-datetimepicker
 //= require jquery.validate
+//= require_tree .
+
 
 
 // var predio = document.querySelector('.predio-name');
