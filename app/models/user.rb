@@ -10,4 +10,6 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 5}, allow_nil: true
   has_many :materials
   has_many :info_predio
+  has_many :vuelos
+  has_many :requests
 end

@@ -1,0 +1,28 @@
+<%= render 'shared/page_title', title: 'Vuelos' %>
+<div class="row">
+  <div class="row"><%= link_to 'Solicitar vuelo', new_request_path , class: 'btn btn-primary' %></div>
+  <div class="col-md-6 col-md-offset-3">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Predio</th>
+          <th>aplicacion</th>
+          <th>Piloto</th>
+          <th>Precio Vuelo</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @vuelos.each do |vuelo| %>
+            <tr>
+              <td><%= vuelo.predio %></td>
+              <td><%= vuelo.aplicacion %></td>
+              <td><%= vuelo.piloto %></td>
+              <td><%= vuelo.precio_vuelo %></td>
+              <td><%= link_to 'Edit', edit_vuelo_path(vuelo) %></td>
+              <td><%= link_to 'Delete', vuelo_path(vuelo), method: :delete, data: {confirm: "Eliminar este vuelo"}, class: 'pull-right' %> </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+  </div>
+</div>

@@ -10,7 +10,43 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180404041623) do
+
+
+
+ActiveRecord::Schema.define(version: 20180425221812) do
+
+  create_table "info_predio_detalles", force: :cascade do |t|
+    t.integer "material_id"
+    t.integer "cantidad"
+    t.integer "info_predio_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["info_predio_id"], name: "index_info_predio_detalles_on_info_predio_id"
+    t.index ["material_id"], name: "index_info_predio_detalles_on_material_id"
+  end
+
+  create_table "info_predio_nutrientes", force: :cascade do |t|
+    t.integer "info_predio_id"
+    t.integer "nutriente_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["info_predio_id"], name: "index_info_predio_nutrientes_on_info_predio_id"
+    t.index ["nutriente_id"], name: "index_info_predio_nutrientes_on_nutriente_id"
+  end
+
+  create_table "info_predios", force: :cascade do |t|
+    t.decimal "fumigada"
+    t.decimal "pago_trabaja"
+    t.integer "conteo_racimos"
+    t.string "color_cinta"
+    t.integer "semana"
+    t.integer "predio_id"
+    t.integer "user_id"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["predio_id"], name: "index_info_predios_on_predio_id"
+  end
 
   create_table "info_predio_detalles", force: :cascade do |t|
     t.integer "material_id"
@@ -82,12 +118,32 @@ ActiveRecord::Schema.define(version: 20180404041623) do
     t.integer "user_id"
   end
 
+  create_table "requests", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "predio"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_requests_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password_digest"
+    t.boolean "admin", default: false
+  end
+
+  create_table "vuelos", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "predio"
+    t.string "aplicacion"
+    t.string "piloto"
+    t.integer "precio_vuelo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_vuelos_on_user_id"
   end
 
 end
