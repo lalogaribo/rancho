@@ -1,6 +1,10 @@
 class RequestsController < ApplicationController
   def index
-    @requests = Request.all
+    if current_user.admin?
+      @requests = Request.all
+    else
+      @requests = current_user.requests
+    end
   end
 
   def new

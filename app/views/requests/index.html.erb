@@ -1,0 +1,21 @@
+<%= render 'shared/page_title', title: 'Mis solicitudes' %>
+<div class="row">
+  <div class="col-md-6">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Productor</th>
+        <th>Predio</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @requests.each do |request| %>
+          <tr>
+            <td><%= request.user.name %></td>
+            <td><%= request.predio %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
