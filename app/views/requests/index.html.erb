@@ -1,6 +1,7 @@
 <%= render 'shared/page_title', title: 'Mis solicitudes' %>
 <div class="row">
-  <div class="col-md-6">
+  <%= link_to 'Crear Vuelo', new_vuelo_path, class: 'btn btn-primary' if current_user.admin? %> <br />
+  <div class="col-md-6 col-md-offset-3">
     <table class="table table-striped">
       <thead>
       <tr>
@@ -11,7 +12,7 @@
       <tbody>
       <% @requests.each do |request| %>
           <tr>
-            <td><%= request.user.name %></td>
+            <td><%= request.user.name%></td>
             <td><%= request.predio %></td>
           </tr>
       <% end %>
