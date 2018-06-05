@@ -49,7 +49,7 @@ $(document).ready(function() {
         var max = $(this).attr('max');
 
         if (max <= 0) {
-            $(this).prop('disabled', true);
+            $(this).prop('readonly', true);
         } else {
             var price = this.getAttribute('data-price')
             var estimated_price = (price * this.value);

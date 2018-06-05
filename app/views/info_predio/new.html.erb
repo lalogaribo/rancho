@@ -26,7 +26,7 @@
                             <% end %>
                             <div class="row form-group">
                                 <div class="col-md-4 text-right">
-                                    <%= label_tag(:fumigada, "Fumigada") %>
+                                    <%= label_tag(:fumigada, "Fumigacion") %>
                                 </div>
                                 <div class="col-md-8 text-left">
                                     <%= text_field_tag 'info_predio[fumigada]' , nil, class: 'form-control required onlyPrice', placeholder: '$0.00' %>
@@ -34,7 +34,7 @@
                             </div>
                             <div class="row form-group">
                                 <div class="col-md-4 text-right">
-                                    <%= label_tag(:pago_trabaja, "Pago Trabaja") %>
+                                    <%= label_tag(:pago_trabaja, "Pago Trabajadores") %>
                                 </div>
                                 <div class="col-md-8 text-left">
                                     <%= text_field_tag 'info_predio[pago_trabaja]' , nil, class: 'form-control required onlyPrice', placeholder: '$0.00'%>                                
@@ -55,15 +55,12 @@
 
                             <div class="row form-group" id="container-pagos" style="border: 1px solid #ccc;border-radius: 3px;padding: 8px;"> </div>
                             
-                            
                             <div class="row form-group">
                                 <div class="col-md-4 text-right">
-                                    <%= label_tag(:nutricion, "Nutricion") %>
+                                    <%= label_tag(:nutriente, "Nutricion") %>
                                 </div>
                                 <div class="col-md-8 text-left">
-                                    <%= select_tag "info_predio[nutriente_id]", 
-                                    options_from_collection_for_select(@nutrientes, "id", "nombre"),
-                                    multiple: false, class: 'form-control required', id: 'nutricion' %>
+                                    <%= text_field_tag 'info_predio[nutriente]' , nil, class: 'form-control required onlyPrice', placeholder: '$0.00'%>                                
                                 </div>
                             </div>
                             <div class="row form-group">

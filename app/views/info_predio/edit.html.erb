@@ -24,7 +24,9 @@
                                             <label for="<%= material.name %>"><%= material.name %></label>
                                         </div>
                                         <div class="col-md-3 text-left">
-                                            <input type="number" name="material_quantity[]" id="material_<%= material.name.downcase %>" data-price="<%= material.price %>" class="form-control required number-materials" min="1" max="<%= material.quantity %>" 
+                                            <input type="number" name="material_quantity[]" id="material_<%= material.name.downcase %>" data-price="<%= material.price %>" 
+                                            class="form-control required number-materials" min="1" 
+                                            max="<%= material.quantity %>" 
                                         
                                             <% @detalle.each do |detalle_material| %>
                                                 <% if detalle_material.material_id == material.id %>
@@ -42,7 +44,7 @@
                             
                             <div class="row form-group">
                                 <div class="col-md-4 text-right">
-                                    <%= label_tag(:fumigada, "Fumigada") %>
+                                    <%= label_tag(:fumigada, "Fumigacion") %>
                                 </div>
                                 <div class="col-md-8 text-left">
                                     <%= text_field_tag 'info_predio[fumigada]' , @info_predio.fumigada, class: 'form-control required onlyPrice', placeholder: '$0.00' %>
@@ -50,7 +52,7 @@
                             </div>
                             <div class="row form-group">
                                 <div class="col-md-4 text-right">
-                                    <%= label_tag(:pago_trabaja, "Pago Trabaja") %>
+                                    <%= label_tag(:pago_trabaja, "Pago Trabajadores") %>
                                 </div>
                                 <div class="col-md-8 text-left">
                                     <%= text_field_tag 'info_predio[pago_trabaja]' , @info_predio.pago_trabaja, class: 'form-control required onlyPrice', placeholder: '$0.00'  %>                                
@@ -105,13 +107,10 @@
                             
                             <div class="row form-group">
                                 <div class="col-md-4 text-right">
-                                    <%= label_tag(:nutricion, "Nutricion") %>
+                                    <%= label_tag(:nutriente, "Nutricion") %>
                                 </div>
                                 <div class="col-md-8 text-left">
-                                    <%= select_tag "info_predio[nutriente_id]", 
-                                    options_from_collection_for_select(@nutrientes, "id", "nombre", @nutriente_predio.nutriente_id),
-                                    multiple: false, class: 'form-control required', id: 'nutricion' %>
-                                    <input type="hidden" name="nutriente_predio_hd[]" value="<%=  @nutriente_predio.id %>">
+                                    <%= text_field_tag 'info_predio[nutriente]' , @info_predio.nutriente, class: 'form-control required onlyPrice', placeholder: '$0.00'%>                                
                                 </div>
                             </div>
                             <div class="row form-group">

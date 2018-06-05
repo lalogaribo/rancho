@@ -1,48 +1,67 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
-
-html, body {
-  height: 100%;
-  font-family: 'Lato', sans-serif;
+html,
+body {
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
 }
 
 body {
-  color: #95f5ff;
-  text-align: center;
-  text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+    color: rgba(0, 0, 0, 0.87);
+    background-color: #f4f3ef;
+    /*text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);*/
 }
+
+h1,
+.h1 h2,
+.h2 h3,
+.h3 h4,
+.h4 h5,
+.h5 h6,
+.h6 {
+    font-family: 'Roboto Slab', serif;
+}
+
+.navbar-default {
+    background-color: #fefafa;
+    border-color: #bcbcbc;
+}
+
 .site-wrapper {
-  display: table;
-  width: 100%;
-  height: 100%; /* For at least Firefox */
-  min-height: 100%;
-  -webkit-box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
-  box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+    display: table;
+    width: 100%;
+    height: 100%;
+    /* For at least Firefox */
+    min-height: 100%;
+    -webkit-box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+    box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
 }
 
 .site-wrapper-inner {
-  display: table-cell;
-  vertical-align: top;
+    display: table-cell;
+    vertical-align: top;
 }
 
 .cover-container {
-  margin-right: auto;
-  margin-left: auto;
+    margin-right: auto;
+    margin-left: auto;
 }
+
 #background {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
-  z-index: -100;
-  -webkit-transform: translateX(-50%) translateY(-50%);
-  transform: translateX(-50%) translateY(-50%);
-  //background: image-url('cover.png') no-repeat;
-  background-size: cover;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    //background: image-url('cover.png') no-repeat;
+    background-size: cover;
 }
+
 #logo {
     float: left;
     font-size: 1.7em;
@@ -84,4 +103,27 @@ h2 {
     font-size: smaller;
     color: #EB5E28;
     border-color: #EB5E28;
+}
+
+.card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    border-radius: 5px;
+    background-color: #fff;
+    /* 5px rounded corners */
+}
+
+
+/* On mouse-over, add a deeper shadow */
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+
+/* Add some padding inside the card container */
+
+.card .container-card {
+    padding: 2px 16px;
 }

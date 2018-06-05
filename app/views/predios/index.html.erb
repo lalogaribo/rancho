@@ -1,10 +1,12 @@
 <%= render 'shared/page_title', title: 'Mostrando todos los predios' %>
 <div class="container">
   <div class="row">
-    <div class="col-md-1">
-      <span class="glyphicon glyphicon-plus btn-lg" aria-hidden="true"><%= link_to 'Crear predio', new_predio_path %></span>
+    <div class="col-md-12 text-right form-group">
+      <%= link_to 'Crear predio', new_predio_path, class:'btn btn-primary btn-lg'%>
     </div>
-      <div class="col-md-10">
+  </div>
+  <div class="row">
+      <div class="col-md-10 col-md-offset-1">
         <%= render 'predio', obj: @predios %>
       </div>
   </div>
