@@ -16,7 +16,7 @@ class InfoPredioController < ApplicationController
     @week = Date.parse(current_date).strftime("%W")
     @user = current_user
     @materials = current_user.materials.where(name: ['rafia','bolsa','cinta'])
-    @info_predios = InfoPredio.find_by(predio_id: @predio_id)
+    @info_predios = InfoPredio.where(predio_id: @predio_id, user_id: current_user.id)
     predio_week = InfoPredio.find_by(semana: @week, predio_id: @predio_id)
     unless predio_week.nil? 
       redirect_to edit_info_predio_path(predio_week.id)
@@ -87,10 +87,11 @@ class InfoPredioController < ApplicationController
     @user = current_user
     @materials = current_user.materials.where(name: ['rafia','bolsa','cinta'])
 
-    @info_predio = InfoPredio.includes(:material, :otros_gasto)
+    @info_predio = InfoPredio.includes(:material, :otros_gasto, :predio)
                           .find(@info_predio_id)
     @detalle =  @info_predio.info_predio_detalle
     @otros_pagos = @info_predio.otros_gasto
+    @predio = @info_predio.predio
   end
 
   def update

@@ -7,7 +7,7 @@
 <div class="row form-group">
   <div class="col-md-12">
     <fieldset>
-        <legend>Informacion Predio</legend>
+        <legend>Informacion Predio <strong><% concat @predio.name %> - Semana <% concat @info_predio.semana %></strong></legend>
         <div class="row">
             <div class="col-md-12">
                 <%= form_tag({:controller=> "info_predio", :action => "update"}, class: 'info_predio_form' , method: "post") do %>

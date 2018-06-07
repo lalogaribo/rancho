@@ -2,7 +2,7 @@
 <div class="row form-group">
   <div class="col-md-12">
     <fieldset>
-        <legend>Informacion Predio</legend>
+        <legend>Informacion Predio <strong>Semana <% concat @week %></strong> </legend>
         <div class="row">
             <div class="col-md-12">
                 <%= form_tag("/info_predio", class: 'info_predio_form' , method: "post") do %>

@@ -1,4 +1,5 @@
 var EDIT_URL = '/predios/{:predio_id}/info_predio/{:id}/edit';
+var STATS_URL = '/predios/{:predio_id}/charts';
 var NOTIFICATION_TEMPLATE =
     '<div class = "row"><div class = "col-md-12"><button type = "button" class="close" aria-label = "Close"><span aria-hidden = "true" > &times; </span> </button> </div> </div> <div class = "otro_pago" >' +
     '<div class="row form-group">\n' +
@@ -128,8 +129,11 @@ function onlyPrice() {
 
 function operateFormatterEmail(value, row, index) {
     return ['<div class="table-icons">',
-        '<a rel="tooltip" title="Edit" class="btn btn-simple btn-warning btn-icon table-action edit" href="javascript:void(0)">',
+        '<a rel="tooltip" title="Edit" class="btn btn-simple btn-warning btn-icon table-action edit" href="javascript:void(0)" style="margin: 5px">',
         '<i class="glyphicon glyphicon-pencil"></i>',
+        '</a>',
+        '<a rel="tooltip" title="Stats" class="btn btn-simple btn-primary btn-icon table-action stat" href="javascript:void(0)" style="margin: 5px">',
+        '<i class="fa fa-line-chart"></i>',
         '</a>'
     ].join('');
 };
@@ -140,8 +144,9 @@ window.operateEventsEmail = {
         EDIT_URL = EDIT_URL.replace('{:id}', row.id).replace('{:predio_id}', row.predio_id);
         window.location = EDIT_URL;
     },
-    'click .remove': function(e, value, row, index) {
-
+    'click .stat': function(e, value, row, index) {
+        STATS_URL = STATS_URL.replace('{:predio_id}', row.predio_id);
+        window.location = STATS_URL;
     }
 };
 
