@@ -24,10 +24,14 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Predios <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><%= link_to 'Predios', predios_path %></li>
-                <li><%= link_to 'Crear predio', new_predio_path %></li>
                 <li><%= link_to 'Historial', info_predio_index_path %></li>
-                <li><%= link_to 'Productos', materials_path %></li>
                 <li><%= link_to 'Graficas', charts_path %></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Productos <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><%= link_to 'Crear Producto', materials_path %></li>
               </ul>
             </li>
             <li class="dropdown">
