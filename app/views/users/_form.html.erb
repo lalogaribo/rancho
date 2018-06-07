@@ -1,51 +1,56 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-6 col-md-offset-3">
+    <div class="col-md-6 col-sm-6 col-md-offset-3 col-sm-offset-3">
       <div class="card">
-        <div class="card-block">
-          <%= form_for(@user, :html => {class: 'form-horizontal', role: 'form'}) do |f| %>
-              <div class="form-group">
-                <div class="control-label col-md-2">
-                  <%= f.label :name, 'Nombre' %>
+        <div class="container-card">
+          <div class="row">
+            <div class="col-md-12" style="margin-top:15px">
+              <h3 class="text-center lato">Crear cuenta</h3>
+              <%= form_for(@user, :html => {class: 'form-horizontal', role: 'form'}) do |f| %>
+                <div class="form-group">
+                  <div class="control-label col-md-4">
+                    <%= f.label :name, 'Nombre' %>
+                  </div>
+                  <div class="col-md-8">
+                    <%= f.text_field :name, class: 'form-control', placeholder: 'Ingresar nombre', autofocus: true %>
+                  </div>
                 </div>
-                <div class="col-md-8">
-                  <%= f.text_field :name, class: 'form-control', placeholder: 'Ingresar nombre', autofocus: true %>
+                <div class="form-group">
+                  <div class="control-label col-md-4">
+                    <%= f.label :email %>
+                  </div>
+                  <div class="col-md-8">
+                    <%= f.email_field :email,class: 'form-control', placeholder: 'Ingresar correo electronico' %>
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <div class="control-label col-md-2">
-                  <%= f.label :email %>
+                <div class="form-group">
+                  <div class="control-label col-md-4">
+                    <%= f.label :password, 'Contraseña' %>
+                  </div>
+                  <div class="col-md-8">
+                    <%= f.password_field :password,class: 'form-control', placeholder: 'Ingresar contraseña' %>
+                  </div>
                 </div>
-                <div class="col-md-8">
-                  <%= f.email_field :email,class: 'form-control', placeholder: 'Ingresar correo electronico' %>
+                <div class="form-group">
+                  <div class="control-label col-md-4">
+                    <%= f.label :password_confirmation, 'Confirmar contraseña' %>
+                  </div>
+                  <div class="col-md-8">
+                    <%= f.password_field :password_confirmation,class: 'form-control', placeholder: 'Confirmar contraseña' %>
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <div class="control-label col-md-2">
-                  <%= f.label :password, 'Contraseña' %>
-                </div>
-                <div class="col-md-8">
-                  <%= f.password_field :password,class: 'form-control', placeholder: 'Ingresar contraseña' %>
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="control-label col-md-2">
-                  <%= f.label :password_confirmation, 'Confirmar contraseña' %>
-                </div>
-                <div class="col-md-8">
-                  <%= f.password_field :password_confirmation,class: 'form-control', placeholder: 'Confirmar contraseña' %>
-                </div>
-              </div>
 
-              <div class="form-group">
-                <div class="col-md-offset-2 col-md-8">
-                  <%= f.submit(@user.new_record? ? 'Crear cuenta' : 'Actualizar perfil',
-                               class: 'btn btn-primary btn-lg btn-xlarge btn-block') %>
+                <div class="form-group">
+                  <div class="col-md-offset-2 col-md-8">
+                    <%= f.submit(@user.new_record? ? 'Crear cuenta' : 'Actualizar perfil',
+                                class: 'btn btn-primary btn-lg btn-xlarge btn-block') %>
+                  </div>
                 </div>
-              </div>
-          <% end %>
-          <div class="col-md-6 col-md-offset-3 ">
-            [ <%= link_to 'Cancelar proceso de creacion de cuenta', root_path%>]
+              <% end %>
+            </div>
+            <div class="col-md-12 text-center back_link">
+              <%= link_to 'Cancelar proceso de creacion de cuenta', root_path%>
+            </div>   
           </div>
         </div>
       </div>

@@ -138,3 +138,25 @@ h2 {
 .app-type__card .smf-icon a {
     color: grey;
 }
+
+.content {
+    min-height: calc(100vh - 70px);
+    position: relative;
+    z-index: 4;
+    padding-top: 20vh;
+}
+
+h3.lato {
+    font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    line-height: 1.28571429em;
+    color: #66615b;
+    margin-bottom: 20px;
+}
+
+.back_link {
+    margin-bottom: 20px;
+}
+
+.back_link a {
+    color: #66615b;
+}

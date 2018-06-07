@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root "pages#home"
   get '/index', to: 'pages#index'
-  get '/signup', to: 'users#new'
+  get '/signup', to: 'sessions#new_user'
   resources :users, except: [:new]
   get 'login', to: 'sessions#new'
   post '/login', to: 'sessions#create'
