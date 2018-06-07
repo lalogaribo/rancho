@@ -16,7 +16,8 @@
               </tr>
               </thead>
               <tbody>
-                <% @info_predios.each do |info_predio| %>
+              <% unless @info_predios.nil?  %>
+                <% Array(@info_predios).each do |info_predio| %>
                   <tr>
                     <td><%= info_predio.predio.name %></td>
                     <td>Semana <%= info_predio.semana %></td>
@@ -26,6 +27,7 @@
                     </td>
                   </tr>
                 <% end %>
+              <% end %>  
               </tbody>
             </table>
             </div>

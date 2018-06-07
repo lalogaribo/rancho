@@ -7,9 +7,8 @@ class InfoPredioController < ApplicationController
     unless @predio_id.nil? 
       @info_predios = InfoPredio.includes(:predio).find_by(predio_id: @predio_id)
     else
-      @info_predios = InfoPredio.includes(:predio).all
+      @info_predios = InfoPredio.includes(:predio).where(user_id: current_user.id)
     end
-    #abort @info_predios.inspect
   end
 
   def new

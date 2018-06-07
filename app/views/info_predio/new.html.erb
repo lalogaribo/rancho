@@ -48,19 +48,6 @@
                                     <%= text_field_tag 'info_predio[nutriente]' , nil, class: 'form-control required onlyPrice', placeholder: '$0.00'%>                                
                                 </div>
                             </div>
-                            <div class="row form-group">
-                                <div class="col-md-4 text-right">
-                                    <%= label_tag(:otros_pagos, "Otros Pagos") %>
-                                </div>
-                                <div class="col-md-2 text-left">
-                                    <button type="button" class="btn btn-primary" id='add-otros-pagos'>
-                                        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="row form-group" id="container-pagos" style="border: 1px solid #ccc;border-radius: 3px;padding: 8px;"> </div>
-
                         </div>
                         <div class="col-md-6">
                             <div class="row form-group">
@@ -105,13 +92,22 @@
                                     <%= text_field_tag 'info_predio[venta]' , nil, class: 'form-control required', readonly: true,  placeholder: '$0.00'  %> 
                                 </div>
                             </div>
-                            <div class="row form-group">
-                                <div class="col-md-offset-4 col-md-8 text-right">
-                                    <%= submit_tag "Completar", class: "btn btn-success", id: "savePredioInfo" %>
-                                </div>
-                            </div>
                         </div>
                     </div>
+                    <div class="row form-group">
+                        <div class="col-md-offset-8 col-md-4 col-sm-4 text-right">
+                            <button type="button" class="btn btn-primary" id='add-otros-pagos'>
+                                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Otros Pagos
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row form-group" id="container-pagos" style="border: 1px solid #ccc;border-radius: 3px;padding: 8px;"> </div>
+                    <div class="row form-group">
+                        <div class="col-md-offset-8 col-md-4 col-sm-4 text-right">
+                            <%= submit_tag "Completar", class: "btn btn-success", id: "savePredioInfo" %>
+                        </div>
+                    </div>
+
                 <% end %>
             </div>
         </div>    
@@ -171,7 +167,6 @@
             <label for="recipient-name" class="control-label">Precio:</label>
             <input type="text" class="form-control" name="precioPago" id="txtPrecio">
           </div>
-        
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
