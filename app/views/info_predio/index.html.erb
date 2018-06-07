@@ -20,7 +20,10 @@
                   <tr>
                     <td><%= info_predio.predio.name %></td>
                     <td>Semana <%= info_predio.semana %></td>
-                    <td align="right"><a rel="tooltip" title="Edit" class="btn btn-simple btn-warning btn-icon table-action edit" href="<%= edit_info_predio_path(info_predio) %>"><i class="glyphicon glyphicon-pencil"></i> </a></td>
+                    <td align="right">
+                      <a rel="tooltip" title="Edit" class="btn btn-simple btn-warning btn-icon table-action edit" href="<%= edit_info_predio_path(info_predio) %>"><i class="glyphicon glyphicon-pencil"></i> </a>
+                      <a rel="tooltip" title="Stats" class="btn btn-simple btn-primary btn-icon table-action stat" href="<%= predio_charts_path(info_predio.predio_id) %>"><i class="fa fa-line-chart"></i> </a>
+                    </td>
                   </tr>
                 <% end %>
               </tbody>

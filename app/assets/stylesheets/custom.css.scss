@@ -12,16 +12,6 @@ body {
     /*text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);*/
 }
 
-h1,
-.h1 h2,
-.h2 h3,
-.h3 h4,
-.h4 h5,
-.h5 h6,
-.h6 {
-    font-family: 'Roboto Slab', serif;
-}
-
 .navbar-default {
     background-color: #fefafa;
     border-color: #bcbcbc;
@@ -78,8 +68,7 @@ h1,
 
 .jumbotron h1,
 h2 {
-    color: #fff;
-    text-align: center;
+    color: #000;
     margin-bottom: 30px;
     letter-spacing: -1px;
     font-weight: bold;
@@ -107,18 +96,14 @@ h2 {
 
 .card {
     /* Add shadows to create the "card" effect */
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    transition: 0.3s;
-    border-radius: 5px;
-    background-color: #fff;
-    /* 5px rounded corners */
-}
-
-
-/* On mouse-over, add a deeper shadow */
-
-.card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    -webkit-box-shadow: 0 2px 2px rgba(204, 197, 185, 0.5);
+    box-shadow: 0 2px 2px rgba(204, 197, 185, 0.5);
+    background-color: #FFFFFF;
+    color: #252422;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: auto;
 }
 
 
@@ -126,4 +111,30 @@ h2 {
 
 .card .container-card {
     padding: 2px 16px;
+}
+
+.app-type__card {
+    border: 1px solid #b3b3b3;
+    color: grey;
+    background-color: white;
+    border-radius: 5px;
+    text-align: center;
+    padding: 20px;
+    margin: 10px 0;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.app-type__title {
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+.app-type__card .smf-icon {
+    margin: 10px 0;
+    font-size: 1.5rem;
+}
+
+.app-type__card .smf-icon a {
+    color: grey;
 }

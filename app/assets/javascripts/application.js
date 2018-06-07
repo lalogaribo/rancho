@@ -16,6 +16,7 @@
 //= require Chart.bundle
 //= require chartkick
 //= require ./admin/predio_info
+//= require ./admin/chart
 //= require moment
 //= require bootstrap-datetimepicker
 //= require jquery.validate

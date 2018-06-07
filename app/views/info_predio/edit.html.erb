@@ -20,10 +20,10 @@
                             <% unless @materials.nil?  %>
                                 <% @materials.each do |material| %>
                                     <div class="row form-group">
-                                        <div class="col-md-4 text-right">
+                                        <div class="col-md-4 col-sm-4 text-right">
                                             <label for="<%= material.name %>"><%= material.name %></label>
                                         </div>
-                                        <div class="col-md-3 text-left">
+                                        <div class="col-md-3 col-sm-3 text-left">
                                             <input type="number" name="material_quantity[]" id="material_<%= material.name.downcase %>" data-price="<%= material.price %>" 
                                             class="form-control required number-materials" min="1" 
                                             max="<%= material.quantity %>" 
@@ -37,34 +37,40 @@
                                             <% end %>
                                             <input type="hidden" name="material[]" id="material_hd_<%= material.name.downcase %>" value="<%= material.id %>">
                                         </div>
-                                        <div class="col-md-3 text-left material_<%= material.name.downcase %>"></div>
+                                        <div class="col-md-3 col-sm-3 text-left material_<%= material.name.downcase %>"></div>
                                     </div>
                                 <% end %>
                             <% end %>
                             
                             <div class="row form-group">
-                                <div class="col-md-4 text-right">
+                                <div class="col-md-4 col-sm-4 text-right">
                                     <%= label_tag(:fumigada, "Fumigacion") %>
                                 </div>
-                                <div class="col-md-8 text-left">
+                                <div class="col-md-8 col-sm-8 text-left">
                                     <%= text_field_tag 'info_predio[fumigada]' , @info_predio.fumigada, class: 'form-control required onlyPrice', placeholder: '$0.00' %>
                                 </div>
                             </div>
                             <div class="row form-group">
-                                <div class="col-md-4 text-right">
+                                <div class="col-md-4 col-sm-4 text-right">
                                     <%= label_tag(:pago_trabaja, "Pago Trabajadores") %>
                                 </div>
-                                <div class="col-md-8 text-left">
+                                <div class="col-md-8 col-sm-8 text-left">
                                     <%= text_field_tag 'info_predio[pago_trabaja]' , @info_predio.pago_trabaja, class: 'form-control required onlyPrice', placeholder: '$0.00'  %>                                
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
+                             <div class="row form-group">
+                                <div class="col-md-4 col-sm-4 text-right">
+                                    <%= label_tag(:nutriente, "Nutricion") %>
+                                </div>
+                                <div class="col-md-8 col-sm-8 text-left">
+                                    <%= text_field_tag 'info_predio[nutriente]' , @info_predio.nutriente, class: 'form-control required onlyPrice', placeholder: '$0.00'%>                                
+                                </div>
+                            </div>
                             <div class="row form-group">
-                                <div class="col-md-4 text-right">
+                                <div class="col-md-4 col-sm-4 text-right">
                                     <%= label_tag(:otros_pagos, "Otros Pagos") %>
                                 </div>
-                                <div class="col-md-2 text-left">
+                                <div class="col-md-2 col-sm-2 text-left">
                                     <button type="button" class="btn btn-primary" id='add-otros-pagos'>
                                         <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
                                     </button>
@@ -72,7 +78,7 @@
                             </div>
 
                             <div class="row form-group" id="container-pagos" style="border: 1px solid #ccc;border-radius: 3px;padding: 8px;"> 
-                                <% unless @materials.nil?  %>
+                                <% unless @otros_pagos.nil?  %>
                                     <% @otros_pagos.each do |otro_pago| %>
                                         <div class="row">
                                             <div class="col-md-12">
@@ -83,18 +89,18 @@
                                         </div>
                                         <div class="otro_pago" data-id="<%= otro_pago.id %>">
                                             <div class="row form-group">
-                                                <div class="col-md-4 text-right">
+                                                <div class="col-md-4 col-sm-4 text-right">
                                                     <label> Pago </label>
                                                 </div>
-                                                <div class="col-md-8 text-left">
+                                                <div class="col-md-8 col-sm-8 text-left">
                                                     <input type="text" id="otro_pago_1" class="form-control" value="<%= otro_pago.nombre %>"  readonly="readonly">
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-4 text-right">
+                                                <div class="col-md-4 col-sm-4 text-right">
                                                     <label> Precio </label>
                                                 </div>
-                                                <div class="col-md-8 text-left">
+                                                <div class="col-md-8 col-sm-8 text-left">
                                                     <input type="text" id="otro_pago_precio_1" class="form-control" value="<%= otro_pago.precio %>" readonly="readonly" >
                                                 </div>
                                             </div>
@@ -103,60 +109,52 @@
                                     <% end %>
                                  <% end %>
                             </div>
-                            
-                            
+                        </div>
+                        <div class="col-md-6">
                             <div class="row form-group">
-                                <div class="col-md-4 text-right">
-                                    <%= label_tag(:nutriente, "Nutricion") %>
+                                <div class="col-md-4  col-sm-4 text-right">
+                                    <%= label_tag(:fecha_embarque, "Fecha Embarque") %>
                                 </div>
-                                <div class="col-md-8 text-left">
-                                    <%= text_field_tag 'info_predio[nutriente]' , @info_predio.nutriente, class: 'form-control required onlyPrice', placeholder: '$0.00'%>                                
+                                <div class="col-md-8 col-sm-8 text-left">
+                                    <%= text_field_tag 'info_predio[fecha_embarque]' ,  @info_predio.fecha_embarque, class: 'form-control fecha_embarque required'  %> 
+                                    <%= hidden_field_tag 'info_predio[fecha_embarque_hd]', @info_predio.fecha_embarque, class: 'fecha_embarque_hd' %>
                                 </div>
                             </div>
-                            <div class="row form-group">
-                                <div class="col-md-4 text-right">
-                                    <%=label_tag(:conteo_racimos, "Conteo racimos") %>
-                                </div>
-                                <div class="col-md-8 text-left">
-                                    <%= text_field_tag 'info_predio[conteo_racimos]' , @info_predio.conteo_racimos, class: 'form-control required onlyNumbers',  placeholder: '0'  %> 
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-md-4 text-right">
+                             <div class="row form-group">
+                                <div class="col-md-4 col-sm-4 text-right">
                                     <%= label_tag(:color_cinta, "Color cinta") %>
                                 </div>
-                                <div class="col-md-8 text-left">
+                                <div class="col-md-8 col-sm-8 text-left">
                                     <%= select_tag "info_predio[color_cinta]", options_for_select([ "Rojo", "Verde", "Azul", "Naranja" ], @info_predio.color_cinta), 
                                     multiple: false, class: 'form-control required', id: 'color_cinta' %>
                                 </div>
                             </div>
                             <div class="row form-group">
-                                <div class="col-md-4 text-right">
-                                    <%= label_tag(:fecha_embarque, "Fecha Embarque") %>
+                                <div class="col-md-4 col-sm-4 text-right">
+                                    <%=label_tag(:conteo_racimos, "Conteo racimos") %>
                                 </div>
-                                <div class="col-md-8 text-left">
-                                    <%= text_field_tag 'info_predio[fecha_embarque]' ,  @info_predio.fecha_embarque, class: 'form-control fecha_embarque required'  %> 
-                                    <%= hidden_field_tag 'info_predio[fecha_embarque_hd]', @info_predio.fecha_embarque, class: 'fecha_embarque_hd' %>
+                                <div class="col-md-8 col-sm-8 text-left">
+                                    <%= text_field_tag 'info_predio[conteo_racimos]' , @info_predio.conteo_racimos, class: 'form-control required onlyNumbers',  placeholder: '0'  %> 
                                 </div>
                             </div>
                             <div class="row form-group">
-                                <div class="col-md-4 text-right">
+                                <div class="col-md-4 col-sm-4 text-right">
                                     <%= label_tag(:precio, "Precio") %>
                                 </div>
-                                <div class="col-md-8 text-left">
+                                <div class="col-md-8 col-sm-8 text-left">
                                     <%= text_field_tag 'info_predio[precio]' ,  @info_predio.precio, class: 'form-control required onlyPrice',  placeholder: '$0.00'   %> 
                                 </div>
                             </div>
                             <div class="row form-group">
-                                <div class="col-md-4 text-right">
+                                <div class="col-md-4 col-sm-4 text-right">
                                     <%= label_tag(:venta, "Venta") %>
                                 </div>
-                                <div class="col-md-8 text-left">
+                                <div class="col-md-8 col-sm-8 text-left">
                                     <%= text_field_tag 'info_predio[venta]' ,  @info_predio.venta, class: 'form-control required', readonly: true,  placeholder: '$0.00' %> 
                                 </div>
                             </div>
                             <div class="row form-group">
-                                <div class="col-md-offset-4 col-md-8 text-right">
+                                <div class="col-md-offset-4 col-sm-8 col-md-8 text-right">
                                     <%= submit_tag "Completar", class: "btn btn-success", id: "savePredioInfo" %>
                                 </div>
                             </div>

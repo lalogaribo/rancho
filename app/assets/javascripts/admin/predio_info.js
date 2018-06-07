@@ -33,7 +33,8 @@ $(document).ready(function() {
     });
     // Initialize responses table
     initBootstrapTable();
-    //Initializa date picker
+
+    //Initialize date picker
     dateInit = $('#info_predio_fecha_embarque_hd').val();
     $('.fecha_embarque').datetimepicker({
         format: 'DD/MM/YYYY',

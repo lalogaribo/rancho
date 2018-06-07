@@ -1,11 +1,10 @@
-<%= render 'shared/page_title', title: "#{@user.name}'s perfil" %>
+<%= render 'shared/page_title', title: "Bienvenido #{@user.name}" %>
 <div class="row">
   <div class="col-md-4 col-md-offset-4 text-center">
     <%= gravatar_for @user, size: 150 %>
   </div>
 </div>
 <hr>
-<h4 align="center"><%= @user.name %>Perfil</h4>
+<h2 align="left">Predios</h2>
 <%= render 'predios/predio', obj: @user.predios %>
-
 </div>

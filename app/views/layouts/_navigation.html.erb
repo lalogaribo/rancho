@@ -8,7 +8,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <%= link_to 'AsosiacionPlatanera', predios_path, class: 'navbar-brand', id: 'logo' %>
+      <%= link_to 'Asociacion Platanera', predios_path, class: 'navbar-brand', id: 'logo' %>
     </div>
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -25,6 +25,7 @@
               <ul class="dropdown-menu">
                 <li><%= link_to 'Predios', predios_path %></li>
                 <li><%= link_to 'Crear predio', new_predio_path %></li>
+                <li><%= link_to 'Historial', info_predio_index_path %></li>
                 <li><%= link_to 'Productos', materials_path %></li>
                 <li><%= link_to 'Graficas', charts_path %></li>
               </ul>

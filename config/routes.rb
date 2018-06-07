@@ -11,16 +11,16 @@ Rails.application.routes.draw do
   resources :info_predio
   resources :predios do
     resources :info_predio
+    resources :charts
+    resources :stats
+    get "/new-users", to: "stats#new_users"
+    get "/payments", to: "stats#payments"
+    get "/sales", to: "stats#sales"
+    get "/earnings", to: "stats#earnings"
   end
+  resources :charts
   get "predios/:id/info", to: "info_predio#new", as: "info"
   get "/signup", to: "users#new"
-  namespace :charts do
-    get "new-users"
-    get "new-materials"
-    get 'invertido-materials'
-  end
-  get "/signup", to: "users#new"
-  get "/charts", to: "charts#index"
   resources :vuelos
   resources :requests
 end

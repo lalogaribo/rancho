@@ -18,7 +18,6 @@ class InfoPredioController < ApplicationController
     @user = current_user
     @materials = current_user.materials.where(name: ['rafia','bolsa','cinta'])
     @info_predios = InfoPredio.find_by(predio_id: @predio_id)
-
     predio_week = InfoPredio.find_by(semana: @week, predio_id: @predio_id)
     unless predio_week.nil? 
       redirect_to edit_info_predio_path(predio_week.id)

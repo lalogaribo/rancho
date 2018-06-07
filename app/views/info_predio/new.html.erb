@@ -40,8 +40,14 @@
                                     <%= text_field_tag 'info_predio[pago_trabaja]' , nil, class: 'form-control required onlyPrice', placeholder: '$0.00'%>                                
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
+                            <div class="row form-group">
+                                <div class="col-md-4 text-right">
+                                    <%= label_tag(:nutriente, "Nutricion") %>
+                                </div>
+                                <div class="col-md-8 text-left">
+                                    <%= text_field_tag 'info_predio[nutriente]' , nil, class: 'form-control required onlyPrice', placeholder: '$0.00'%>                                
+                                </div>
+                            </div>
                             <div class="row form-group">
                                 <div class="col-md-4 text-right">
                                     <%= label_tag(:otros_pagos, "Otros Pagos") %>
@@ -54,21 +60,15 @@
                             </div>
 
                             <div class="row form-group" id="container-pagos" style="border: 1px solid #ccc;border-radius: 3px;padding: 8px;"> </div>
-                            
+
+                        </div>
+                        <div class="col-md-6">
                             <div class="row form-group">
                                 <div class="col-md-4 text-right">
-                                    <%= label_tag(:nutriente, "Nutricion") %>
+                                    <%= label_tag(:fecha_embarque, "Fecha Embarque") %>
                                 </div>
                                 <div class="col-md-8 text-left">
-                                    <%= text_field_tag 'info_predio[nutriente]' , nil, class: 'form-control required onlyPrice', placeholder: '$0.00'%>                                
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-md-4 text-right">
-                                    <%=label_tag(:conteo_racimos, "Conteo racimos") %>
-                                </div>
-                                <div class="col-md-8 text-left">
-                                    <%= text_field_tag 'info_predio[conteo_racimos]' , nil, class: 'form-control required onlyNumbers'  %> 
+                                    <%= text_field_tag 'info_predio[fecha_embarque]' , nil, class: 'form-control fecha_embarque required'  %> 
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -83,10 +83,10 @@
                             </div>
                             <div class="row form-group">
                                 <div class="col-md-4 text-right">
-                                    <%= label_tag(:fecha_embarque, "Fecha Embarque") %>
+                                    <%=label_tag(:conteo_racimos, "Conteo racimos") %>
                                 </div>
                                 <div class="col-md-8 text-left">
-                                    <%= text_field_tag 'info_predio[fecha_embarque]' , nil, class: 'form-control fecha_embarque required'  %> 
+                                    <%= text_field_tag 'info_predio[conteo_racimos]' , nil, class: 'form-control required onlyNumbers'  %> 
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -136,7 +136,7 @@
                     </thead>
                     <tbody>
                     <% unless @info_predios.nil?  %>
-                        <% @info_predios.each do |info| %>
+                        <% Array(@info_predios).each do |info| %>
                             <tr>
                                 <td align="center"><%= info.id %></td>
                                 <td align="center"><%= info.predio_id %></td>
