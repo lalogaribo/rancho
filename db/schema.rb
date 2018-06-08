@@ -10,8 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
 ActiveRecord::Schema.define(version: 20180608010021) do
+
   create_table "info_predio_detalles", force: :cascade do |t|
     t.integer "material_id"
     t.integer "cantidad"

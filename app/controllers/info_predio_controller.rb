@@ -18,9 +18,9 @@ class InfoPredioController < ApplicationController
     @materials = current_user.materials.where(name: ['rafia','bolsa','cinta'])
     @info_predios = InfoPredio.where(predio_id: @predio_id, user_id: current_user.id)
     predio_week = InfoPredio.find_by(semana: @week, predio_id: @predio_id)
-
-    unless @materials.nil?
-      flash[:danger] = 'No has dado de alta ningun tipo de materiales (Rafia, Bolsa y Cinta). Da de alta estos materiales para continuar.'
+    
+    unless @materials.present?
+      flash[:danger] = 'No has dado de alta ningun tipo de materiales (Rafia, Bolsa y Cinta). Agrega materiales para continuar.'
       redirect_to materials_path
     end
 
