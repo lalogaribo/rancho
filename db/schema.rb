@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180425221812) do
+ActiveRecord::Schema.define(version: 20180608010021) do
 
   create_table "info_predio_detalles", force: :cascade do |t|
     t.integer "material_id"
@@ -112,6 +112,15 @@ ActiveRecord::Schema.define(version: 20180425221812) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_vuelos_on_user_id"
+  end
+
+  create_table "workers", force: :cascade do |t|
+    t.string "name"
+    t.string "last_name"
+    t.integer "phone_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
   end
 
 end

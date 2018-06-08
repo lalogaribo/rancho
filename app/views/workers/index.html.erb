@@ -1,0 +1,30 @@
+<%= render 'shared/page_title', title: 'Empleados' %>
+<div class="row">
+  <h3>
+    <%= link_to 'Agregar empleado', new_worker_path, class: 'btn btn-primary btn-sm' %>
+  </h3>
+  <div class="col-md-12">
+    <div >
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>No celular</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @workers.each do |worker| %>
+            <tr>
+              <td><%= link_to worker.name, edit_worker_path(worker) %></td>
+              <td><%= worker.last_name %></td>
+              <td><%= worker.phone_number %></td>
+              <td><%= link_to 'Edit', edit_worker_path(worker) %></td>
+              <td><%= link_to 'Delete', worker_path(worker), method: :delete, data: {confirm: "Dar de baja empleado"}, class: 'pull-right' %> </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
