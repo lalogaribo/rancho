@@ -95,7 +95,23 @@ class StatsController < ApplicationController
   end
 
 
-  def invertido_materials
-    render json: current_user.materials.group(:name).sum(:quantity)
+  def materials
+    @predio_id = params[:predio_id]
+    query = "select  info_predio_detalles.cantidad as cantidad, semana
+              from info_predios 
+              INNER JOIN info_predio_detalles ON  info_predio_detalles.info_predio_id = info_predios.id
+              INNER JOIN materials ON  materials.id = info_predio_detalles.material_id
+              where info_predios.predio_id = "+ @predio_id +"
+              and materials.name LIKE \"%bolsa%\"
+              GROUP BY semana"
+
+    @materials = ActiveRecord::Base.connection.execute(query)
+    my_array = Hash.new
+    unless @materials.nil?
+      Array(@materials).each do |data|
+          my_array[data["semana"]] = data["cantidad"]
+      end
+    end
+    render json: my_array
   end
 end

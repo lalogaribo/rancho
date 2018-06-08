@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     get "/payments", to: "stats#payments"
     get "/sales", to: "stats#sales"
     get "/earnings", to: "stats#earnings"
+    get "/materials", to: "stats#materials"
   end
   resources :charts
   get "predios/:id/info", to: "info_predio#new", as: "info"

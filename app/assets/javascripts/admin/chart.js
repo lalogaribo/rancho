@@ -225,6 +225,7 @@ window.Chart.Sales = (function($) {
 
     self.loadSales = function(predio_id) {
         sales(predio_id)
+        Chart.Materials.loadMaterials(predio_id)
     };
 
     function sales(predio_id) {
@@ -282,6 +283,90 @@ window.Chart.Sales = (function($) {
         };
 
         var chart = new google.charts.Bar(document.getElementById('barchart_sales'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
+
+    /**
+     *
+     * @param {Object} xhr
+     * @param {String} status
+     * @param {String} errorThrown
+     */
+    function onError(xhr, status, errorThrown) {
+        var errorMessage = errorThrown;
+        if (typeof xhr.responseJSON === "object" && xhr.responseJSON.hasOwnProperty("error")) {
+            errorMessage = xhr.responseJSON.error;
+        }
+        console.log(errorMessage);
+    }
+
+    return self;
+})(jQuery);
+
+window.Chart.Materials = (function($) {
+    var HEADERS = ['Semana', 'Cantidad'];
+    var VALUES = [];
+
+    self.loadMaterials = function(predio_id) {
+        materials(predio_id)
+    };
+
+    function materials(predio_id) {
+        var settings = {
+            type: "GET",
+            url: '/predios/' + predio_id + '/materials',
+            dataType: "json",
+            error: onError,
+            success: onSuccess
+        };
+        return $.ajax(settings);
+    }
+
+    function onSuccess(data) {
+        var valuesObj = Object.values(data);
+        var keysObj = Object.keys(data)
+        VALUES = [];
+        if ($.isArray(valuesObj) && $.isArray(keysObj)) {
+            VALUES.push(HEADERS)
+            $.each(valuesObj, function(index, value) {
+                var reference = [];
+                reference.push(keysObj[index]);
+                reference.push(value);
+                VALUES.push(reference)
+            });
+        }
+        // Load chart
+        google
+            .charts
+            .setOnLoadCallback(drawPaymentChart);
+    }
+
+    function drawPaymentChart() {
+        var data = google
+            .visualization
+            .arrayToDataTable(VALUES);
+
+        var options = {
+            chart: {
+                title: 'Materiales',
+                subtitle: 'Bolsas por semana',
+            },
+            bars: 'vertical', // Required for Material Bar Charts.
+            vAxis: {
+                format: 'decimal'
+            },
+            height: 400,
+            chartArea: {
+                left: 20,
+                top: 0,
+                width: '50%',
+                height: '75%'
+            },
+            colors: ['gold']
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('barchart_materials'));
 
         chart.draw(data, google.charts.Bar.convertOptions(options));
     }
