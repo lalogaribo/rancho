@@ -1,10 +1,17 @@
 <% obj.each do |predio| %>
-  <div class="col-md-4 well text-center" id="predio">
-    <p>Nombre <strong><%= predio.name %></strong></p>
-    <p><%= predio.no_hectareas %> Hectareas</p>
-    <p><%= link_to 'Informacion Predio', info_path(predio)%></p>
-    <p>
-      <span class="quiet"><small>Creado hace <%= time_ago_in_words(predio.created_at) %></small></span>
-    </p>
+  <div class="col-md-4 text-center" >
+    <div class="card">
+      <div class="container-card">
+        <div class="app-type__card">
+            <div class="app-type__title"> <%= predio.name %></div>
+            <p><strong><%= predio.no_hectareas %> Ha.</strong></p>
+            <div class="smf-icon">
+              <p><%= link_to '<i class="fa fa-leaf" aria-hidden="true"></i> Informacion Predio'.html_safe, info_path(predio)%></p>
+              <p><%= link_to '<i class="fa fa-line-chart" aria-hidden="true"></i> Estadisticas'.html_safe, predio_charts_path(predio)%></p>
+            </div>
+            <div> <small>Creado hace <%= time_ago_in_words(predio.created_at) %></small> </div>
+        </div>
+      </div>
+    </div>
   </div>
 <% end %>

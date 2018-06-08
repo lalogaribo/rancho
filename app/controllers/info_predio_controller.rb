@@ -7,23 +7,27 @@ class InfoPredioController < ApplicationController
     unless @predio_id.nil? 
       @info_predios = InfoPredio.includes(:predio).find_by(predio_id: @predio_id)
     else
-      @info_predios = InfoPredio.includes(:predio).all
+      @info_predios = InfoPredio.includes(:predio).where(user_id: current_user.id)
     end
-    #abort @info_predios.inspect
   end
 
   def new
     @predio_id = params[:id]
     @week = Date.parse(current_date).strftime("%W")
-    @nutrientes = Nutriente.all
     @user = current_user
     @materials = current_user.materials.where(name: ['rafia','bolsa','cinta'])
-    @info_predios = InfoPredio.find_by(predio_id: @predio_id)
-
+    @info_predios = InfoPredio.where(predio_id: @predio_id, user_id: current_user.id)
     predio_week = InfoPredio.find_by(semana: @week, predio_id: @predio_id)
+
+    unless @materials.nil?
+      flash[:danger] = 'No has dado de alta ningun tipo de materiales (Rafia, Bolsa y Cinta). Da de alta estos materiales para continuar.'
+      redirect_to materials_path
+    end
+
     unless predio_week.nil? 
       redirect_to edit_info_predio_path(predio_week.id)
     end
+    
     @info_predio = InfoPredio.new
   end
 
@@ -32,11 +36,6 @@ class InfoPredioController < ApplicationController
     @info_predio = InfoPredio.new(info_predio_params)
 
     if @info_predio.save
-      #Nutriente
-      infoNutriente = InfoPredioNutriente.new(info_predio_nutrientes_params)
-      infoNutriente.info_predio = @info_predio
-      infoNutriente.save
-
       #otros_pagos
       @otros_pagos = params[:otro_pago]
       @precio_otros_pagos = params[:otro_pago_precio]
@@ -95,19 +94,16 @@ class InfoPredioController < ApplicationController
     @user = current_user
     @materials = current_user.materials.where(name: ['rafia','bolsa','cinta'])
 
-    @info_predio = InfoPredio.includes(:nutriente, :material, :otros_gasto)
+    @info_predio = InfoPredio.includes(:material, :otros_gasto, :predio)
                           .find(@info_predio_id)
     @detalle =  @info_predio.info_predio_detalle
-    @nutriente_predio = @info_predio.info_predio_nutriente
     @otros_pagos = @info_predio.otros_gasto
+    @predio = @info_predio.predio
   end
 
   def update
     @info_predio = InfoPredio.find(params[:id])
     if @info_predio.update_attributes(info_predio_params)
-      # update predio nutriente
-      @predio_nutriente = InfoPredioNutriente.find_by(id: params[:nutriente_predio_hd])
-      if @predio_nutriente.update_attributes(info_predio_nutrientes_params)
         #materials
         @predio_material_hd = params[:material_predio_hd]
         @materials_qty = params[:material_quantity]
@@ -155,9 +151,6 @@ class InfoPredioController < ApplicationController
         end
         flash[:success] = 'Informacion del predio actualiza exitosamente'
         redirect_to info_predio_index_url
-      else
-        render 'edit'
-      end
     else
       render 'edit'
     end
@@ -177,7 +170,7 @@ class InfoPredioController < ApplicationController
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def info_predio_params
-      params.require(:info_predio).permit(:predio_id, :semana, :user_id, :fumigada, :pago_trabaja, :color_cinta, :conteo_racimos, :fecha_embarque, :precio, :venta)
+      params.require(:info_predio).permit(:predio_id, :semana, :user_id, :fumigada, :pago_trabaja, :color_cinta, :conteo_racimos, :fecha_embarque, :precio, :venta, :nutriente)
     end
 
     def info_predio_nutrientes_params

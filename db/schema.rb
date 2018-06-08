@@ -10,8 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180608010021) do
 
+ActiveRecord::Schema.define(version: 20180608010021) do
   create_table "info_predio_detalles", force: :cascade do |t|
     t.integer "material_id"
     t.integer "cantidad"
@@ -37,12 +37,17 @@ ActiveRecord::Schema.define(version: 20180608010021) do
     t.integer "conteo_racimos"
     t.string "color_cinta"
     t.integer "semana"
+    t.date "fecha_embarque"
+    t.decimal "precio"
+    t.decimal "venta"
     t.integer "predio_id"
     t.integer "user_id"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "nutriente"
     t.index ["predio_id"], name: "index_info_predios_on_predio_id"
+    t.index ["user_id"], name: "index_info_predios_on_user_id"
   end
 
   create_table "materiales", force: :cascade do |t|
@@ -60,13 +65,6 @@ ActiveRecord::Schema.define(version: 20180608010021) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
-  end
-
-  create_table "nutrientes", force: :cascade do |t|
-    t.string "nombre"
-    t.decimal "precio"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "otros_gastos", force: :cascade do |t|

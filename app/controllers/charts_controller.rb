@@ -1,18 +1,11 @@
 class ChartsController < ApplicationController
   layout 'dashboard'
+  
   def index
     @predios = current_user.predios
-  end
-
-  def new_users
-    render json: User.group_by_day(:created_at).count
-  end
-
-  def new_materials
-    render json: current_user.materials.group_by_day(:created_at).count
-  end
-
-  def invertido_materials
-    render json: current_user.materials.group(:name).sum(:quantity)
+    @predio_id = params[:predio_id]
+    unless @predio_id.nil?
+      @predio = Predio.find(@predio_id)
+    end
   end
 end

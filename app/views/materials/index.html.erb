@@ -1,8 +1,10 @@
 <%= render 'shared/page_title', title: 'Materiales' %>
 <div class="row">
-  <h3>Producto
-    <%= link_to 'Agregar producto', new_material_path, class: 'btn btn-primary btn-sm' %>
-  </h3>
+  <div class="col-md-12 text-right form-group">
+    <%= link_to 'Agregar producto <i class="fa fa-plus-circle" aria-hidden="true"></i>'.html_safe, new_material_path, class: 'btn btn-primary' %>
+  </div>
+</div
+<div class="row">
   <div class="col-md-12">
     <div >
       <table class="table table-striped">
