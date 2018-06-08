@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :workers
   root "pages#home"
   get '/index', to: 'pages#index'
   get '/signup', to: 'sessions#new_user'
@@ -24,4 +25,5 @@ Rails.application.routes.draw do
   get "/signup", to: "users#new"
   resources :vuelos
   resources :requests
+  match '*unmatched', to: 'application#route_not_found', via: :all
 end

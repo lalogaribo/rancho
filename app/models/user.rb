@@ -12,4 +12,5 @@ class User < ApplicationRecord
   has_many :info_predio
   has_many :vuelos
   has_many :requests
+  has_many :workers
 end
