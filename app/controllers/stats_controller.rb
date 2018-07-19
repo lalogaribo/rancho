@@ -96,6 +96,36 @@ class StatsController < ApplicationController
     render json: my_array
   end
 
+  def investmentByYear
+    @predio_id = params[:predio_id]
+    
+    query = "SELECT SUM(amount) as Inversion, anual
+              FROM ( SELECT sum(materials.price * ipd.cantidad) as amount, strftime('%%Y', info_predios.created_at)  AS anual
+              from info_predio_detalles as ipd  
+              LEFT JOIN  info_predios ON  ipd.info_predio_id = info_predios.id
+              Left JOIN materials  ON materials.id = ipd.material_id
+              where  info_predios.predio_id = %d
+              Group by anual
+              UNION SELECT  sum(otros_gastos.precio) as amount , strftime('%%Y', info_predios.created_at)  AS anual
+              from otros_gastos 
+              LEFT JOIN  info_predios ON  otros_gastos.info_predio_id = info_predios.id
+              where info_predios.predio_id = %d
+	            Group by anual
+              UNION  SELECT   sum(fumigada + pago_trabaja + nutriente ) as amount, strftime('%%Y', info_predios.created_at)  AS anual
+              from info_predios 
+	            Group by anual)
+              Group by anual"
+
+    @inversion = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id,  @predio_id,  @predio_id))
+    my_array = Hash.new
+    unless @inversion.nil?
+      Array(@inversion).each do |data|          
+          my_array[data["anual"]] = data["Inversion"]
+      end
+    end
+    render json: my_array
+  end
+
   def sales
     @predio_id = params[:predio_id]
     query = "select venta, semana
@@ -154,6 +184,23 @@ class StatsController < ApplicationController
           end
           
           my_array[@mes] = data["venta"]
+      end
+    end
+    render json: my_array
+  end
+
+  def salesByYear
+    @predio_id = params[:predio_id]
+    query = "select SUM(venta) as venta, strftime('%%Y', info_predios.created_at)  AS anual
+              from info_predios 
+              where info_predios.predio_id = %d
+              GROUP BY anual"
+
+    @sales = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id))
+    my_array = Hash.new
+    unless @sales.nil?
+      Array(@sales).each do |data|  
+          my_array[data["anual"]] = data["venta"]
       end
     end
     render json: my_array
@@ -280,6 +327,49 @@ class StatsController < ApplicationController
     render json: my_array
   end
 
+  def earningsByYear
+    @predio_id = params[:predio_id]
+    #SALES
+    query = "select SUM(venta) as venta, strftime('%%Y', info_predios.created_at)  AS anual
+              from info_predios 
+              where info_predios.predio_id = %d
+              GROUP BY anual"
+    @sales = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id))
+    #INVESTMENT
+    query = "SELECT SUM(amount) as Inversion, anual
+              FROM ( SELECT sum(materials.price * ipd.cantidad) as amount, strftime('%%Y', info_predios.created_at)  AS anual
+              from info_predio_detalles as ipd  
+              LEFT JOIN  info_predios ON  ipd.info_predio_id = info_predios.id
+              Left JOIN materials  ON materials.id = ipd.material_id
+              where  info_predios.predio_id = %d
+              Group by anual
+              UNION SELECT  sum(otros_gastos.precio) as amount , strftime('%%Y', info_predios.created_at)  AS anual
+              from otros_gastos 
+              LEFT JOIN  info_predios ON  otros_gastos.info_predio_id = info_predios.id
+              where info_predios.predio_id = %d
+	            Group by anual
+              UNION  SELECT   sum(fumigada + pago_trabaja + nutriente ) as amount, strftime('%%Y', info_predios.created_at)  AS anual
+              from info_predios 
+	            Group by anual)
+              Group by anual"
+
+    @inversion = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id,  @predio_id,  @predio_id))
+    
+    my_array = Hash.new
+    unless @sales.nil?
+      Array(@sales).each_with_index {|data, index|
+          semanaArray = Hash.new
+          semanaArray['semana'] = data["anual"]
+          semanaArray['venta'] = data["venta"]
+          semanaArray['inversion'] = @inversion[index]["Inversion"]
+          semanaArray['utilidad'] = data["venta"] - @inversion[index]["Inversion"]
+          my_array[index] = semanaArray
+        }
+    end
+    
+    render json: my_array
+  end
+
   def materials
     @predio_id = params[:predio_id]
     query = "select  info_predio_detalles.cantidad as cantidad, semana
@@ -343,6 +433,26 @@ class StatsController < ApplicationController
           @mes = 'Diciembre'
           end
           my_array[@mes] = data["cantidad"]
+      end
+    end
+    render json: my_array
+  end
+
+  def materialsByYear
+    @predio_id = params[:predio_id]
+    query = "select SUM(info_predio_detalles.cantidad) as cantidad, strftime(\"%Y\", info_predios.created_at)  AS anual
+              from info_predios 
+              INNER JOIN info_predio_detalles ON  info_predio_detalles.info_predio_id = info_predios.id
+              INNER JOIN materials ON  materials.id = info_predio_detalles.material_id
+              where info_predios.predio_id = "+ @predio_id +"
+              and materials.name LIKE \"%bolsa%\"
+              GROUP BY anual"
+
+    @materials = ActiveRecord::Base.connection.execute(query)
+    my_array = Hash.new
+    unless @materials.nil?
+      Array(@materials).each do |data|
+          my_array[data["anual"]] = data["cantidad"]
       end
     end
     render json: my_array

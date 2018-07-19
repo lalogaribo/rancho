@@ -9,7 +9,7 @@ window.Chart = (function($) {
             });
 
             if (predioExist()) {
-                Chart.Earnings.loadEarnings(PREDIO_ID)
+                Chart.Earnings.loadEarnings(PREDIO_ID, '')
                 $('#filterDate').attr('disabled', false);
             }
             else{
