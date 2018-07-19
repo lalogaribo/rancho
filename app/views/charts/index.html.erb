@@ -14,6 +14,11 @@
       options_from_collection_for_select(@predios, "id", "name"),
       multiple: false, prompt: "Selecciona un predio", class: 'form-control', id: 'predio'%>
   </div>
+  <div class="col-md-6 text-left">
+      <%= select_tag "filterDate[date]", 
+      options_for_select([['Semana', 1], ['Mes', 2], ['Año', 3]]),
+      multiple: false, class: 'form-control required', id: 'filterDate', prompt: "Filtro Adicional" %>
+  </div>
 </div>
 
 <% unless @predio_id.nil?  %>

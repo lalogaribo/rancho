@@ -10,10 +10,18 @@ window.Chart = (function($) {
 
             if (predioExist()) {
                 Chart.Earnings.loadEarnings(PREDIO_ID)
+                $('#filterDate').attr('disabled', false);
+            }
+            else{
+                $('#filterDate').attr('disabled', true);
             }
 
             $(document).on('change', '#predio', function() {
                 fetchStatsPredio($(this));
+            });
+            
+            $(document).on('change', '#filterDate', function() {
+                fetchStatsPredioByDate($(this));
             });
         });
     };
@@ -28,12 +36,30 @@ window.Chart = (function($) {
         }
     }
 
+    function fetchStatsPredioByDate(trigger) {
+        var typeFilter = trigger.find(':selected').val();
+        if ($.isNumeric(PREDIO_ID)) {
+            var type;
+            if (typeFilter == '1') {
+                type = ''
+            }
+            else if(typeFilter == '2'){
+                type = '/month'
+            }
+            else {
+                type = '/year'
+            }
+            Chart.Earnings.loadEarnings(PREDIO_ID, type)
+        }
+    }
+
     function fetchStatsPredio(trigger) {
         PREDIO_ID = trigger.find(':selected').val();
         if ($.isNumeric(PREDIO_ID)) {
+            $('#filterDate').attr('disabled', false);
             var name = trigger.find(':selected').text();
             $('.namePredio').text(name);
-            Chart.Earnings.loadEarnings(PREDIO_ID)
+            Chart.Earnings.loadEarnings(PREDIO_ID, '')
         }
     }
 
@@ -48,15 +74,15 @@ window.Chart.Earnings = (function($) {
     var HEADERS = ['Semana', 'Ventas', 'Inversion', 'Utilidad'];
     var VALUES = [];
 
-    self.loadEarnings = function(predio_id) {
-        sales(predio_id)
-        Chart.Payments.loadPayments(predio_id)
+    self.loadEarnings = function(predio_id, type) {
+        sales(predio_id, type)
+        Chart.Payments.loadPayments(predio_id, type)
     };
 
-    function sales(predio_id) {
+    function sales(predio_id, type) {
         var settings = {
             type: "GET",
-            url: '/predios/' + predio_id + '/earnings',
+            url : '/predios/' + predio_id + '/earnings' + type,
             dataType: "json",
             error: onError,
             success: onSuccess
@@ -137,16 +163,16 @@ window.Chart.Payments = (function($) {
     var HEADERS = ['Semana', 'Inversion'];
     var VALUES = [];
 
-    self.loadPayments = function(predio_id) {
-        payments(predio_id)
-        console.log('payment')
-        Chart.Sales.loadSales(predio_id)
+    self.loadPayments = function(predio_id, type) {
+        payments(predio_id, type)
+        console.log('investment')
+        Chart.Sales.loadSales(predio_id, type)
     };
 
-    function payments(predio_id) {
+    function payments(predio_id, type) {
         var settings = {
             type: "GET",
-            url: '/predios/' + predio_id + '/payments',
+            url: '/predios/' + predio_id + '/investment' + type,
             dataType: "json",
             error: onError,
             success: onSuccess
@@ -223,15 +249,15 @@ window.Chart.Sales = (function($) {
     var HEADERS = ['Semana', 'Ventas'];
     var VALUES = [];
 
-    self.loadSales = function(predio_id) {
-        sales(predio_id)
-        Chart.Materials.loadMaterials(predio_id)
+    self.loadSales = function (predio_id, type) {
+        sales(predio_id, type)
+        Chart.Materials.loadMaterials(predio_id, type)
     };
 
-    function sales(predio_id) {
+    function sales(predio_id, type) {
         var settings = {
             type: "GET",
-            url: '/predios/' + predio_id + '/sales',
+            url: '/predios/' + predio_id + '/sales' + type,
             dataType: "json",
             error: onError,
             success: onSuccess
@@ -308,14 +334,14 @@ window.Chart.Materials = (function($) {
     var HEADERS = ['Semana', 'Cantidad'];
     var VALUES = [];
 
-    self.loadMaterials = function(predio_id) {
-        materials(predio_id)
+    self.loadMaterials = function (predio_id, type) {
+        materials(predio_id, type)
     };
 
-    function materials(predio_id) {
+    function materials(predio_id, type) {
         var settings = {
             type: "GET",
-            url: '/predios/' + predio_id + '/materials',
+            url: '/predios/' + predio_id + '/materials' + type,
             dataType: "json",
             error: onError,
             success: onSuccess
