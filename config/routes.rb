@@ -15,10 +15,18 @@ Rails.application.routes.draw do
     resources :charts
     resources :stats
     get "/new-users", to: "stats#new_users"
-    get "/payments", to: "stats#payments"
+    get "/investment", to: "stats#investment"
     get "/sales", to: "stats#sales"
     get "/earnings", to: "stats#earnings"
     get "/materials", to: "stats#materials"
+    get "/investment/month", to: "stats#investmentByMonth"
+    get "/sales/month", to: "stats#salesByMonth"
+    get "/materials/month", to: "stats#materialsByMonth"
+    get "/earnings/month", to: "stats#earningsByMonth"
+    get "/investment/year", to: "stats#investmentByYear"
+    get "/sales/year", to: "stats#salesByYear"
+    get "/materials/year", to: "stats#materialsByYear"
+    get "/earnings/year", to: "stats#earningsByYear"
   end
   resources :charts
   get "predios/:id/info", to: "info_predio#new", as: "info"
