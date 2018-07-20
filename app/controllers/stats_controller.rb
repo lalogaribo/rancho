@@ -7,30 +7,31 @@ class StatsController < ApplicationController
     @predio_id = params[:predio_id]
     query = "SELECT SUM(amount) as Inversion, semana as semana
               FROM (select   sum(materials.price * ipd.cantidad) as amount, info_predios.semana
-              from info_predio_detalles as ipd  
+              from info_predio_detalles as ipd
               LEFT JOIN  info_predios ON  ipd.info_predio_id = info_predios.id
               Left JOIN materials  ON materials.id = ipd.material_id
               where  info_predios.predio_id = %d
-              and info_predios.created_at >= date('now', 'start of year')
+              and info_predios.created_at  BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
               Group by info_predios.semana
               UNION select  sum(otros_gastos.precio) as amount , info_predios.semana
-              from otros_gastos 
+              from otros_gastos
               LEFT JOIN  info_predios ON  otros_gastos.info_predio_id = info_predios.id
               where info_predios.predio_id = %d
-              and info_predios.created_at >= date('now', 'start of year')
+              and info_predios.created_at BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
               Group by info_predios.semana
-              UNION  select   sum(fumigada + pago_trabaja + nutriente ) as amount, semana
-              from info_predios 
+              UNION  select  sum(fumigada + pago_trabaja + nutriente ) as amount, semana
+              from info_predios
               where info_predios.predio_id = %d
-              and info_predios.created_at >= date('now', 'start of year')
-              Group by info_predios.semana) 
+              and info_predios.created_at BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
+              Group by info_predios.semana) as Inversion
               Group by semana"
 
     @inversion = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id,  @predio_id,  @predio_id))
+    
     my_array = Hash.new
     unless @inversion.nil?
-      Array(@inversion).each do |data|
-         my_array[data["semana"]] = data["Inversion"]
+      @inversion.map do |data|
+         my_array[data["semana"]] = data["inversion"]
       end
     end
     render json: my_array
@@ -40,57 +41,59 @@ class StatsController < ApplicationController
     @predio_id = params[:predio_id]
     
     query = "SELECT SUM(amount) as Inversion, mes
-              FROM ( SELECT sum(materials.price * ipd.cantidad) as amount, strftime('%%m', info_predios.created_at)  AS mes
-              from info_predio_detalles as ipd  
+              FROM ( SELECT sum(materials.price * ipd.cantidad) as amount, date_part('month', info_predios.created_at)  AS mes
+              from info_predio_detalles as ipd
               LEFT JOIN  info_predios ON  ipd.info_predio_id = info_predios.id
               Left JOIN materials  ON materials.id = ipd.material_id
               where  info_predios.predio_id = %d
-              and info_predios.created_at >= date('now', 'start of year')
+              and info_predios.created_at BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
               Group by mes
-              UNION SELECT  sum(otros_gastos.precio) as amount , strftime('%%m', info_predios.created_at)  AS mes
-              from otros_gastos 
+              UNION SELECT  sum(otros_gastos.precio) as amount , date_part('month', info_predios.created_at)  AS mes
+              from otros_gastos
               LEFT JOIN  info_predios ON  otros_gastos.info_predio_id = info_predios.id
               where info_predios.predio_id = %d
-              and info_predios.created_at >= date('now', 'start of year')
+              and info_predios.created_at BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
 	            Group by mes
-              UNION  SELECT   sum(fumigada + pago_trabaja + nutriente ) as amount, strftime('%%m', info_predios.created_at)  AS mes
-              from info_predios 
+              UNION  SELECT  sum(fumigada + pago_trabaja + nutriente ) as amount, date_part('month', info_predios.created_at)  AS mes
+              from info_predios
               where info_predios.predio_id = %d
-	            Group by mes)
-              Group by mes"
+              and info_predios.created_at BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
+	            Group by mes) as Inversion
+              Group by mes
+              ORDER BY mes"
 
     @inversion = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id,  @predio_id,  @predio_id))
     my_array = Hash.new
     unless @inversion.nil?
       Array(@inversion).each do |data|
           case data["mes"]
-          when "01"
+          when 1
           @mes = 'Enero'
-          when "02"
+          when 2
           @mes = 'Febrero'
-          when '03'
+          when 3
           @mes = 'Marzo'
-          when '04'
+          when 4
           @mes = 'Abril'
-          when '05'
+          when 5
           @mes = 'Mayo'
-          when '06'
+          when 6
           @mes = 'Junio'
-          when '07'
+          when 7
           @mes = 'Julio'
-          when '08'
+          when 8
           @mes = 'Agosto'
-          when '09'
+          when 9
           @mes = 'Septiemmbre'
-          when '10'
+          when 10
           @mes = 'Octubre'
-          when '11'
+          when 11
           @mes = 'Noviembre'
-          when '12'
+          when 12
           @mes = 'Diciembre'
           end
           
-          my_array[@mes] = data["Inversion"]
+          my_array[@mes] = data["inversion"]
       end
     end
     render json: my_array
@@ -100,27 +103,27 @@ class StatsController < ApplicationController
     @predio_id = params[:predio_id]
     
     query = "SELECT SUM(amount) as Inversion, anual
-              FROM ( SELECT sum(materials.price * ipd.cantidad) as amount, strftime('%%Y', info_predios.created_at)  AS anual
+              FROM ( SELECT sum(materials.price * ipd.cantidad) as amount, date_part('year', info_predios.created_at)  AS anual
               from info_predio_detalles as ipd  
               LEFT JOIN  info_predios ON  ipd.info_predio_id = info_predios.id
               Left JOIN materials  ON materials.id = ipd.material_id
               where  info_predios.predio_id = %d
               Group by anual
-              UNION SELECT  sum(otros_gastos.precio) as amount , strftime('%%Y', info_predios.created_at)  AS anual
+              UNION SELECT  sum(otros_gastos.precio) as amount , date_part('year', info_predios.created_at)  AS anual
               from otros_gastos 
               LEFT JOIN  info_predios ON  otros_gastos.info_predio_id = info_predios.id
               where info_predios.predio_id = %d
 	            Group by anual
-              UNION  SELECT   sum(fumigada + pago_trabaja + nutriente ) as amount, strftime('%%Y', info_predios.created_at)  AS anual
+              UNION  SELECT   sum(fumigada + pago_trabaja + nutriente ) as amount, date_part('year', info_predios.created_at)  AS anual
               from info_predios 
-	            Group by anual)
+	            Group by anual) As anual
               Group by anual"
 
     @inversion = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id,  @predio_id,  @predio_id))
     my_array = Hash.new
     unless @inversion.nil?
       Array(@inversion).each do |data|          
-          my_array[data["anual"]] = data["Inversion"]
+          my_array[data["anual"].to_i] = data["inversion"]
       end
     end
     render json: my_array
@@ -129,10 +132,10 @@ class StatsController < ApplicationController
   def sales
     @predio_id = params[:predio_id]
     query = "select venta, semana
-              from info_predios 
+              from info_predios
               where info_predios.predio_id = %d
-              and info_predios.created_at >= date('now', 'start of year')
-              GROUP BY semana"
+              and info_predios.created_at BETWEEN date_trunc('year', now()) AND CURRENT_TIMESTAMP
+              GROUP BY semana, venta"
 
     @sales = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id))
     my_array = Hash.new
@@ -146,40 +149,41 @@ class StatsController < ApplicationController
 
   def salesByMonth
     @predio_id = params[:predio_id]
-    query = "select SUM(venta) as venta, strftime('%%m', info_predios.created_at)  AS mes
-              from info_predios 
+    query = "select SUM(venta) as venta, date_part('month', info_predios.created_at)  AS mes
+              from info_predios
               where info_predios.predio_id = %d
-              and info_predios.created_at >= date('now', 'start of year')
-              GROUP BY mes"
+              and info_predios.created_at BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
+              GROUP BY mes
+              ORDER BY mes"
 
     @sales = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id))
     my_array = Hash.new
     unless @sales.nil?
       Array(@sales).each do |data|
           case data["mes"]
-          when "01"
+          when 1
           @mes = 'Enero'
-          when "02"
+          when 2
           @mes = 'Febrero'
-          when '03'
+          when 3
           @mes = 'Marzo'
-          when '04'
+          when 4
           @mes = 'Abril'
-          when '05'
+          when 5
           @mes = 'Mayo'
-          when '06'
+          when 6
           @mes = 'Junio'
-          when '07'
+          when 7
           @mes = 'Julio'
-          when '08'
+          when 8
           @mes = 'Agosto'
-          when '09'
+          when 9
           @mes = 'Septiemmbre'
-          when '10'
+          when 10
           @mes = 'Octubre'
-          when '11'
+          when 11
           @mes = 'Noviembre'
-          when '12'
+          when 12
           @mes = 'Diciembre'
           end
           
@@ -191,7 +195,7 @@ class StatsController < ApplicationController
 
   def salesByYear
     @predio_id = params[:predio_id]
-    query = "select SUM(venta) as venta, strftime('%%Y', info_predios.created_at)  AS anual
+    query = "select SUM(venta) as venta,  date_part('year', info_predios.created_at)  AS anual
               from info_predios 
               where info_predios.predio_id = %d
               GROUP BY anual"
@@ -200,7 +204,7 @@ class StatsController < ApplicationController
     my_array = Hash.new
     unless @sales.nil?
       Array(@sales).each do |data|  
-          my_array[data["anual"]] = data["venta"]
+          my_array[data["anual"].to_i] = data["venta"]
       end
     end
     render json: my_array
@@ -209,33 +213,33 @@ class StatsController < ApplicationController
   def earnings
     @predio_id = params[:predio_id]
     #SALES
-    query = "select conteo_racimos * precio as venta, semana
-              from info_predios 
+    query = "select venta, semana
+              from info_predios
               where info_predios.predio_id = %d
-              and info_predios.created_at >= date('now', 'start of year')
-              GROUP BY semana"
+              and info_predios.created_at BETWEEN date_trunc('year', now()) AND CURRENT_TIMESTAMP
+              GROUP BY semana, venta"
     @sales = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id))
     #INVESTMENT
     query = "SELECT SUM(amount) as Inversion, semana as semana
               FROM (select   sum(materials.price * ipd.cantidad) as amount, info_predios.semana
-              from info_predio_detalles as ipd  
+              from info_predio_detalles as ipd
               LEFT JOIN  info_predios ON  ipd.info_predio_id = info_predios.id
               Left JOIN materials  ON materials.id = ipd.material_id
               where  info_predios.predio_id = %d
-              and info_predios.created_at >= date('now', 'start of year')
+              and info_predios.created_at  BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
               Group by info_predios.semana
               UNION select  sum(otros_gastos.precio) as amount , info_predios.semana
-              from otros_gastos 
+              from otros_gastos
               LEFT JOIN  info_predios ON  otros_gastos.info_predio_id = info_predios.id
               where info_predios.predio_id = %d
-              and info_predios.created_at >= date('now', 'start of year')
+              and info_predios.created_at BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
               Group by info_predios.semana
-              UNION  select   sum(fumigada + pago_trabaja + nutriente ) as amount, semana
-              from info_predios 
+              UNION  select  sum(fumigada + pago_trabaja + nutriente ) as amount, semana
+              from info_predios
               where info_predios.predio_id = %d
-              and info_predios.created_at >= date('now', 'start of year')
-              Group by info_predios.semana
-              )Group by semana"
+              and info_predios.created_at BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
+              Group by info_predios.semana) as Inversion
+              Group by semana"
 
     @inversion = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id,  @predio_id,  @predio_id))
     
@@ -243,10 +247,12 @@ class StatsController < ApplicationController
     unless @sales.nil?
       Array(@sales).each_with_index {|data, index|
           semanaArray = Hash.new
-          semanaArray['semana'] = data["semana"]
-          semanaArray['venta'] = data["venta"]
-          semanaArray['inversion'] = @inversion[index]["Inversion"]
-          semanaArray['utilidad'] = data["venta"] - @inversion[index]["Inversion"]
+          semanaArray['semana'] = data["semana"].to_i 
+          semanaArray['venta'] = data["venta"].to_i 
+          semanaArray['inversion'] = @inversion[index]["inversion"].to_i 
+          venta =  data["venta"].to_i 
+          inversion = @inversion[index]["inversion"].to_i 
+          semanaArray['utilidad'] = venta - inversion
           my_array[index] = semanaArray
         }
     end
@@ -257,32 +263,35 @@ class StatsController < ApplicationController
   def earningsByMonth
     @predio_id = params[:predio_id]
     #SALES
-    query = "select SUM(venta) as venta, strftime('%%m', info_predios.created_at)  AS mes
-              from info_predios 
+    query = "select SUM(venta) as venta, date_part('month', info_predios.created_at)  AS mes
+              from info_predios
               where info_predios.predio_id = %d
-              and info_predios.created_at >= date('now', 'start of year')
-              GROUP BY mes"
+              and info_predios.created_at BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
+              GROUP BY mes
+              ORDER BY mes"
     @sales = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id))
     #INVESTMENT
     query = "SELECT SUM(amount) as Inversion, mes
-              FROM ( SELECT sum(materials.price * ipd.cantidad) as amount, strftime('%%m', info_predios.created_at)  AS mes
-              from info_predio_detalles as ipd  
+              FROM ( SELECT sum(materials.price * ipd.cantidad) as amount, date_part('month', info_predios.created_at)  AS mes
+              from info_predio_detalles as ipd
               LEFT JOIN  info_predios ON  ipd.info_predio_id = info_predios.id
               Left JOIN materials  ON materials.id = ipd.material_id
               where  info_predios.predio_id = %d
-              and info_predios.created_at >= date('now', 'start of year')
+              and info_predios.created_at BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
               Group by mes
-              UNION SELECT  sum(otros_gastos.precio) as amount , strftime('%%m', info_predios.created_at)  AS mes
-              from otros_gastos 
+              UNION SELECT  sum(otros_gastos.precio) as amount , date_part('month', info_predios.created_at)  AS mes
+              from otros_gastos
               LEFT JOIN  info_predios ON  otros_gastos.info_predio_id = info_predios.id
               where info_predios.predio_id = %d
-              and info_predios.created_at >= date('now', 'start of year')
+              and info_predios.created_at BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
 	            Group by mes
-              UNION  SELECT   sum(fumigada + pago_trabaja + nutriente ) as amount, strftime('%%m', info_predios.created_at)  AS mes
-              from info_predios 
+              UNION  SELECT  sum(fumigada + pago_trabaja + nutriente ) as amount, date_part('month', info_predios.created_at)  AS mes
+              from info_predios
               where info_predios.predio_id = %d
-	            Group by mes)
-              Group by mes"
+              and info_predios.created_at BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
+	            Group by mes) as Inversion
+              Group by mes
+              ORDER BY mes"
 
     @inversion = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id,  @predio_id,  @predio_id))
     
@@ -291,35 +300,38 @@ class StatsController < ApplicationController
       Array(@sales).each_with_index {|data, index|
           semanaArray = Hash.new
           case data["mes"]
-          when "01"
+          when 1
           @mes = 'Enero'
-          when "02"
+          when 2
           @mes = 'Febrero'
-          when '03'
+          when 3
           @mes = 'Marzo'
-          when '04'
+          when 4
           @mes = 'Abril'
-          when '05'
+          when 5
           @mes = 'Mayo'
-          when '06'
+          when 6
           @mes = 'Junio'
-          when '07'
+          when 7
           @mes = 'Julio'
-          when '08'
+          when 8
           @mes = 'Agosto'
-          when '09'
+          when 9
           @mes = 'Septiemmbre'
-          when '10'
+          when 10
           @mes = 'Octubre'
-          when '11'
+          when 11
           @mes = 'Noviembre'
-          when '12'
+          when 12
           @mes = 'Diciembre'
           end
-          semanaArray['semana'] = @mes
-          semanaArray['venta'] = data["venta"]
-          semanaArray['inversion'] = @inversion[index]["Inversion"]
-          semanaArray['utilidad'] = data["venta"] - @inversion[index]["Inversion"]
+          semanaArray = Hash.new
+          semanaArray['semana'] =@mes
+          semanaArray['venta'] = data["venta"].to_i 
+          semanaArray['inversion'] = @inversion[index]["inversion"].to_i 
+          venta =  data["venta"].to_i 
+          inversion = @inversion[index]["inversion"].to_i 
+          semanaArray['utilidad'] = venta - inversion
           my_array[index] = semanaArray
         }
     end
@@ -330,27 +342,27 @@ class StatsController < ApplicationController
   def earningsByYear
     @predio_id = params[:predio_id]
     #SALES
-    query = "select SUM(venta) as venta, strftime('%%Y', info_predios.created_at)  AS anual
+    query = "select SUM(venta) as venta,  date_part('year', info_predios.created_at)  AS anual
               from info_predios 
               where info_predios.predio_id = %d
               GROUP BY anual"
     @sales = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id))
     #INVESTMENT
     query = "SELECT SUM(amount) as Inversion, anual
-              FROM ( SELECT sum(materials.price * ipd.cantidad) as amount, strftime('%%Y', info_predios.created_at)  AS anual
+              FROM ( SELECT sum(materials.price * ipd.cantidad) as amount, date_part('year', info_predios.created_at)  AS anual
               from info_predio_detalles as ipd  
               LEFT JOIN  info_predios ON  ipd.info_predio_id = info_predios.id
               Left JOIN materials  ON materials.id = ipd.material_id
               where  info_predios.predio_id = %d
               Group by anual
-              UNION SELECT  sum(otros_gastos.precio) as amount , strftime('%%Y', info_predios.created_at)  AS anual
+              UNION SELECT  sum(otros_gastos.precio) as amount , date_part('year', info_predios.created_at)  AS anual
               from otros_gastos 
               LEFT JOIN  info_predios ON  otros_gastos.info_predio_id = info_predios.id
               where info_predios.predio_id = %d
 	            Group by anual
-              UNION  SELECT   sum(fumigada + pago_trabaja + nutriente ) as amount, strftime('%%Y', info_predios.created_at)  AS anual
+              UNION  SELECT   sum(fumigada + pago_trabaja + nutriente ) as amount, date_part('year', info_predios.created_at)  AS anual
               from info_predios 
-	            Group by anual)
+	            Group by anual) As anual
               Group by anual"
 
     @inversion = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id,  @predio_id,  @predio_id))
@@ -359,10 +371,12 @@ class StatsController < ApplicationController
     unless @sales.nil?
       Array(@sales).each_with_index {|data, index|
           semanaArray = Hash.new
-          semanaArray['semana'] = data["anual"]
-          semanaArray['venta'] = data["venta"]
-          semanaArray['inversion'] = @inversion[index]["Inversion"]
-          semanaArray['utilidad'] = data["venta"] - @inversion[index]["Inversion"]
+          semanaArray['semana'] = data["anual"].to_i
+          semanaArray['venta'] = data["venta"].to_i 
+          semanaArray['inversion'] = @inversion[index]["inversion"].to_i 
+          venta =  data["venta"].to_i 
+          inversion = @inversion[index]["inversion"].to_i 
+          semanaArray['utilidad'] = venta - inversion
           my_array[index] = semanaArray
         }
     end
@@ -377,9 +391,9 @@ class StatsController < ApplicationController
               INNER JOIN info_predio_detalles ON  info_predio_detalles.info_predio_id = info_predios.id
               INNER JOIN materials ON  materials.id = info_predio_detalles.material_id
               where info_predios.predio_id = "+ @predio_id +"
-              and materials.name LIKE \"%bolsa%\"
-              and info_predios.created_at >= date('now', 'start of year')
-              GROUP BY semana"
+              and materials.name LIKE \'%bolsa%\'
+              and info_predios.created_at BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
+              GROUP BY semana, cantidad"
 
     @materials = ActiveRecord::Base.connection.execute(query)
     my_array = Hash.new
@@ -393,43 +407,44 @@ class StatsController < ApplicationController
 
   def materialsByMonth
     @predio_id = params[:predio_id]
-    query = "select SUM(info_predio_detalles.cantidad) as cantidad, strftime(\"%m\", info_predios.created_at)  AS mes
+    query = "select SUM(info_predio_detalles.cantidad) as cantidad,  date_part('month', info_predios.created_at)  AS mes
               from info_predios 
               INNER JOIN info_predio_detalles ON  info_predio_detalles.info_predio_id = info_predios.id
               INNER JOIN materials ON  materials.id = info_predio_detalles.material_id
               where info_predios.predio_id = "+ @predio_id +"
-              and materials.name LIKE \"%bolsa%\"
-              and info_predios.created_at >= date('now', 'start of year')
-              GROUP BY mes"
+              and materials.name LIKE \'%bolsa%\'
+              and info_predios.created_at BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
+              GROUP BY mes
+              ORDER BY mes"
 
     @materials = ActiveRecord::Base.connection.execute(query)
     my_array = Hash.new
     unless @materials.nil?
       Array(@materials).each do |data|
          case data["mes"]
-          when "01"
+          when 1
           @mes = 'Enero'
-          when "02"
+          when 2
           @mes = 'Febrero'
-          when '03'
+          when 3
           @mes = 'Marzo'
-          when '04'
+          when 4
           @mes = 'Abril'
-          when '05'
+          when 5
           @mes = 'Mayo'
-          when '06'
+          when 6
           @mes = 'Junio'
-          when '07'
+          when 7
           @mes = 'Julio'
-          when '08'
+          when 8
           @mes = 'Agosto'
-          when '09'
+          when 9
           @mes = 'Septiemmbre'
-          when '10'
+          when 10
           @mes = 'Octubre'
-          when '11'
+          when 11
           @mes = 'Noviembre'
-          when '12'
+          when 12
           @mes = 'Diciembre'
           end
           my_array[@mes] = data["cantidad"]
@@ -440,19 +455,19 @@ class StatsController < ApplicationController
 
   def materialsByYear
     @predio_id = params[:predio_id]
-    query = "select SUM(info_predio_detalles.cantidad) as cantidad, strftime(\"%Y\", info_predios.created_at)  AS anual
+    query = "select SUM(info_predio_detalles.cantidad) as cantidad, date_part('year', info_predios.created_at)  AS anual
               from info_predios 
               INNER JOIN info_predio_detalles ON  info_predio_detalles.info_predio_id = info_predios.id
               INNER JOIN materials ON  materials.id = info_predio_detalles.material_id
               where info_predios.predio_id = "+ @predio_id +"
-              and materials.name LIKE \"%bolsa%\"
+              and materials.name LIKE \'%bolsa%\'
               GROUP BY anual"
 
     @materials = ActiveRecord::Base.connection.execute(query)
     my_array = Hash.new
     unless @materials.nil?
       Array(@materials).each do |data|
-          my_array[data["anual"]] = data["cantidad"]
+          my_array[data["anual"].to_i] = data["cantidad"]
       end
     end
     render json: my_array
