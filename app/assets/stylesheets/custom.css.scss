@@ -1,162 +1,164 @@
-@import "bootstrap-sprockets";
-@import "bootstrap";
-html,
-body {
-    height: 100%;
-    font-family: 'Roboto', sans-serif;
-}
-
-body {
-    color: rgba(0, 0, 0, 0.87);
-    background-color: #f4f3ef;
-    /*text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);*/
-}
-
-.navbar-default {
-    background-color: #fefafa;
-    border-color: #bcbcbc;
-}
-
-.site-wrapper {
-    display: table;
-    width: 100%;
-    height: 100%;
-    /* For at least Firefox */
-    min-height: 100%;
-    -webkit-box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
-    box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
-}
-
-.site-wrapper-inner {
-    display: table-cell;
-    vertical-align: top;
-}
-
-.cover-container {
-    margin-right: auto;
-    margin-left: auto;
-}
-
-#background {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    z-index: -100;
-    -webkit-transform: translateX(-50%) translateY(-50%);
-    transform: translateX(-50%) translateY(-50%);
-    //background: image-url('cover.png') no-repeat;
-    background-size: cover;
-}
-
-#logo {
-    float: left;
-    font-size: 1.7em;
-    color: #717371;
-    letter-spacing: -1px;
-    font-weight: bold;
-}
-
-.jumbotron {
-    background-image: asset_url('cover.png');
-    background-size: cover;
-    height: 500px;
-}
-
-.jumbotron h1,
-h2 {
-    color: #000;
-    margin-bottom: 30px;
-    letter-spacing: -1px;
-    font-weight: bold;
-}
-
-.well a {
-    color: rgb(223, 172, 172)
-}
-
-.listing {
-    list-style: none;
-    padding-left: 0;
-    margin: 3px;
-}
-
-.botones {
-    margin-top: 70px;
-}
-
-.error {
-    font-size: smaller;
-    color: #EB5E28;
-    border-color: #EB5E28;
-}
-
-.card {
-    /* Add shadows to create the "card" effect */
-    border-radius: 6px;
-    -webkit-box-shadow: 0 2px 2px rgba(204, 197, 185, 0.5);
-    box-shadow: 0 2px 2px rgba(204, 197, 185, 0.5);
-    background-color: #FFFFFF;
-    color: #252422;
-    margin-bottom: 20px;
-    position: relative;
-    z-index: auto;
-}
-
-
-/* Add some padding inside the card container */
-
-.card .container-card {
-    padding: 2px 16px;
-}
-
-.app-type__card {
-    border: 1px solid #b3b3b3;
-    color: grey;
-    background-color: white;
-    border-radius: 5px;
-    text-align: center;
-    padding: 20px;
-    margin: 10px 0;
-    transition: all 0.2s ease;
-    font-weight: 500;
-}
-
-.app-type__title {
-    font-size: 2.5rem;
-    font-weight: 600;
-}
-
-.app-type__card .smf-icon {
-    margin: 10px 0;
-    font-size: 1.5rem;
-}
-
-.app-type__card .smf-icon a {
-    color: grey;
-}
-
-.content {
-    min-height: calc(100vh - 70px);
-    position: relative;
-    z-index: 4;
-    padding-top: 20vh;
-}
-
-h3.lato {
-    font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
-    line-height: 1.28571429em;
-    color: #66615b;
-    margin-bottom: 20px;
-}
-
-.back_link {
-    margin-bottom: 20px;
-}
-
-.back_link a {
-    color: #66615b;
-}
+//@import "bootstrap-sprockets";
+//@import "bootstrap";
+//@import "toastr";
+//
+//html,
+//body {
+//    height: 100%;
+//    font-family: 'Roboto', sans-serif;
+//}
+//
+//body {
+//    color: rgba(0, 0, 0, 0.87);
+//    background-color: #f4f3ef;
+//    /*text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);*/
+//}
+//
+//.navbar-default {
+//    background-color: #fefafa;
+//    border-color: #bcbcbc;
+//}
+//
+//.site-wrapper {
+//    display: table;
+//    width: 100%;
+//    height: 100%;
+//    /* For at least Firefox */
+//    min-height: 100%;
+//    -webkit-box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+//    box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+//}
+//
+//.site-wrapper-inner {
+//    display: table-cell;
+//    vertical-align: top;
+//}
+//
+//.cover-container {
+//    margin-right: auto;
+//    margin-left: auto;
+//}
+//
+//#background {
+//    position: fixed;
+//    top: 50%;
+//    left: 50%;
+//    min-width: 100%;
+//    min-height: 100%;
+//    width: auto;
+//    height: auto;
+//    z-index: -100;
+//    -webkit-transform: translateX(-50%) translateY(-50%);
+//    transform: translateX(-50%) translateY(-50%);
+//    //background: image-url('cover.png') no-repeat;
+//    background-size: cover;
+//}
+//
+//#logo {
+//    float: left;
+//    font-size: 1.7em;
+//    color: #717371;
+//    letter-spacing: -1px;
+//    font-weight: bold;
+//}
+//
+//.jumbotron {
+//    background-image: asset_url('cover.png');
+//    background-size: cover;
+//    height: 500px;
+//}
+//
+//.jumbotron h1,
+//h2 {
+//    color: #000;
+//    margin-bottom: 30px;
+//    letter-spacing: -1px;
+//    font-weight: bold;
+//}
+//
+//.well a {
+//    color: rgb(223, 172, 172)
+//}
+//
+//.listing {
+//    list-style: none;
+//    padding-left: 0;
+//    margin: 3px;
+//}
+//
+//.botones {
+//    margin-top: 70px;
+//}
+//
+//.error {
+//    font-size: smaller;
+//    color: #EB5E28;
+//    border-color: #EB5E28;
+//}
+//
+//.card {
+//    /* Add shadows to create the "card" effect */
+//    border-radius: 6px;
+//    -webkit-box-shadow: 0 2px 2px rgba(204, 197, 185, 0.5);
+//    box-shadow: 0 2px 2px rgba(204, 197, 185, 0.5);
+//    background-color: #FFFFFF;
+//    color: #252422;
+//    margin-bottom: 20px;
+//    position: relative;
+//    z-index: auto;
+//}
+//
+//
+///* Add some padding inside the card container */
+//
+//.card .container-card {
+//    padding: 2px 16px;
+//}
+//
+//.app-type__card {
+//    border: 1px solid #b3b3b3;
+//    color: grey;
+//    background-color: white;
+//    border-radius: 5px;
+//    text-align: center;
+//    padding: 20px;
+//    margin: 10px 0;
+//    transition: all 0.2s ease;
+//    font-weight: 500;
+//}
+//
+//.app-type__title {
+//    font-size: 2.5rem;
+//    font-weight: 600;
+//}
+//
+//.app-type__card .smf-icon {
+//    margin: 10px 0;
+//    font-size: 1.5rem;
+//}
+//
+//.app-type__card .smf-icon a {
+//    color: grey;
+//}
+//
+//.content {
+//    min-height: calc(100vh - 70px);
+//    position: relative;
+//    z-index: 4;
+//    padding-top: 20vh;
+//}
+//
+//h3.lato {
+//    font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+//    line-height: 1.28571429em;
+//    color: #66615b;
+//    margin-bottom: 20px;
+//}
+//
+//.back_link {
+//    margin-bottom: 20px;
+//}
+//
+//.back_link a {
+//    color: #66615b;
+//}
