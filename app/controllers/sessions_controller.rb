@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
       flash[:success] = 'Haz iniciado sesion exitosamente!'
       redirect_to user
     else
-      flash.now[:danger] = 'Hubo problemas con tus credenciales'
+      flash.now[:error] = 'Hubo problemas con tus credenciales'
       render 'new'
     end
   end

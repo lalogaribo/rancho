@@ -1,13 +1,16 @@
 
-<%= simple_form_for(@worker) do |f| %>
+<div class="row">
+  <div class="col-md-12">
+    <%= simple_form_for(@worker) do |f| %>
+      <div class="form-group">
+        <%= f.input :name, label: 'Nombre', placeholder: 'Ingresar Nombre', class: 'form-control ' %>
+        <%= f.input :last_name, label: 'Apellido', placeholder: 'Ingresar Apellido', class: 'form-control' %>
+        <%= f.input :phone_number, label: 'Numero celular', placeholder: 'Ingresar numero celular', class: 'form-control' %>
+      </div>
 
-  <div class="form-inputs">
-    <%= f.input :name, label: 'Nombre', placeholder: 'Ingresar Nombre' %>
-    <%= f.input :last_name, label: 'Apellido', placeholder: 'Ingresar Apellido' %>
-    <%= f.input :phone_number, label: 'Numero celular', placeholder: 'Ingresar numero celular' %>
+      <div class="form-actions">
+        <%= f.button :submit, label:'Crear', class: 'btn btn-primary'%>
+      </div>
+    <% end %>
   </div>
-
-  <div class="form-actions">
-    <%= f.button :submit, label:'Crear', class: 'btn btn-primary'%>
-  </div>
-<% end %>
+</div>

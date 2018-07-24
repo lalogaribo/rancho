@@ -66,4 +66,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "chartkick"
 gem 'groupdate'
 gem 'simple_form'
+gem 'toastr-rails'
 
