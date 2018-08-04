@@ -53,12 +53,12 @@ $(document).ready(function() {
         if (max <= 0) {
             $(this).prop('readonly', true);
         } else {
-            var price = this.getAttribute('data-price')
+            var price = this.getAttribute('data-price');
             var estimated_price = (price * this.value);
             var id = this.getAttribute('id');
             $('.' + id).text('$' + estimated_price);
         }
-    })
+    });
 
     //Event listener input numbers
     $('.number-materials').change(function() {
@@ -69,7 +69,7 @@ $(document).ready(function() {
             $(this).data('lastvalue', this.value);
 
             if (this.value) {
-                var price = this.getAttribute('data-price')
+                var price = this.getAttribute('data-price');
                 var estimated_price = (price * this.value);
                 var id = this.getAttribute('id');
                 $('.' + id).text('$' + estimated_price);
@@ -136,8 +136,7 @@ function operateFormatterEmail(value, row, index) {
         '<i class="fa fa-line-chart"></i>',
         '</a>'
     ].join('');
-};
-
+}
 //icons operations
 window.operateEventsEmail = {
     'click .edit': function(e, value, row, index) {
