@@ -1,5 +1,3 @@
-
-
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
@@ -17,7 +15,6 @@
  *= require_self
  *= require bootstrap-datetimepicker
  */
-
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "toastr";
@@ -127,7 +124,6 @@ h2 {
   position: relative;
   z-index: auto;
 }
-
 
 /* Add some padding inside the card container */
 

@@ -1,5 +1,5 @@
-<%= render 'shared/page_title', title: 'Estadisticas'%>
-<% unless @predio_id.nil?  %>
+<%= render 'shared/page_title', title: 'Estadisticas' %>
+<% unless @predio_id.nil? %>
   <div class="row form-group">
     <div class="col-md-12">
       <h4 class="text-center">Graficas de predio <strong class="namePredio"><%= @predio.name %> </strong></h4>
@@ -11,20 +11,20 @@
 <div class="row form-group">
   <div class="col-md-6 text-left">
     <%= select_tag "predio[:predio_id]",
-      options_from_collection_for_select(@predios, "id", "name"),
-      multiple: false, prompt: "Selecciona un predio", class: 'form-control', id: 'predio'%>
+                   options_from_collection_for_select(@predios, "id", "name"),
+                   multiple: false, prompt: "Selecciona un predio", class: 'form-control', id: 'predio' %>
   </div>
   <div class="col-md-6 text-left">
-      <%= select_tag "filterDate[date]", 
-      options_for_select([['Semana', 1], ['Mes', 2], ['Año', 3]]),
-      multiple: false, class: 'form-control required', id: 'filterDate', prompt: "Filtro Adicional" %>
+    <%= select_tag "filterDate[date]",
+                   options_for_select([['Semana', 1], ['Mes', 2], ['Año', 3]]),
+                   multiple: false, class: 'form-control required', id: 'filterDate', prompt: "Filtro Adicional" %>
   </div>
 </div>
 
-<% unless @predio_id.nil?  %>
+<% unless @predio_id.nil? %>
   <input type="hidden" id="hdPredioId" value="<%= @predio.id %>">
 <% end %>
-  
+
 <div class="row form-group">
   <div class="col-md-12">
     <div id="barchart_earnings" class="card"></div>

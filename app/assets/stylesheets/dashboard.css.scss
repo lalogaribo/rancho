@@ -4,14 +4,14 @@
 
 html,
 body {
-    height: 100%;
-    font-family: 'Roboto', sans-serif;
+  height: 100%;
+  font-family: 'Roboto', sans-serif;
 }
 
 body {
-    color: rgba(0, 0, 0, 0.87);
-    background-color: #f4f3ef;
-    /*text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);*/
+  color: rgba(0, 0, 0, 0.87);
+  background-color: #f4f3ef;
+  /*text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);*/
 }
 
 h1,
@@ -21,39 +21,36 @@ h1,
 .h4 h5,
 .h5 h6,
 .h6 {
-    font-family: 'Roboto Slab', serif;
+  font-family: 'Roboto Slab', serif;
 }
 
 .navbar-default {
-    background-color: #fefafa;
-    border-color: #bcbcbc;
+  background-color: #fefafa;
+  border-color: #bcbcbc;
 }
-
 
 /*
  * Globals
  */
-
 
 /* Links */
 
 a,
 a:focus,
 a:hover {
-    color: #fff;
+  color: #fff;
 }
-
 
 /* Custom default button */
 
 .btn-secondary,
 .btn-secondary:hover,
 .btn-secondary:focus {
-    color: #333;
-    text-shadow: none;
-    /* Prevent inheritance from `body` */
-    background-color: #fff;
-    border: .05rem solid #fff;
+  color: #333;
+  text-shadow: none;
+  /* Prevent inheritance from `body` */
+  background-color: #fff;
+  border: .05rem solid #fff;
 }
 
 @import "bootstrap-sprockets";

@@ -26,12 +26,12 @@ class StatsController < ApplicationController
               Group by info_predios.semana) as Inversion
               Group by semana"
 
-    @inversion = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id,  @predio_id,  @predio_id))
-    
+    @inversion = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id, @predio_id, @predio_id))
+
     my_array = Hash.new
     unless @inversion.nil?
       @inversion.map do |data|
-         my_array[data["semana"]] = data["inversion"]
+        my_array[data["semana"]] = data["inversion"]
       end
     end
     render json: my_array
@@ -39,7 +39,7 @@ class StatsController < ApplicationController
 
   def investmentByMonth
     @predio_id = params[:predio_id]
-    
+
     query = "SELECT SUM(amount) as Inversion, mes
               FROM ( SELECT sum(materials.price * ipd.cantidad) as amount, date_part('month', info_predios.created_at)  AS mes
               from info_predio_detalles as ipd
@@ -62,38 +62,37 @@ class StatsController < ApplicationController
               Group by mes
               ORDER BY mes"
 
-    @inversion = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id,  @predio_id,  @predio_id))
+    @inversion = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id, @predio_id, @predio_id))
     my_array = Hash.new
     unless @inversion.nil?
       Array(@inversion).each do |data|
-          case data["mes"]
-          when 1
+        case data["mes"]
+        when 1
           @mes = 'Enero'
-          when 2
+        when 2
           @mes = 'Febrero'
-          when 3
+        when 3
           @mes = 'Marzo'
-          when 4
+        when 4
           @mes = 'Abril'
-          when 5
+        when 5
           @mes = 'Mayo'
-          when 6
+        when 6
           @mes = 'Junio'
-          when 7
+        when 7
           @mes = 'Julio'
-          when 8
+        when 8
           @mes = 'Agosto'
-          when 9
+        when 9
           @mes = 'Septiemmbre'
-          when 10
+        when 10
           @mes = 'Octubre'
-          when 11
+        when 11
           @mes = 'Noviembre'
-          when 12
+        when 12
           @mes = 'Diciembre'
-          end
-          
-          my_array[@mes] = data["inversion"]
+        end
+        my_array[@mes] = data["inversion"]
       end
     end
     render json: my_array
@@ -101,7 +100,7 @@ class StatsController < ApplicationController
 
   def investmentByYear
     @predio_id = params[:predio_id]
-    
+
     query = "SELECT SUM(amount) as Inversion, anual
               FROM ( SELECT sum(materials.price * ipd.cantidad) as amount, date_part('year', info_predios.created_at)  AS anual
               from info_predio_detalles as ipd  
@@ -119,11 +118,11 @@ class StatsController < ApplicationController
 	            Group by anual) As anual
               Group by anual"
 
-    @inversion = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id,  @predio_id,  @predio_id))
+    @inversion = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id, @predio_id, @predio_id))
     my_array = Hash.new
     unless @inversion.nil?
-      Array(@inversion).each do |data|          
-          my_array[data["anual"].to_i] = data["inversion"]
+      Array(@inversion).each do |data|
+        my_array[data["anual"].to_i] = data["inversion"]
       end
     end
     render json: my_array
@@ -141,7 +140,7 @@ class StatsController < ApplicationController
     my_array = Hash.new
     unless @sales.nil?
       Array(@sales).each do |data|
-          my_array[data["semana"]] = data["venta"]
+        my_array[data["semana"]] = data["venta"]
       end
     end
     render json: my_array
@@ -160,34 +159,34 @@ class StatsController < ApplicationController
     my_array = Hash.new
     unless @sales.nil?
       Array(@sales).each do |data|
-          case data["mes"]
-          when 1
+        case data["mes"]
+        when 1
           @mes = 'Enero'
-          when 2
+        when 2
           @mes = 'Febrero'
-          when 3
+        when 3
           @mes = 'Marzo'
-          when 4
+        when 4
           @mes = 'Abril'
-          when 5
+        when 5
           @mes = 'Mayo'
-          when 6
+        when 6
           @mes = 'Junio'
-          when 7
+        when 7
           @mes = 'Julio'
-          when 8
+        when 8
           @mes = 'Agosto'
-          when 9
+        when 9
           @mes = 'Septiemmbre'
-          when 10
+        when 10
           @mes = 'Octubre'
-          when 11
+        when 11
           @mes = 'Noviembre'
-          when 12
+        when 12
           @mes = 'Diciembre'
-          end
-          
-          my_array[@mes] = data["venta"]
+        end
+
+        my_array[@mes] = data["venta"]
       end
     end
     render json: my_array
@@ -203,8 +202,8 @@ class StatsController < ApplicationController
     @sales = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id))
     my_array = Hash.new
     unless @sales.nil?
-      Array(@sales).each do |data|  
-          my_array[data["anual"].to_i] = data["venta"]
+      Array(@sales).each do |data|
+        my_array[data["anual"].to_i] = data["venta"]
       end
     end
     render json: my_array
@@ -241,22 +240,22 @@ class StatsController < ApplicationController
               Group by info_predios.semana) as Inversion
               Group by semana"
 
-    @inversion = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id,  @predio_id,  @predio_id))
-    
+    @inversion = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id, @predio_id, @predio_id))
+
     my_array = Hash.new
     unless @sales.nil?
       Array(@sales).each_with_index {|data, index|
-          semanaArray = Hash.new
-          semanaArray['semana'] = data["semana"].to_i 
-          semanaArray['venta'] = data["venta"].to_i 
-          semanaArray['inversion'] = @inversion[index]["inversion"].to_i 
-          venta =  data["venta"].to_i 
-          inversion = @inversion[index]["inversion"].to_i 
-          semanaArray['utilidad'] = venta - inversion
-          my_array[index] = semanaArray
-        }
+        semanaArray = Hash.new
+        semanaArray['semana'] = data["semana"].to_i
+        semanaArray['venta'] = data["venta"].to_i
+        semanaArray['inversion'] = @inversion[index]["inversion"].to_i
+        venta = data["venta"].to_i
+        inversion = @inversion[index]["inversion"].to_i
+        semanaArray['utilidad'] = venta - inversion
+        my_array[index] = semanaArray
+      }
     end
-    
+
     render json: my_array
   end
 
@@ -293,49 +292,49 @@ class StatsController < ApplicationController
               Group by mes
               ORDER BY mes"
 
-    @inversion = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id,  @predio_id,  @predio_id))
-    
+    @inversion = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id, @predio_id, @predio_id))
+
     my_array = Hash.new
     unless @sales.nil?
       Array(@sales).each_with_index {|data, index|
-          semanaArray = Hash.new
-          case data["mes"]
-          when 1
+        semanaArray = Hash.new
+        case data["mes"]
+        when 1
           @mes = 'Enero'
-          when 2
+        when 2
           @mes = 'Febrero'
-          when 3
+        when 3
           @mes = 'Marzo'
-          when 4
+        when 4
           @mes = 'Abril'
-          when 5
+        when 5
           @mes = 'Mayo'
-          when 6
+        when 6
           @mes = 'Junio'
-          when 7
+        when 7
           @mes = 'Julio'
-          when 8
+        when 8
           @mes = 'Agosto'
-          when 9
+        when 9
           @mes = 'Septiemmbre'
-          when 10
+        when 10
           @mes = 'Octubre'
-          when 11
+        when 11
           @mes = 'Noviembre'
-          when 12
+        when 12
           @mes = 'Diciembre'
-          end
-          semanaArray = Hash.new
-          semanaArray['semana'] =@mes
-          semanaArray['venta'] = data["venta"].to_i 
-          semanaArray['inversion'] = @inversion[index]["inversion"].to_i 
-          venta =  data["venta"].to_i 
-          inversion = @inversion[index]["inversion"].to_i 
-          semanaArray['utilidad'] = venta - inversion
-          my_array[index] = semanaArray
-        }
+        end
+        semanaArray = Hash.new
+        semanaArray['semana'] = @mes
+        semanaArray['venta'] = data["venta"].to_i
+        semanaArray['inversion'] = @inversion[index]["inversion"].to_i
+        venta = data["venta"].to_i
+        inversion = @inversion[index]["inversion"].to_i
+        semanaArray['utilidad'] = venta - inversion
+        my_array[index] = semanaArray
+      }
     end
-    
+
     render json: my_array
   end
 
@@ -365,22 +364,22 @@ class StatsController < ApplicationController
 	            Group by anual) As anual
               Group by anual"
 
-    @inversion = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id,  @predio_id,  @predio_id))
-    
+    @inversion = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id, @predio_id, @predio_id))
+
     my_array = Hash.new
     unless @sales.nil?
       Array(@sales).each_with_index {|data, index|
-          semanaArray = Hash.new
-          semanaArray['semana'] = data["anual"].to_i
-          semanaArray['venta'] = data["venta"].to_i 
-          semanaArray['inversion'] = @inversion[index]["inversion"].to_i 
-          venta =  data["venta"].to_i 
-          inversion = @inversion[index]["inversion"].to_i 
-          semanaArray['utilidad'] = venta - inversion
-          my_array[index] = semanaArray
-        }
+        semanaArray = Hash.new
+        semanaArray['semana'] = data["anual"].to_i
+        semanaArray['venta'] = data["venta"].to_i
+        semanaArray['inversion'] = @inversion[index]["inversion"].to_i
+        venta = data["venta"].to_i
+        inversion = @inversion[index]["inversion"].to_i
+        semanaArray['utilidad'] = venta - inversion
+        my_array[index] = semanaArray
+      }
     end
-    
+
     render json: my_array
   end
 
@@ -390,7 +389,7 @@ class StatsController < ApplicationController
               from info_predios 
               INNER JOIN info_predio_detalles ON  info_predio_detalles.info_predio_id = info_predios.id
               INNER JOIN materials ON  materials.id = info_predio_detalles.material_id
-              where info_predios.predio_id = "+ @predio_id +"
+              where info_predios.predio_id = " + @predio_id + "
               and materials.name LIKE \'%bolsa%\'
               and info_predios.created_at BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
               GROUP BY semana, cantidad"
@@ -399,7 +398,7 @@ class StatsController < ApplicationController
     my_array = Hash.new
     unless @materials.nil?
       Array(@materials).each do |data|
-          my_array[data["semana"]] = data["cantidad"]
+        my_array[data["semana"]] = data["cantidad"]
       end
     end
     render json: my_array
@@ -408,10 +407,10 @@ class StatsController < ApplicationController
   def materialsByMonth
     @predio_id = params[:predio_id]
     query = "select SUM(info_predio_detalles.cantidad) as cantidad,  date_part('month', info_predios.created_at)  AS mes
-              from info_predios 
+              from info_predios
               INNER JOIN info_predio_detalles ON  info_predio_detalles.info_predio_id = info_predios.id
               INNER JOIN materials ON  materials.id = info_predio_detalles.material_id
-              where info_predios.predio_id = "+ @predio_id +"
+              where info_predios.predio_id = " + @predio_id + "
               and materials.name LIKE \'%bolsa%\'
               and info_predios.created_at BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
               GROUP BY mes
@@ -421,33 +420,33 @@ class StatsController < ApplicationController
     my_array = Hash.new
     unless @materials.nil?
       Array(@materials).each do |data|
-         case data["mes"]
-          when 1
+        case data["mes"]
+        when 1
           @mes = 'Enero'
-          when 2
+        when 2
           @mes = 'Febrero'
-          when 3
+        when 3
           @mes = 'Marzo'
-          when 4
+        when 4
           @mes = 'Abril'
-          when 5
+        when 5
           @mes = 'Mayo'
-          when 6
+        when 6
           @mes = 'Junio'
-          when 7
+        when 7
           @mes = 'Julio'
-          when 8
+        when 8
           @mes = 'Agosto'
-          when 9
+        when 9
           @mes = 'Septiemmbre'
-          when 10
+        when 10
           @mes = 'Octubre'
-          when 11
+        when 11
           @mes = 'Noviembre'
-          when 12
+        when 12
           @mes = 'Diciembre'
-          end
-          my_array[@mes] = data["cantidad"]
+        end
+        my_array[@mes] = data["cantidad"]
       end
     end
     render json: my_array
@@ -459,7 +458,7 @@ class StatsController < ApplicationController
               from info_predios 
               INNER JOIN info_predio_detalles ON  info_predio_detalles.info_predio_id = info_predios.id
               INNER JOIN materials ON  materials.id = info_predio_detalles.material_id
-              where info_predios.predio_id = "+ @predio_id +"
+              where info_predios.predio_id = " + @predio_id + "
               and materials.name LIKE \'%bolsa%\'
               GROUP BY anual"
 
@@ -467,7 +466,7 @@ class StatsController < ApplicationController
     my_array = Hash.new
     unless @materials.nil?
       Array(@materials).each do |data|
-          my_array[data["anual"].to_i] = data["cantidad"]
+        my_array[data["anual"].to_i] = data["cantidad"]
       end
     end
     render json: my_array
