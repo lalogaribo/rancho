@@ -11,19 +11,19 @@
           <%= f.text_field :name, class: 'form-control', placeholder: 'Nombre del predio', autofocus: true %>
         </div>
       </div>
-        <div class="form-group">
-          <div class="control-label col-md-2">
-            <%= f.label :no_hectareas %>
-          </div>
-          <div class="col-md-6">
-            <%= f.text_field :no_hectareas, class: 'form-control', placeholder: 'Ingresar numero de hectareas' %>
-          </div>
+      <div class="form-group">
+        <div class="control-label col-md-2">
+          <%= f.label :no_hectareas %>
         </div>
-        <div class="form-group">
-          <div class="col-md-offset-2 col-md-6">
-            <%= f.submit 'Crear predio', class: 'btn btn-primary btn-block'  %>
-          </div>
+        <div class="col-md-6">
+          <%= f.text_field :no_hectareas, class: 'form-control', placeholder: 'Ingresar numero de hectareas' %>
         </div>
-        <% end %>
+      </div>
+      <div class="form-group">
+        <div class="col-md-offset-2 col-md-6">
+          <%= f.submit 'Crear predio', class: 'btn btn-primary btn-block' %>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>

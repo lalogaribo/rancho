@@ -12,19 +12,19 @@
           <%= f.text_field :nombre, class: 'form-control', placeholder: 'Nombre del nutriente', autofocus: true %>
         </div>
       </div>
-        <div class="form-group">
-          <div class="control-label col-md-2">
-            <%= f.label :precio %>
-          </div>
-          <div class="col-md-4">
-            <%= f.text_field :precio, class: 'form-control', placeholder: '$0.00' %>
-          </div>
+      <div class="form-group">
+        <div class="control-label col-md-2">
+          <%= f.label :precio %>
         </div>
-        <div class="form-group">
-          <div class="col-md-offset-2 col-md-10">
-            <%= f.submit "Crear Nutriente", class: 'btn btn-primary btn-lg btn-xlarge' %>
-          </div>
+        <div class="col-md-4">
+          <%= f.text_field :precio, class: 'form-control', placeholder: '$0.00' %>
         </div>
-        <% end %>
+      </div>
+      <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+          <%= f.submit "Crear Nutriente", class: 'btn btn-primary btn-lg btn-xlarge' %>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>

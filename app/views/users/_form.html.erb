@@ -20,7 +20,7 @@
                     <%= f.label :email %>
                   </div>
                   <div class="col-md-8">
-                    <%= f.email_field :email,class: 'form-control', placeholder: 'Ingresar correo electronico' %>
+                    <%= f.email_field :email, class: 'form-control', placeholder: 'Ingresar correo electronico' %>
                   </div>
                 </div>
                 <div class="form-group">
@@ -28,7 +28,7 @@
                     <%= f.label :password, 'Contraseña' %>
                   </div>
                   <div class="col-md-8">
-                    <%= f.password_field :password,class: 'form-control', placeholder: 'Ingresar contraseña' %>
+                    <%= f.password_field :password, class: 'form-control', placeholder: 'Ingresar contraseña' %>
                   </div>
                 </div>
                 <div class="form-group">
@@ -36,21 +36,21 @@
                     <%= f.label :password_confirmation, 'Confirmar contraseña' %>
                   </div>
                   <div class="col-md-8">
-                    <%= f.password_field :password_confirmation,class: 'form-control', placeholder: 'Confirmar contraseña' %>
+                    <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirmar contraseña' %>
                   </div>
                 </div>
 
                 <div class="form-group">
                   <div class="col-md-offset-2 col-md-8">
                     <%= f.submit(@user.new_record? ? 'Crear cuenta' : 'Actualizar perfil',
-                                class: 'btn btn-primary btn-lg btn-xlarge btn-block') %>
+                                 class: 'btn btn-primary btn-lg btn-xlarge btn-block') %>
                   </div>
                 </div>
               <% end %>
             </div>
             <div class="col-md-12 text-center back_link">
-              <%= link_to 'Cancelar proceso de creacion de cuenta', root_path%>
-            </div>   
+              <%= link_to 'Cancelar proceso de creacion de cuenta', root_path %>
+            </div>
           </div>
         </div>
       </div>

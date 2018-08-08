@@ -1,4 +1,3 @@
-
 <div class="row">
   <div class="col-md-8 col-md-offset-3">
     <%= simple_form_for(@worker, :html => {class: 'form-horizontal', role: 'form'}) do |f| %>
@@ -9,7 +8,7 @@
       </div>
 
       <div class="form-actions">
-        <%= f.button :submit, label:'Crear', class: 'btn btn-primary'%>
+        <%= f.button :submit, label: 'Crear', class: 'btn btn-primary' %>
         <%= link_to 'Regresar', workers_path, class: 'btn btn-warning' %>
       </div>
     <% end %>

@@ -1,12 +1,13 @@
 class VuelosController < ApplicationController
   layout 'dashboard'
   before_action :set_vuelo, only: [:show, :edit, :update, :destroy]
+
   def index
     if logged_in? && current_user.admin?
       @vuelos = Vuelo.all
     else
       @vuelos = current_user.vuelos
-      end
+    end
   end
 
   def new
@@ -25,6 +26,7 @@ class VuelosController < ApplicationController
 
   def edit
   end
+
   def show
   end
 

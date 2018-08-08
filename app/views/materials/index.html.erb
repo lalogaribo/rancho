@@ -6,7 +6,7 @@
 </div>
 <div class="row">
   <div class="col-md-12">
-    <div >
+    <div>
       <table class="table table-striped">
         <thead>
         <tr>
@@ -18,14 +18,14 @@
         </thead>
         <tbody>
         <% @materials.each do |material| %>
-            <tr>
-              <td><%= link_to material.name, edit_material_path(material) %></td>
-              <td><%= material.price %></td>
-              <td><%= material.quantity %></td>
-              <td><%= material.price * material.quantity %></td>
-              <td><%= link_to 'Editar', edit_material_path(material) %></td>
-              <td><%= link_to 'Eliminar', material_path(material), method: :delete, data: {confirm: "Eliminar este producto?"}, class: 'pull-right' %> </td>
-            </tr>
+          <tr>
+            <td><%= link_to material.name, edit_material_path(material) %></td>
+            <td><%= material.price %></td>
+            <td><%= material.quantity %></td>
+            <td><%= material.price * material.quantity %></td>
+            <td><%= link_to 'Editar', edit_material_path(material) %></td>
+            <td><%= link_to 'Eliminar', material_path(material), method: :delete, data: {confirm: "Eliminar este producto?"}, class: 'pull-right' %> </td>
+          </tr>
         <% end %>
         </tbody>
       </table>

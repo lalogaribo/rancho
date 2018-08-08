@@ -5,7 +5,7 @@ class NutrientesController < ApplicationController
   def index
     @nutrientes = Nutriente.all
   end
-  
+
   def new
     @nutriente = Nutriente.new
   end
@@ -42,17 +42,18 @@ class NutrientesController < ApplicationController
   end
 
   private
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def nutriente_params
-      params.require(:nutriente).permit(:nombre, :precio)
-    end
 
-    def current_date 
-      Time.now.strftime("%Y-%m-%d") # Week from monday to monday
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def nutriente_params
+    params.require(:nutriente).permit(:nombre, :precio)
+  end
 
-    def set_nutriente
-      @nutriente = Nutriente.find(params[:id])
-    end
+  def current_date
+    Time.now.strftime("%Y-%m-%d") # Week from monday to monday
+  end
+
+  def set_nutriente
+    @nutriente = Nutriente.find(params[:id])
+  end
 
 end
