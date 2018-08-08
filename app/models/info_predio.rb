@@ -4,7 +4,7 @@ class InfoPredio < ApplicationRecord
   has_many :info_predio_detalle
   has_many :material, through: :info_predio_detalle
   has_many :otros_gasto
-  validates :fumigada, presence: {message: 'Es un campo requerido'}
+  validates :fumigada, presence: {message: ' es un campo requerido'}
   validates :pago_trabaja, presence: {message: 'Es un campo requerido'}
   validates :conteo_racimos, presence: {message: 'Es un campo requerido'}
   validates :color_cinta, presence: {message: 'Es un campo requerido'}

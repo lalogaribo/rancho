@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 
   def require_user
     if !logged_in?
-      flash[:danger] = 'Ocupas iniciar sesion, para hacer dicha accion'
+      flash[:danger] = 'Ocupas iniciar sesion'
       redirect_to root_path
     end
   end

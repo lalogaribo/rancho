@@ -3,7 +3,7 @@
   <div class="col-md-12 text-right form-group">
     <%= link_to 'Agregar producto <i class="fa fa-plus-circle" aria-hidden="true"></i>'.html_safe, new_material_path, class: 'btn btn-primary' %>
   </div>
-</div
+</div>
 <div class="row">
   <div class="col-md-12">
     <div >
@@ -23,8 +23,8 @@
               <td><%= material.price %></td>
               <td><%= material.quantity %></td>
               <td><%= material.price * material.quantity %></td>
-              <td><%= link_to 'Edit', edit_material_path(material) %></td>
-              <td><%= link_to 'Delete', material_path(material), method: :delete, data: {confirm: "Eliminar este producto?"}, class: 'pull-right' %> </td>
+              <td><%= link_to 'Editar', edit_material_path(material) %></td>
+              <td><%= link_to 'Eliminar', material_path(material), method: :delete, data: {confirm: "Eliminar este producto?"}, class: 'pull-right' %> </td>
             </tr>
         <% end %>
         </tbody>

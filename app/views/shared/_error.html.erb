@@ -9,7 +9,7 @@
             </h2>
             <div class="panel-body">
               <ul>
-                <% obj.errors.full_messages.each do |msg| %>
+                <% obj.errors.each do |attr, msg| %>
                     <li><%= msg %></li>
                 <% end %>
               </ul>

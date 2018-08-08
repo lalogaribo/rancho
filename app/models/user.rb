@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   before_save {self.email = email.downcase}
   validates :name, presence: {message: 'Nombre es requerido'},
-            length: {maximum: 30}
+            length: {maximum: 250}
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: { message: 'Email es requerido'},
             length: {maximum: 255},
@@ -9,8 +9,8 @@ class User < ApplicationRecord
             uniqueness: {case_sensitive: false}
   has_many :predios
   has_secure_password
-  validates :password, presence: { message: 'Contraseñaes requerdo'},
-            length: {minimum: 5},
+  validates :password, presence: { message: 'Contraseña es requerdo'},
+            length: {minimum: 5, maximum: 255},
             allow_nil: true
   has_many :materials
   has_many :info_predio

@@ -3,6 +3,7 @@ class Worker < ApplicationRecord
   validates :last_name, presence: { message: "Apellido es requerido" }
   validates :phone_number, presence: { message: "Telefono es requerido" },
             length: { maximum: 10 },
-            numericality: { only_integer: true}
+            numericality: { message: 'Ingresar numero valido' },
+            format: {with: /\A\d+(?:\.\d{0,2})?\z/, message: 'Ingresar numero valido'}
   belongs_to :user
 end
