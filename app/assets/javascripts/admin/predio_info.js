@@ -22,14 +22,14 @@ var NOTIFICATION_TEMPLATE =
     '</div>';
 
 // Default Type
-$(document).ready(function() {
+$(document).ready(function () {
 
-    $(document).on('click', '#add-otros-pagos', function() {
+    $(document).on('click', '#add-otros-pagos', function () {
         $('#exampleModal').modal('show');
     });
 
     //Append otro pago and validate
-    $(document).on('click', '#save-payment', function() {
+    $(document).on('click', '#save-payment', function () {
         addOtherPayment();
     });
     // Initialize responses table
@@ -42,26 +42,26 @@ $(document).ready(function() {
         date: dateInit,
     });
     //Validate predio Form
-    $(document).on('click', '#savePredioInfo', function() {
+    $(document).on('click', '#savePredioInfo', function () {
         saveForm();
     });
 
     //Disabled if not stock
-    $('.number-materials').each(function() {
+    $('.number-materials').each(function () {
         var max = $(this).attr('max');
 
         if (max <= 0) {
             $(this).prop('readonly', true);
         } else {
-            var price = this.getAttribute('data-price')
+            var price = this.getAttribute('data-price');
             var estimated_price = (price * this.value);
             var id = this.getAttribute('id');
             $('.' + id).text('$' + estimated_price);
         }
-    })
+    });
 
     //Event listener input numbers
-    $('.number-materials').change(function() {
+    $('.number-materials').change(function () {
         if (this.getAttribute('value') === this.value) {
             // setting the original 'lastvalue' data property
             $(this).data('lastvalue', this.value);
@@ -69,7 +69,7 @@ $(document).ready(function() {
             $(this).data('lastvalue', this.value);
 
             if (this.value) {
-                var price = this.getAttribute('data-price')
+                var price = this.getAttribute('data-price');
                 var estimated_price = (price * this.value);
                 var id = this.getAttribute('id');
                 $('.' + id).text('$' + estimated_price);
@@ -78,7 +78,7 @@ $(document).ready(function() {
     }).change();
 
     //Calculate precio info predio
-    $(document).on('blur', '#info_predio_precio', function() {
+    $(document).on('blur', '#info_predio_precio', function () {
         var precio = $(this).val();
         var racimos = ($('#info_predio_conteo_racimos').val()) ? $('#info_predio_conteo_racimos').val() : 0;
 
@@ -93,7 +93,7 @@ $(document).ready(function() {
     onlyPrice();
 
     //Remove
-    $(document).on('click', '.close', function() {
+    $(document).on('click', '.close', function () {
         var containerOtroPago = $(this).parent().parent().next('.otro_pago');
         var idRemoved = containerOtroPago.attr('data-id');
         containerOtroPago.remove();
@@ -105,7 +105,7 @@ $(document).ready(function() {
 });
 
 function onlyNumbers() {
-    $('.onlyNumbers').keyup(function(e) {
+    $('.onlyNumbers').keyup(function (e) {
         if (/\D/g.test(this.value)) {
             // Filter non-digits from input value.
             this.value = this.value.replace(/\D/g, '');
@@ -115,14 +115,14 @@ function onlyNumbers() {
 
 function onlyPrice() {
     $('.onlyPrice')
-        .keypress(function(event) {
+        .keypress(function (event) {
             if ((event.which != 46 || (event.which == 46 && $(this).val() == '') || $(this)
-                    .val()
-                    .indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+                .val()
+                .indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
                 event.preventDefault();
             }
         })
-        .on('paste', function(event) {
+        .on('paste', function (event) {
             event.preventDefault();
         });
 }
@@ -136,15 +136,15 @@ function operateFormatterEmail(value, row, index) {
         '<i class="fa fa-line-chart"></i>',
         '</a>'
     ].join('');
-};
+}
 
 //icons operations
 window.operateEventsEmail = {
-    'click .edit': function(e, value, row, index) {
+    'click .edit': function (e, value, row, index) {
         EDIT_URL = EDIT_URL.replace('{:id}', row.id).replace('{:predio_id}', row.predio_id);
         window.location = EDIT_URL;
     },
-    'click .stat': function(e, value, row, index) {
+    'click .stat': function (e, value, row, index) {
         STATS_URL = STATS_URL.replace('{:predio_id}', row.predio_id);
         window.location = STATS_URL;
     }
@@ -171,7 +171,7 @@ function initBootstrapTable() {
         pageSize: 10,
         pageList: [],
 
-        formatRecordsPerPage: function(pageNumber) {
+        formatRecordsPerPage: function (pageNumber) {
             return pageNumber + " rows visible";
         },
         icons: {
@@ -189,7 +189,7 @@ function initBootstrapTable() {
 }
 
 function addOtherPayment() {
-    $.validator.addMethod('price', function(value, element) {
+    $.validator.addMethod('price', function (value, element) {
         return this.optional(element) || /^\d+(\.\d{1,2})?$/.test(value);
     }, 'Escribe un precio valido');
 
@@ -216,7 +216,7 @@ function addOtherPayment() {
                 price: 'Escribe un precio valido',
             }
         },
-        submitHandler: function() {
+        submitHandler: function () {
             var valuePago = $('#otroPago')
                 .find('#txtNombre')
                 .val();
@@ -239,7 +239,7 @@ function addOtherPayment() {
                 .find('#txtPrecio')
                 .val('');
         },
-        invalidHandler: function(form, validator) {
+        invalidHandler: function (form, validator) {
             var errors = validator.numberOfInvalids();
             console.log(errors);
             console.log(validator);

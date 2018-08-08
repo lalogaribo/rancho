@@ -1,26 +1,26 @@
-window.Chart = (function($) {
+window.Chart = (function ($) {
     var PREDIO_ID = undefined;
 
     // Initialize
-    self.init = function() {
-        $(document).ready(function() {
+    self.init = function () {
+        $(document).ready(function () {
             google.charts.load('current', {
                 'packages': ['bar']
             });
 
             if (predioExist()) {
-                Chart.Earnings.loadEarnings(PREDIO_ID, '')
+                Chart.Earnings.loadEarnings(PREDIO_ID, '');
                 $('#filterDate').attr('disabled', false);
             }
-            else{
+            else {
                 $('#filterDate').attr('disabled', true);
             }
 
-            $(document).on('change', '#predio', function() {
+            $(document).on('change', '#predio', function () {
                 fetchStatsPredio($(this));
             });
-            
-            $(document).on('change', '#filterDate', function() {
+
+            $(document).on('change', '#filterDate', function () {
                 fetchStatsPredioByDate($(this));
             });
         });
@@ -29,7 +29,7 @@ window.Chart = (function($) {
     function predioExist() {
         PREDIO_ID = $('#hdPredioId').val();
         if ($.isNumeric(PREDIO_ID)) {
-            $('#predio').val(PREDIO_ID)
+            $('#predio').val(PREDIO_ID);
             return true;
         } else {
             return false;
@@ -43,7 +43,7 @@ window.Chart = (function($) {
             if (typeFilter == '1') {
                 type = ''
             }
-            else if(typeFilter == '2'){
+            else if (typeFilter == '2') {
                 type = '/month'
             }
             else {
@@ -70,19 +70,19 @@ window.Chart = (function($) {
 
 })(jQuery);
 
-window.Chart.Earnings = (function($) {
+window.Chart.Earnings = (function ($) {
     var HEADERS = ['Semana', 'Ventas', 'Inversion', 'Utilidad'];
     var VALUES = [];
 
-    self.loadEarnings = function(predio_id, type) {
-        sales(predio_id, type)
+    self.loadEarnings = function (predio_id, type) {
+        sales(predio_id, type);
         Chart.Payments.loadPayments(predio_id, type)
     };
 
     function sales(predio_id, type) {
         var settings = {
             type: "GET",
-            url : '/predios/' + predio_id + '/earnings' + type,
+            url: '/predios/' + predio_id + '/earnings' + type,
             dataType: "json",
             error: onError,
             success: onSuccess
@@ -92,12 +92,12 @@ window.Chart.Earnings = (function($) {
 
     function onSuccess(data) {
         var valuesObj = Object.values(data);
-        console.log(valuesObj)
-        var keysObj = Object.keys(data)
+        console.log(valuesObj);
+        var keysObj = Object.keys(data);
         VALUES = [];
         if ($.isArray(valuesObj) && $.isArray(keysObj)) {
-            VALUES.push(HEADERS)
-            $.each(valuesObj, function(indexArray, value) {
+            VALUES.push(HEADERS);
+            $.each(valuesObj, function (indexArray, value) {
                 var reference = [];
                 reference.push(value.semana);
                 reference.push(value.venta);
@@ -159,13 +159,13 @@ window.Chart.Earnings = (function($) {
     return self;
 })(jQuery);
 
-window.Chart.Payments = (function($) {
+window.Chart.Payments = (function ($) {
     var HEADERS = ['Semana', 'Inversion'];
     var VALUES = [];
 
-    self.loadPayments = function(predio_id, type) {
-        payments(predio_id, type)
-        console.log('investment')
+    self.loadPayments = function (predio_id, type) {
+        payments(predio_id, type);
+        console.log('investment');
         Chart.Sales.loadSales(predio_id, type)
     };
 
@@ -182,11 +182,11 @@ window.Chart.Payments = (function($) {
 
     function onSuccess(data) {
         var valuesObj = Object.values(data);
-        var keysObj = Object.keys(data)
+        var keysObj = Object.keys(data);
         VALUES = [];
         if ($.isArray(valuesObj) && $.isArray(keysObj)) {
-            VALUES.push(HEADERS)
-            $.each(valuesObj, function(index, value) {
+            VALUES.push(HEADERS);
+            $.each(valuesObj, function (index, value) {
                 var reference = [];
                 reference.push(keysObj[index]);
                 reference.push(value);
@@ -245,12 +245,12 @@ window.Chart.Payments = (function($) {
     return self;
 })(jQuery);
 
-window.Chart.Sales = (function($) {
+window.Chart.Sales = (function ($) {
     var HEADERS = ['Semana', 'Ventas'];
     var VALUES = [];
 
     self.loadSales = function (predio_id, type) {
-        sales(predio_id, type)
+        sales(predio_id, type);
         Chart.Materials.loadMaterials(predio_id, type)
     };
 
@@ -267,11 +267,11 @@ window.Chart.Sales = (function($) {
 
     function onSuccess(data) {
         var valuesObj = Object.values(data);
-        var keysObj = Object.keys(data)
+        var keysObj = Object.keys(data);
         VALUES = [];
         if ($.isArray(valuesObj) && $.isArray(keysObj)) {
-            VALUES.push(HEADERS)
-            $.each(valuesObj, function(index, value) {
+            VALUES.push(HEADERS);
+            $.each(valuesObj, function (index, value) {
                 var reference = [];
                 reference.push(keysObj[index]);
                 reference.push(value);
@@ -330,7 +330,7 @@ window.Chart.Sales = (function($) {
     return self;
 })(jQuery);
 
-window.Chart.Materials = (function($) {
+window.Chart.Materials = (function ($) {
     var HEADERS = ['Semana', 'Cantidad'];
     var VALUES = [];
 
@@ -351,11 +351,11 @@ window.Chart.Materials = (function($) {
 
     function onSuccess(data) {
         var valuesObj = Object.values(data);
-        var keysObj = Object.keys(data)
+        var keysObj = Object.keys(data);
         VALUES = [];
         if ($.isArray(valuesObj) && $.isArray(keysObj)) {
-            VALUES.push(HEADERS)
-            $.each(valuesObj, function(index, value) {
+            VALUES.push(HEADERS);
+            $.each(valuesObj, function (index, value) {
                 var reference = [];
                 reference.push(keysObj[index]);
                 reference.push(value);
