@@ -4,34 +4,36 @@
 <div class="row">
   <div class="col-md-12">
     <fieldset>
-        <legend>Historial</legend>
-        <div class="row">
-            <div class="col-md-12">
-             <table class="table table-striped">
-             <thead>
-              <tr>
-                  <th data-field="predio_name" data-sortable="true" align="center">Nombre del Predio</th>
-                  <th data-field="semana" data-sortable="true" align="center">Semana</th>
-                  <th data-field="actions" class="td-actions text-right" data-events="operateEventsEmail" data-formatter="operateFormatterEmail" align="center">Actions</th>
-              </tr>
-              </thead>
-              <tbody>
-              <% unless @info_predios.nil?  %>
-                <% Array(@info_predios).each do |info_predio| %>
-                  <tr>
-                    <td><%= info_predio.predio.name %></td>
-                    <td>Semana <%= info_predio.semana %></td>
-                    <td align="right">
-                      <a rel="tooltip" title="Edit" class="btn btn-simple btn-warning btn-icon table-action edit" href="<%= edit_info_predio_path(info_predio) %>"><i class="glyphicon glyphicon-pencil"></i> </a>
-                      <a rel="tooltip" title="Stats" class="btn btn-simple btn-primary btn-icon table-action stat" href="<%= predio_charts_path(info_predio.predio_id) %>"><i class="fa fa-line-chart"></i> </a>
-                    </td>
-                  </tr>
-                <% end %>
-              <% end %>  
-              </tbody>
-            </table>
-            </div>
+      <legend>Historial</legend>
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th data-field="predio_name" data-sortable="true" align="center">Nombre del Predio</th>
+              <th data-field="semana" data-sortable="true" align="center">Semana</th>
+              <th data-field="actions" class="td-actions text-right" data-events="operateEventsEmail" data-formatter="operateFormatterEmail" align="center">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% unless @info_predios.nil? %>
+              <% Array(@info_predios).each do |info_predio| %>
+                <tr>
+                  <td><%= info_predio.predio.name %></td>
+                  <td>Semana <%= info_predio.semana %></td>
+                  <td align="right">
+                    <a rel="tooltip" title="Edit" class="btn btn-simple btn-warning btn-icon table-action edit" href="<%= edit_info_predio_path(info_predio) %>"><i class="glyphicon glyphicon-pencil"></i>
+                    </a>
+                    <a rel="tooltip" title="Stats" class="btn btn-simple btn-primary btn-icon table-action stat" href="<%= predio_charts_path(info_predio.predio_id) %>"><i class="fa fa-line-chart"></i>
+                    </a>
+                  </td>
+                </tr>
+              <% end %>
+            <% end %>
+            </tbody>
+          </table>
         </div>
+      </div>
     </fieldset>
- </div>
+  </div>
 </div>

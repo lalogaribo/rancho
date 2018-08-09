@@ -1,36 +1,36 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Coahuayana produce</title>
-    <%= csrf_meta_tags %>
-    <%= javascript_include_tag "//code.jquery.com/jquery-3.3.1.min.js" %>
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <%= stylesheet_link_tag '//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css' %>
-    <%= javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js" , 'data-turbolinks-track': 'reload'  %>
-  </head>
+<head>
+  <title>Coahuayana produce</title>
+  <%= csrf_meta_tags %>
+  <%= javascript_include_tag "//code.jquery.com/jquery-3.3.1.min.js" %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= stylesheet_link_tag '//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css' %>
+  <%= javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js", 'data-turbolinks-track': 'reload' %>
+</head>
 
-  <body>
-  <div class="site-wrapper">
-    <div class="site-wrapper-inner">
-      <div class="cover-container">
-        <%= video_tag(
-                 'empaque.mp4',
-                 id: 'background',
-                 autoplay: true,
-                 loop: true,
-                 muted: true,
-                 #poster: 'cover.png'
-            )
-        %>
-        <%= render 'layouts/navigation' %>
-        <%= render 'shared/notifications' %>
+<body>
+<div class="site-wrapper">
+  <div class="site-wrapper-inner">
+    <div class="cover-container">
+      <%= video_tag(
+              'empaque.mp4',
+              id: 'background',
+              autoplay: true,
+              loop: true,
+              muted: true,
+          #poster: 'cover.png'
+          )
+      %>
+      <%= render 'layouts/navigation' %>
+      <%= render 'shared/notifications' %>
 
-        <div  class="content">
-          <%= yield %>
-        </div>
+      <div class="content">
+        <%= yield %>
       </div>
     </div>
   </div>
-  </body>
+</div>
+</body>
 </html>

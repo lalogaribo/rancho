@@ -11,23 +11,23 @@
   <div class="col-md-12">
     <table class="table table-striped">
       <thead>
-        <tr>
-          <th class="text-center">Nombre</th>
-          <th class="text-center">Precio</th>
-          <th colspan="3"></th>
-        </tr>
+      <tr>
+        <th class="text-center">Nombre</th>
+        <th class="text-center">Precio</th>
+        <th colspan="3"></th>
+      </tr>
       </thead>
 
       <tbody>
-        <% @nutrientes.each do |nutriente| %>
-          <tr>
-            <td align="center"><%= nutriente.nombre %></td>
-            <td align="center">$ <%= nutriente.precio %></td>
-            <td><%= link_to 'Show', nutriente %></td>
-            <td><%= link_to 'Edit', edit_nutriente_path(nutriente) %></td>
-            <td><%= link_to 'Destroy', nutriente, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-          </tr>
-        <% end %>
+      <% @nutrientes.each do |nutriente| %>
+        <tr>
+          <td align="center"><%= nutriente.nombre %></td>
+          <td align="center">$ <%= nutriente.precio %></td>
+          <td><%= link_to 'Show', nutriente %></td>
+          <td><%= link_to 'Edit', edit_nutriente_path(nutriente) %></td>
+          <td><%= link_to 'Destroy', nutriente, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+        </tr>
+      <% end %>
       </tbody>
     </table>
   </div>
