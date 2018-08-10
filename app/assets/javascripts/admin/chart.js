@@ -6,7 +6,7 @@ window.Chart = (function($) {
     self.init = function() {
         $(document).ready(function() {
             google.charts.load('current', {
-                'packages': ['bar']
+                'packages': ['corechart' ,'bar']
             });
 
             if (predioExist()) {
@@ -68,6 +68,44 @@ window.Chart = (function($) {
         return TITLE_AXIS;
     }
 
+    self.getOptionsChart =function() {
+        var options = {
+            vAxis: {
+                format: 'currency'
+            },
+            hAxis: {
+                format: '',
+                title: Chart.getTitleAxis()
+            },
+            height: 400,
+            animation: {
+                duration: 1500,
+                easing: 'out',
+                startup: true
+            },
+            bar: { groupWidth: '93%' },
+            chartArea: {
+                width: '80%'
+            }
+        };
+
+        return options;
+    }
+
+    /**
+    *
+    * @param {Object} xhr
+    * @param {String} status
+    * @param {String} errorThrown
+    */
+    self.onError = function(xhr, status, errorThrown) {
+        var errorMessage = errorThrown;
+        if (typeof xhr.responseJSON === "object" && xhr.responseJSON.hasOwnProperty("error")) {
+            errorMessage = xhr.responseJSON.error;
+        }
+        console.log(errorMessage);
+    }
+
     // Initialize
     self.init();
 
@@ -78,7 +116,6 @@ window.Chart = (function($) {
 window.Chart.Earnings = (function($) {
     var HEADERS = ['Semana', 'Ventas', 'Inversion', 'Utilidad'];
     var VALUES = [];
-    var TITLE_AXIS = 'Semana';
 
     self.loadEarnings = function(predio_id, type) {
         sales(predio_id, type);
@@ -90,7 +127,7 @@ window.Chart.Earnings = (function($) {
             type: "GET",
             url: '/predios/' + predio_id + '/earnings' + type,
             dataType: "json",
-            error: onError,
+            error: Chart.onError,
             success: onSuccess
         };
         return $.ajax(settings);
@@ -98,7 +135,6 @@ window.Chart.Earnings = (function($) {
 
     function onSuccess(data) {
         var valuesObj = Object.values(data);
-        console.log(valuesObj);
         var keysObj = Object.keys(data);
         VALUES = [];
         if ($.isArray(valuesObj) && $.isArray(keysObj)) {
@@ -111,7 +147,6 @@ window.Chart.Earnings = (function($) {
                 reference.push(value.utilidad);
                 VALUES.push(reference)
             });
-            console.log(VALUES)
         }
         // Load chart
         google
@@ -124,51 +159,13 @@ window.Chart.Earnings = (function($) {
             .visualization
             .arrayToDataTable(VALUES);
 
-        var options = {
-            chart: {
-                title: 'Reporte General',
-                subtitle: 'Utilidades',
-            },
-            bars: 'vertical', // Required for Material Bar Charts.
-            vAxis: {
-                format: 'currency'
-            },
-            hAxis: {
-                format: '',
-                title: Chart.getTitleAxis()
-            },
-            height: 400,
-            chartArea: {
-                left: 20,
-                top: 0,
-                width: '50%',
-                height: '75%'
-            },
-            animation: {
-                duration: 2000,
-                easing: 'inAndOut',
-                startup: true
-            },
-            colors: ['#428bca', '#d95f02', '#1b9e77']
-        };
+        var options = Chart.getOptionsChart();
+        options.title = 'Reporte General Utilidades',
+        options.colors = ['#428bca', '#d95f02', '#1b9e77']
+        
+        var chart = new google.visualization.ColumnChart(document.getElementById('barchart_earnings'));
 
-        var chart = new google.charts.Bar(document.getElementById('barchart_earnings'));
-
-        chart.draw(data, google.charts.Bar.convertOptions(options));
-    }
-
-    /**
-     *
-     * @param {Object} xhr
-     * @param {String} status
-     * @param {String} errorThrown
-     */
-    function onError(xhr, status, errorThrown) {
-        var errorMessage = errorThrown;
-        if (typeof xhr.responseJSON === "object" && xhr.responseJSON.hasOwnProperty("error")) {
-            errorMessage = xhr.responseJSON.error;
-        }
-        console.log(errorMessage);
+        chart.draw(data, options);
     }
 
     return self;
@@ -180,7 +177,6 @@ window.Chart.Payments = (function($) {
 
     self.loadPayments = function(predio_id, type) {
         payments(predio_id, type);
-        console.log('investment');
         Chart.Sales.loadSales(predio_id, type)
     };
 
@@ -189,7 +185,7 @@ window.Chart.Payments = (function($) {
             type: "GET",
             url: '/predios/' + predio_id + '/investment' + type,
             dataType: "json",
-            error: onError,
+            error: Chart.onError,
             success: onSuccess
         };
         return $.ajax(settings);
@@ -204,7 +200,7 @@ window.Chart.Payments = (function($) {
             $.each(valuesObj, function(index, value) {
                 var reference = [];
                 reference.push(keysObj[index]);
-                reference.push(value);
+                reference.push(Number(value));
                 VALUES.push(reference)
             });
         }
@@ -215,55 +211,15 @@ window.Chart.Payments = (function($) {
     }
 
     function drawPaymentChart() {
-        var data = google
-            .visualization
-            .arrayToDataTable(VALUES);
+        var data = google.visualization.arrayToDataTable(VALUES);
 
-        var options = {
-            chart: {
-                title: 'Inversion',
-                subtitle: 'Inversion por semana',
-            },
-            bars: 'vertical', // Required for Material Bar Charts.
-            vAxis: {
-                format: 'currency'
-            },
-            hAxis: {
-                format: '',
-                title: Chart.getTitleAxis()
-            },
-            height: 400,
-            chartArea: {
-                left: 20,
-                top: 0,
-                width: '50%',
-                height: '75%'
-            },
-            animation: {
-                duration: 1500,
-                easing: 'out',
-                startup: true
-            },
-            colors: ['#d95f02']
-        };
+        var options = Chart.getOptionsChart();
+        options.title = 'Inversion';
+        options.colors = ['#d95f02'];
+        
+        var chart = new google.visualization.ColumnChart(document.getElementById('barchart_payments'));
 
-        var chart = new google.charts.Bar(document.getElementById('barchart_payments'));
-
-        chart.draw(data, google.charts.Bar.convertOptions(options));
-    }
-
-    /**
-     *
-     * @param {Object} xhr
-     * @param {String} status
-     * @param {String} errorThrown
-     */
-    function onError(xhr, status, errorThrown) {
-        var errorMessage = errorThrown;
-        if (typeof xhr.responseJSON === "object" && xhr.responseJSON.hasOwnProperty("error")) {
-            errorMessage = xhr.responseJSON.error;
-        }
-        console.log(errorMessage);
+        chart.draw(data, options);
     }
 
     return self;
@@ -283,7 +239,7 @@ window.Chart.Sales = (function($) {
             type: "GET",
             url: '/predios/' + predio_id + '/sales' + type,
             dataType: "json",
-            error: onError,
+            error: Chart.onError,
             success: onSuccess
         };
         return $.ajax(settings);
@@ -298,7 +254,7 @@ window.Chart.Sales = (function($) {
             $.each(valuesObj, function(index, value) {
                 var reference = [];
                 reference.push(keysObj[index]);
-                reference.push(value);
+                reference.push(Number(value));
                 VALUES.push(reference)
             });
         }
@@ -313,51 +269,12 @@ window.Chart.Sales = (function($) {
             .visualization
             .arrayToDataTable(VALUES);
 
-        var options = {
-            chart: {
-                title: 'Ventas',
-                subtitle: 'Ventas por semana',
-            },
-            bars: 'vertical', // Required for Material Bar Charts.
-            vAxis: {
-                format: 'currency'
-            },
-            hAxis: {
-                format: '',
-                title: Chart.getTitleAxis()
-            },
-            height: 400,
-            chartArea: {
-                left: 20,
-                top: 0,
-                width: '50%',
-                height: '75%'
-            },
-            animation: {
-                duration: 1500,
-                easing: 'out',
-                startup: true
-            },
-            colors: ['#428bca']
-        };
+        var options = Chart.getOptionsChart();
+        options.title = 'Ventas';
+        options.colors = ['#428bca'];
 
-        var chart = new google.charts.Bar(document.getElementById('barchart_sales'));
-
-        chart.draw(data, google.charts.Bar.convertOptions(options));
-    }
-
-    /**
-     *
-     * @param {Object} xhr
-     * @param {String} status
-     * @param {String} errorThrown
-     */
-    function onError(xhr, status, errorThrown) {
-        var errorMessage = errorThrown;
-        if (typeof xhr.responseJSON === "object" && xhr.responseJSON.hasOwnProperty("error")) {
-            errorMessage = xhr.responseJSON.error;
-        }
-        console.log(errorMessage);
+        var chart = new google.visualization.ColumnChart(document.getElementById('barchart_sales'));
+        chart.draw(data, options);
     }
 
     return self;
@@ -376,7 +293,7 @@ window.Chart.Materials = (function($) {
             type: "GET",
             url: '/predios/' + predio_id + '/materials' + type,
             dataType: "json",
-            error: onError,
+            error: Chart.onError,
             success: onSuccess
         };
         return $.ajax(settings);
@@ -391,7 +308,7 @@ window.Chart.Materials = (function($) {
             $.each(valuesObj, function(index, value) {
                 var reference = [];
                 reference.push(keysObj[index]);
-                reference.push(value);
+                reference.push(Number(value));
                 VALUES.push(reference)
             });
         }
@@ -406,51 +323,12 @@ window.Chart.Materials = (function($) {
             .visualization
             .arrayToDataTable(VALUES);
 
-        var options = {
-            chart: {
-                title: 'Materiales',
-                subtitle: 'Bolsas por semana',
-            },
-            bars: 'vertical', // Required for Material Bar Charts.
-            vAxis: {
-                format: 'decimal'
-            },
-            hAxis: {
-                format: '',
-                title: Chart.getTitleAxis()
-            },
-            height: 400,
-            chartArea: {
-                left: 20,
-                top: 0,
-                width: '50%',
-                height: '75%'
-            },
-            animation: {
-                duration: 1500,
-                easing: 'out',
-                startup: true
-            },
-            colors: ['gold']
-        };
+        var options = Chart.getOptionsChart();
+        options.title = 'Materiales';
+        options.colors = ['gold'];
 
-        var chart = new google.charts.Bar(document.getElementById('barchart_materials'));
-
-        chart.draw(data, google.charts.Bar.convertOptions(options));
-    }
-
-    /**
-     *
-     * @param {Object} xhr
-     * @param {String} status
-     * @param {String} errorThrown
-     */
-    function onError(xhr, status, errorThrown) {
-        var errorMessage = errorThrown;
-        if (typeof xhr.responseJSON === "object" && xhr.responseJSON.hasOwnProperty("error")) {
-            errorMessage = xhr.responseJSON.error;
-        }
-        console.log(errorMessage);
+        var chart = new google.visualization.ColumnChart(document.getElementById('barchart_materials'));
+        chart.draw(data, options);
     }
 
     return self;
