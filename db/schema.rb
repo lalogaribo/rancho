@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 20180804214208) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "info_predio_detalles", force: :cascade do |t|
     t.integer "material_id"
     t.integer "cantidad"
