@@ -10,25 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180804214208) do
+ActiveRecord::Schema.define(version: 20180814022227) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "info_predio_detalles", force: :cascade do |t|
-    t.integer "material_id"
+    t.bigint "material_id"
     t.integer "cantidad"
-    t.integer "info_predio_id"
+    t.bigint "info_predio_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["info_predio_id"], name: "index_info_predio_detalles_on_info_predio_id"
     t.index ["material_id"], name: "index_info_predio_detalles_on_material_id"
-  end
-
-  create_table "info_predio_nutrientes", force: :cascade do |t|
-    t.integer "info_predio_id"
-    t.integer "nutriente_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["info_predio_id"], name: "index_info_predio_nutrientes_on_info_predio_id"
-    t.index ["nutriente_id"], name: "index_info_predio_nutrientes_on_nutriente_id"
   end
 
   create_table "info_predios", force: :cascade do |t|
@@ -40,12 +34,13 @@ ActiveRecord::Schema.define(version: 20180804214208) do
     t.date "fecha_embarque"
     t.decimal "precio"
     t.decimal "venta"
-    t.integer "predio_id"
-    t.integer "user_id"
+    t.bigint "predio_id"
+    t.bigint "user_id"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "nutriente"
+    t.decimal "ratio"
     t.index ["predio_id"], name: "index_info_predios_on_predio_id"
     t.index ["user_id"], name: "index_info_predios_on_user_id"
   end
@@ -70,7 +65,7 @@ ActiveRecord::Schema.define(version: 20180804214208) do
   create_table "otros_gastos", force: :cascade do |t|
     t.string "nombre"
     t.decimal "precio"
-    t.integer "info_predio_id"
+    t.bigint "info_predio_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["info_predio_id"], name: "index_otros_gastos_on_info_predio_id"
@@ -85,7 +80,7 @@ ActiveRecord::Schema.define(version: 20180804214208) do
   end
 
   create_table "requests", force: :cascade do |t|
-    t.integer "user_id"
+    t.bigint "user_id"
     t.string "predio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -102,7 +97,7 @@ ActiveRecord::Schema.define(version: 20180804214208) do
   end
 
   create_table "vuelos", force: :cascade do |t|
-    t.integer "user_id"
+    t.bigint "user_id"
     t.string "predio"
     t.string "aplicacion"
     t.string "piloto"
@@ -121,4 +116,6 @@ ActiveRecord::Schema.define(version: 20180804214208) do
     t.integer "user_id"
   end
 
+  add_foreign_key "requests", "users"
+  add_foreign_key "vuelos", "users"
 end
