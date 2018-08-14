@@ -12,6 +12,8 @@
             <tr>
               <th data-field="predio_name" data-sortable="true" align="center">Nombre del Predio</th>
               <th data-field="semana" data-sortable="true" align="center">Semana</th>
+              <th data-field="color_cinta" data-sortable="true">Color de cinta</th>
+              <th data-field="conteo_racimos" data-sortable="true" align="center">Produccion Semanal</th>
               <th data-field="actions" class="td-actions text-right" data-events="operateEventsEmail" data-formatter="operateFormatterEmail" align="center">Actions</th>
             </tr>
             </thead>
@@ -21,6 +23,9 @@
                 <tr>
                   <td><%= info_predio.predio.name %></td>
                   <td>Semana <%= info_predio.semana %></td>
+                  <td>Color <%= info_predio.color_cinta %></td>
+                  <td><%= (info_predio.conteo_racimos * info_predio.ratio).floor %> - Cajas
+                    <span class="box-item"><i class="fa fa-archive" aria-hidden="true"></i></span></td>
                   <td align="right">
                     <a rel="tooltip" title="Edit" class="btn btn-simple btn-warning btn-icon table-action edit" href="<%= edit_info_predio_path(info_predio) %>"><i class="glyphicon glyphicon-pencil"></i>
                     </a>

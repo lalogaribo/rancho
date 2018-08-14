@@ -171,7 +171,10 @@ class InfoPredioController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def info_predio_params
-    params.require(:info_predio).permit(:predio_id, :semana, :user_id, :fumigada, :pago_trabaja, :color_cinta, :conteo_racimos, :fecha_embarque, :precio, :venta, :nutriente)
+    params.require(:info_predio).permit(:predio_id, :semana, :user_id,
+                                        :fumigada, :pago_trabaja, :color_cinta,
+                                        :conteo_racimos, :fecha_embarque,
+                                        :precio, :venta, :nutriente, :ratio)
   end
 
   def info_predio_nutrientes_params

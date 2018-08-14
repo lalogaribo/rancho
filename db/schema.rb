@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180804214208) do
+ActiveRecord::Schema.define(version: 20180814022227) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20180804214208) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "nutriente"
+    t.decimal "ratio"
     t.index ["predio_id"], name: "index_info_predios_on_predio_id"
     t.index ["user_id"], name: "index_info_predios_on_user_id"
   end
