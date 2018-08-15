@@ -1,15 +1,19 @@
 Rails.application.routes.draw do
-  resources :workers
   root 'pages#home'
   get '/index', to: 'pages#index'
   get '/signup', to: 'sessions#new_user'
-  resources :users, except: [:new]
   get 'login', to: 'sessions#new'
   get '/:token/confirm_email/', to: 'users#confirm_email', as: 'confirm_email'
   post '/login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
+  resources :password_resets, only: [:new, :create, :edit, :update]
+  resources :users, except: [:new]
+  resources :workers
   resources :materials
   resources :nutrientes
+  resources :charts
+  resources :vuelos
+  resources :requests
   resources :info_predio
   resources :predios do
     resources :info_predio
@@ -29,10 +33,7 @@ Rails.application.routes.draw do
     get '/materials/year', to: 'stats#materialsByYear'
     get '/earnings/year', to: 'stats#earningsByYear'
   end
-  resources :charts
   get 'predios/:id/info', to: 'info_predio#new', as: 'info'
   get '/signup', to: 'users#new'
-  resources :vuelos
-  resources :requests
   match '*unmatched', to: 'application#route_not_found', via: :all
 end

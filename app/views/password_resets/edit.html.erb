@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-sm-6 col-md-offset-3 col-sm-offset-3">
+      <div class="card">
+        <div class="container-card">
+          <div class="row">
+            <div class="col-md-12" style="margin-top:15px">
+              <h3 class="lato text-center">Nueva contrasena</h3>
+              <%= form_for(@user, url: password_reset_path(params[:id])) do |f| %>
+                <%= hidden_field_tag :email, @user.email %>
+
+                <div class="form-group">
+                  <div class="row">
+                  <div class="col-md-8 col-md-offset-2">
+                    <%= f.label :password %>
+                    <%= f.password_field :password, class: 'form-control',  placeholder: 'Ingresar Nueva Contrasena' %>
+                  </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                  <div class="col-md-8 col-md-offset-2">
+                    <%= f.label :password_confirmation, "Confirmacion" %>
+                    <%= f.password_field :password_confirmation, class: 'form-control',  placeholder: 'Confirma Nueva Contrasena' %>
+                  </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                  <div class="col-md-8 col-md-offset-2">
+                    <%= f.submit 'Actualizar Password', class: 'btn btn-primary btn-block' %>
+                  </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+            <div class="col-md-12 text-center back_link">
+              <%= link_to 'Cancelar', root_path %>
+            </div>
+          </div>
+          </di>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
