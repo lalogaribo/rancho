@@ -471,5 +471,4 @@ class StatsController < ApplicationController
     end
     render json: my_array
   end
-
 end

@@ -53,12 +53,10 @@ class MaterialsController < ApplicationController
   end
 
   def set_product
-    byebug
     @material = Material.find(params[:id])
   end
 
   def same_user
-    byebug
     if @material.user_id != current_user.id
       flash[:danger] = 'Solo puedes editar o borrar tu informacion'
       redirect_to predios_path

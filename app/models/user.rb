@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  after_create :set_default_role
   ############################################################################################
   ## PeterGate Roles                                                                        ##
   ## The :user role is added by default and shouldn't be included in this list.             ##
@@ -26,4 +27,10 @@ class User < ApplicationRecord
   has_many :vuelos
   has_many :requests
   has_many :workers
+
+  private
+
+  def set_default_role
+    self.update_attribute(:roles, 'producer')
+  end
 end
