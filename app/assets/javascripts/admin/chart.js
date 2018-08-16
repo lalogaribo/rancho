@@ -114,7 +114,7 @@ window.Chart = (function($) {
 })(jQuery);
 
 window.Chart.Earnings = (function($) {
-    var HEADERS = ['Semana','Produccion', 'Ventas', 'Inversion', 'Utilidad'];
+    var HEADERS = ['Semana','Produccion', 'Ventas', 'Gastos', 'Utilidad'];
     var VALUES = [];
 
     self.loadEarnings = function(predio_id, type) {
@@ -257,7 +257,7 @@ window.Chart.Ratio = (function($) {
 })(jQuery);
 
 window.Chart.Investment = (function($) {
-    var HEADERS = ['Semana', 'Inversion', { role: 'annotation' }];
+    var HEADERS = ['Semana', 'Gastos', { role: 'annotation' }];
     var VALUES = [];
 
     self.loadInvestment = function(predio_id, type) {
