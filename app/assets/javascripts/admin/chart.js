@@ -114,15 +114,15 @@ window.Chart = (function($) {
 })(jQuery);
 
 window.Chart.Earnings = (function($) {
-    var HEADERS = ['Semana', 'Ventas', 'Inversion', 'Utilidad'];
+    var HEADERS = ['Semana','Produccion', 'Ventas', 'Inversion', 'Utilidad'];
     var VALUES = [];
 
     self.loadEarnings = function(predio_id, type) {
-        sales(predio_id, type);
-        Chart.Payments.loadPayments(predio_id, type)
+        earnings(predio_id, type);
+        Chart.Ratio.loadRatio(predio_id, type)
     };
 
-    function sales(predio_id, type) {
+    function earnings(predio_id, type) {
         var settings = {
             type: "GET",
             url: '/predios/' + predio_id + '/earnings' + type,
@@ -142,6 +142,7 @@ window.Chart.Earnings = (function($) {
             $.each(valuesObj, function(indexArray, value) {
                 var reference = [];
                 reference.push(value.semana);
+                reference.push(value.produccion);
                 reference.push(value.venta);
                 reference.push(value.inversion);
                 reference.push(value.utilidad);
@@ -159,11 +160,24 @@ window.Chart.Earnings = (function($) {
             .visualization
             .arrayToDataTable(VALUES);
 
+        var tickMarks = [];
+        //add first
+        tickMarks.push(data.getValue(0, 0));
+        //add last
+        tickMarks.push(data.getValue(data.getNumberOfRows() - 1, 0));
+
         var options = Chart.getOptionsChart();
+        options.seriesType = 'bars';
+        options.series= {5: {type: 'line'}};
         options.title = 'Reporte General Utilidades',
-        options.colors = ['#428bca', '#d95f02', '#1b9e77']
+        options.colors = ['#210f2b', '#428bca', '#d95f02', '#1b9e77'];
+        options.hAxis = {
+            format: '',
+            title: Chart.getTitleAxis(),
+            ticks: tickMarks
+        };
         
-        var chart = new google.visualization.ColumnChart(document.getElementById('barchart_earnings'));
+        var chart = new google.visualization.ComboChart(document.getElementById('barchart_earnings'));
 
         chart.draw(data, options);
     }
@@ -171,16 +185,87 @@ window.Chart.Earnings = (function($) {
     return self;
 })(jQuery);
 
-window.Chart.Payments = (function($) {
-    var HEADERS = ['Semana', 'Inversion'];
+window.Chart.Ratio = (function($) {
+    var HEADERS = ['Semana', 'Produccion', { role: 'annotation' }];
     var VALUES = [];
 
-    self.loadPayments = function(predio_id, type) {
-        payments(predio_id, type);
+    self.loadRatio = function(predio_id, type) {
+        ratios(predio_id, type);
+        Chart.Investment.loadInvestment(predio_id, type)
+    };
+
+    function ratios(predio_id, type) {
+        var settings = {
+            type: "GET",
+            url: '/predios/' + predio_id + '/ratio' + type,
+            dataType: "json",
+            error: Chart.onError,
+            success: onSuccess
+        };
+        return $.ajax(settings);
+    }
+
+    function onSuccess(data) {
+        var valuesObj = Object.values(data);
+        var keysObj = Object.keys(data);
+        VALUES = [];
+        if ($.isArray(valuesObj) && $.isArray(keysObj)) {
+            VALUES.push(HEADERS);
+            $.each(valuesObj, function(index, value) {
+                var reference = [];
+                reference.push(keysObj[index]);
+                reference.push(Number(value));
+                reference.push(Number(value));
+                VALUES.push(reference)
+            });
+        }
+        // Load chart
+        google
+            .charts
+            .setOnLoadCallback(drawRatioChart);
+    }
+
+    function drawRatioChart() {
+        var data = google.visualization.arrayToDataTable(VALUES);
+
+        var options = {
+            title: 'Produccion',
+            colors: ['#210f2b'],
+            vAxis: {
+                title: 'Produccion'
+            },
+            hAxis: {
+                title: Chart.getTitleAxis()
+            },
+            height: 400,
+            pointShape: 'diamond',
+            animation: {
+                duration: 1500,
+                easing: 'out',
+                startup: true
+            },
+            bar: {
+                groupWidth: "95%"
+            }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('trendline_ratio'));
+        chart.draw(data, options);
+    }
+
+    return self;
+})(jQuery);
+
+window.Chart.Investment = (function($) {
+    var HEADERS = ['Semana', 'Inversion', { role: 'annotation' }];
+    var VALUES = [];
+
+    self.loadInvestment = function(predio_id, type) {
+        investments(predio_id, type);
         Chart.Sales.loadSales(predio_id, type)
     };
 
-    function payments(predio_id, type) {
+    function investments(predio_id, type) {
         var settings = {
             type: "GET",
             url: '/predios/' + predio_id + '/investment' + type,
@@ -201,6 +286,7 @@ window.Chart.Payments = (function($) {
                 var reference = [];
                 reference.push(keysObj[index]);
                 reference.push(Number(value));
+                reference.push(Number(value));
                 VALUES.push(reference)
             });
         }
@@ -214,10 +300,10 @@ window.Chart.Payments = (function($) {
         var data = google.visualization.arrayToDataTable(VALUES);
 
         var options = Chart.getOptionsChart();
-        options.title = 'Inversion';
+        options.title = 'Pagos';
         options.colors = ['#d95f02'];
         
-        var chart = new google.visualization.ColumnChart(document.getElementById('barchart_payments'));
+        var chart = new google.visualization.ColumnChart(document.getElementById('barchart_investments'));
 
         chart.draw(data, options);
     }
@@ -226,7 +312,7 @@ window.Chart.Payments = (function($) {
 })(jQuery);
 
 window.Chart.Sales = (function($) {
-    var HEADERS = ['Semana', 'Ventas'];
+    var HEADERS = ['Semana', 'Ventas',  { role: 'annotation' }];
     var VALUES = [];
 
     self.loadSales = function(predio_id, type) {
@@ -255,6 +341,7 @@ window.Chart.Sales = (function($) {
                 var reference = [];
                 reference.push(keysObj[index]);
                 reference.push(Number(value));
+                reference.push(Number(value));
                 VALUES.push(reference)
             });
         }
@@ -281,7 +368,7 @@ window.Chart.Sales = (function($) {
 })(jQuery);
 
 window.Chart.Materials = (function($) {
-    var HEADERS = ['Semana', 'Cantidad'];
+    var HEADERS = ['Semana', 'Cantidad',  { role: 'annotation' }];
     var VALUES = [];
 
     self.loadMaterials = function(predio_id, type) {
@@ -308,6 +395,7 @@ window.Chart.Materials = (function($) {
             $.each(valuesObj, function(index, value) {
                 var reference = [];
                 reference.push(keysObj[index]);
+                reference.push(Number(value));
                 reference.push(Number(value));
                 VALUES.push(reference)
             });

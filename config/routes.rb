@@ -27,6 +27,9 @@ Rails.application.routes.draw do
     get "/sales/year", to: "stats#salesByYear"
     get "/materials/year", to: "stats#materialsByYear"
     get "/earnings/year", to: "stats#earningsByYear"
+    get "/ratio", to: "stats#ratio"
+    get "/ratio/month", to: "stats#ratioByMonth"
+    get "/ratio/year", to: "stats#ratioByYear"
   end
   resources :charts
   get "predios/:id/info", to: "info_predio#new", as: "info"
