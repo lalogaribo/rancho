@@ -1,6 +1,7 @@
 class PrediosController < ApplicationController
   before_action :authenticate_user!
-  before_action :same_user, only: [:edit, :update, :destroy]
+  before_action :set_predio, only: [:show, :edit, :update, :destroy]
+  before_action :same_user, only: [:edit, :update, :destroy, :show]
   layout 'dashboard'
   access producer: {except: [:destroy]}, site_admin: :all
 
@@ -44,7 +45,12 @@ class PrediosController < ApplicationController
     Time.now.strftime("%Y-%m-%d") # Week from monday to monday
   end
 
+  def set_predio
+    @predio = Predio.find(params[:id])
+  end
+
   def same_user
+    byebug
     if current_user != @predio.user
       flash[:danger] = 'Solo puedes editar o borrar tu informacion'
       redirect_to predios_path

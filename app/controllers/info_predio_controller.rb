@@ -1,8 +1,8 @@
 class InfoPredioController < ApplicationController
   layout 'dashboard'
-  before_action :set_info_predio, only: [:show, :update, :destroy]
-  before_action :require_same_user, only: [:show, :update, :edit, :destroy]
+  before_action :set_info_predio, only: [:show, :edit, :update, :destroy, :new]
   before_action :authenticate_user!
+  before_action :require_same_user, only: [:show, :update, :edit, :destroy]
   # before_action :same_user
   access producer: {except: [:destroy]}, site_admin: :all
 
@@ -190,7 +190,6 @@ class InfoPredioController < ApplicationController
   end
 
   def set_info_predio
-    # @info_predio = InfoPredio.where(id: params[:id])
     @info_predio = InfoPredio.find(params[:id])
   end
 
