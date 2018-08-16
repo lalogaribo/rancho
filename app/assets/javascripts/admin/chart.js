@@ -300,7 +300,7 @@ window.Chart.Investment = (function($) {
         var data = google.visualization.arrayToDataTable(VALUES);
 
         var options = Chart.getOptionsChart();
-        options.title = 'Inversion';
+        options.title = 'Pagos';
         options.colors = ['#d95f02'];
         
         var chart = new google.visualization.ColumnChart(document.getElementById('barchart_investments'));
