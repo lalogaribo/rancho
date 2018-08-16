@@ -1,8 +1,9 @@
 class MaterialsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
   layout 'dashboard'
-  before_action :require_user, except: [:show]
-  #before_action :require_same_user, except: [:index, :show]
+  before_action :authenticate_user!, except: [:show]
+  # before_action :same_user, only: %i[edit update destroy show]
+  access producer: {except: [:destroy]}, site_admin: :all
 
   def index
     @materials = current_user.materials
@@ -53,5 +54,12 @@ class MaterialsController < ApplicationController
 
   def set_product
     @material = Material.find(params[:id])
+  end
+
+  def same_user
+    if @material.user_id != current_user.id
+      flash[:danger] = 'Solo puedes editar o borrar tu informacion'
+      redirect_to predios_path
+    end
   end
 end

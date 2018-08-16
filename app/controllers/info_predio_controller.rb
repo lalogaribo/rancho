@@ -1,6 +1,10 @@
 class InfoPredioController < ApplicationController
   layout 'dashboard'
   before_action :set_info_predio, only: [:show, :update, :destroy]
+  before_action :require_same_user, only: [:show, :update, :edit, :destroy]
+  before_action :authenticate_user!
+  # before_action :same_user
+  access producer: {except: [:destroy]}, site_admin: :all
 
   def index
     @predio_id = params[:id]
@@ -186,6 +190,14 @@ class InfoPredioController < ApplicationController
   end
 
   def set_info_predio
-    @info_predio = InfoPredio.where(id: params[:id])
+    # @info_predio = InfoPredio.where(id: params[:id])
+    @info_predio = InfoPredio.find(params[:id])
+  end
+
+  def require_same_user
+    if current_user.id != @info_predio.user_id
+      flash[:danger] = "Solo puedes editar tus predios"
+      redirect_to predios_path
+    end
   end
 end

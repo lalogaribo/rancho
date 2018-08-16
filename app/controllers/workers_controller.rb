@@ -1,7 +1,8 @@
 class WorkersController < ApplicationController
   layout 'dashboard'
   before_action :set_worker, only: [:show, :edit, :update, :destroy]
-  before_action :require_user, except: [:show]
+  access producer: {except: [:destroy]}, site_admin: :all
+  before_action :require_same_user, except: [:edit, :update, :index]
 
 
   def index
