@@ -1,9 +1,9 @@
 class MaterialsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_product, only: [:show, :edit, :update, :destroy]
   layout 'dashboard'
-  before_action :authenticate_user!, except: [:show]
   before_action :same_user, only: %i[edit update destroy show]
-  access producer: {except: [:destroy]}, site_admin: :all
+  access producer: :all, site_admin: :all
 
   def index
     @materials = current_user.materials

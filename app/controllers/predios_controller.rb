@@ -3,7 +3,7 @@ class PrediosController < ApplicationController
   before_action :set_predio, only: [:show, :edit, :update, :destroy]
   before_action :same_user, only: [:edit, :update, :destroy, :show]
   layout 'dashboard'
-  access producer: {except: [:destroy]}, site_admin: :all
+  access producer: :all, site_admin: :all
 
   def index
     @predios = current_user.predios

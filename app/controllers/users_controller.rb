@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update destroy]
-  layout 'dashboard'
   before_action :require_same_user, only: %i[edit update destroy show]
+  layout 'dashboard'
 
   def index
     @users = User.all

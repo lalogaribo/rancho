@@ -1,8 +1,9 @@
 class WorkersController < ApplicationController
   layout 'dashboard'
+  before_action :authenticate_user!
   before_action :set_worker, only: [:show, :edit, :update, :destroy]
-  access producer: {except: [:destroy]}, site_admin: :all
-  before_action :require_same_user, except: [:edit, :update, :index]
+  before_action :same_user, except: [:edit, :update, :index, :new, :create]
+  access producer: :all, site_admin: :all
 
 
   def index
@@ -61,5 +62,12 @@ class WorkersController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def worker_params
     params.require(:worker).permit(:name, :last_name, :phone_number)
+  end
+
+  def same_user
+    if @worker.user_id != current_user.id
+      flash[:danger] = 'Solo puedes editar o borrar tu informacion'
+      redirect_to predios_path
+    end
   end
 end

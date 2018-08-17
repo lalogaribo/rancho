@@ -1,4 +1,5 @@
 class StatsController < ApplicationController
+  before_action :authenticate_user!
   def new_users
     render json: User.group_by_day(:created_at).count
   end

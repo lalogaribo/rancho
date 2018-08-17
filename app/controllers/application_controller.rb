@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  # rescue_from ActiveRecord::RecordNotFound, with: :render_404
+  rescue_from ActiveRecord::RecordNotFound, with: :render_404
   protect_from_forgery with: :exception
   helper_method :current_user, :logged_in?, :user_signed_in?
 
@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   end
 
   def render_404
-    flash[:danger] = "Producto no encontrado"
+    flash[:danger] = "Elemento no encontrado"
     redirect_to predios_path
   end
 
