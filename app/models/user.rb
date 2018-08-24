@@ -9,7 +9,7 @@ class User < ApplicationRecord
             uniqueness: {case_sensitive: false, message: 'Este correo esta siendo usado por otro usuario'}
   has_secure_password
   validates :password, presence: {message: 'Contraseña es requerdo'},
-            length: {minimum: 5, maximum: 255, message: 'La contraseña tiene que tener 5 caractereres como minimo'},
+            length: {minimum: 5, maximum: 255, message: 'La contraseña tiene que tener 5 caracteres como minimo'},
             allow_nil: true
   has_many :predios
   has_many :materials

@@ -31,3 +31,13 @@
 
 en:
   hello: "Hello world"
+  activerecord:
+    attributes:
+      user:
+        password_confirmation: "Contraseñas"
+    errors:
+      models:
+        user:
+          attributes:
+            password_confirmation:
+              confirmation: "Las contraseñas no coinciden"
