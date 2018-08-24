@@ -23,7 +23,6 @@ var NOTIFICATION_TEMPLATE =
 
 // Default Type
 $(document).ready(function () {
-
     $(document).on('click', '#add-otros-pagos', function () {
         $('#exampleModal').modal('show');
     });
@@ -36,15 +35,30 @@ $(document).ready(function () {
     initBootstrapTable();
 
     //Initialize date picker
-    dateInit = $('#info_predio_fecha_embarque_hd').val();
+    var dateInit = $('#info_predio_fecha_embarque_hd').val();
     $('.fecha_embarque').datetimepicker({
         format: 'DD/MM/YYYY',
         date: dateInit,
     });
+
+    //Validations
+    onlyNumbers();
+    onlyPrice();
+
     //Validate predio Form
     $(document).on('click', '#savePredioInfo', function () {
         saveForm();
     });
+
+    // Calculate ratio * racimos
+    $(document).on('change', '#ratio-convert', calculateRatio);
+    $('#info_predio_conteo_racimos').blur(function() {
+        calculateRatio();
+        calculateSale();
+    });
+
+    //Calculate venta info predio
+    $('#info_predio_precio').blur(calculateSale);
 
     //Disabled if not stock
     $('.number-materials').each(function () {
@@ -77,21 +91,6 @@ $(document).ready(function () {
         }
     }).change();
 
-    //Calculate precio info predio
-    $(document).on('blur', '#info_predio_precio', function () {
-        var precio = $(this).val();
-        var racimos = ($('#info_predio_conteo_racimos').val()) ? $('#info_predio_conteo_racimos').val() : 0;
-
-        if (!isNaN(precio) && !isNaN(racimos)) {
-            var venta = precio * racimos;
-            $('#info_predio_venta').val(venta);
-        }
-    });
-
-    //Validations
-    onlyNumbers();
-    onlyPrice();
-
     //Remove
     $(document).on('click', '.close', function () {
         var containerOtroPago = $(this).parent().parent().next('.otro_pago');
@@ -103,6 +102,26 @@ $(document).ready(function () {
         }
     });
 });
+
+function calculateSale() {
+    var precio = $('#info_predio_precio').val();
+    var racimos = ($('#info_predio_conteo_racimos').val()) ? $('#info_predio_conteo_racimos').val() : 0;
+
+    if (!isNaN(precio) && !isNaN(racimos)) {
+        var venta = precio * racimos;
+        $('#info_predio_venta').val(venta);
+    }
+}
+
+function calculateRatio() {
+    var ratio = $('#ratio-convert').find(':selected').val();
+    var conteoRacimos = $('#info_predio_conteo_racimos').val();
+
+    if(!isNaN(conteoRacimos)) {
+        var cajas = Math.round(ratio * conteoRacimos);
+        $('#info_predio_cajas').val(cajas)
+    }
+}
 
 function onlyNumbers() {
     $('.onlyNumbers').keyup(function (e) {
