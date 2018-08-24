@@ -20,23 +20,22 @@
             <div class="row">
               <div class="col-md-6">
                 <% unless @materials.nil? %>
-                  <% @materials.each do |material| %>
+                  <% @materials.each_with_index do |material, index| %>
                     <div class="row form-group">
                       <div class="col-md-4 col-sm-4 text-right">
                         <label for="<%= material.name %>"><%= material.name %></label>
                       </div>
                       <div class="col-md-3 col-sm-3 text-left">
                         <input type="number" name="material_quantity[]" id="material_<%= material.name.downcase %>" data-price="<%= material.price %>"
-                               class="form-control required number-materials" min="1"
-                               max="<%= material.quantity %>"
+                               class="form-control required number-materials" min="1"  max="<% if material.quantity > 0 %><%= material.quantity %><% else %><%= @detalle[index].cantidad %><% end %>"
 
                                <% @detalle.each do |detalle_material| %>
-                               <% if detalle_material.material_id == material.id %>
-                               value="<%= detalle_material.cantidad %>">
-                                 <input type="hidden" name="material_predio_hd[]" value="<%= detalle_material.id %>">
-                                 <input type="hidden" name="material_quantity_old[]" value="<%= detalle_material.cantidad %>">
-                          <% end %>
-                          <% end %>
+                                  <% if detalle_material.material_id == material.id %>
+                                    value="<%= detalle_material.cantidad %>">
+                                    <input type="hidden" name="material_predio_hd[]" value="<%= detalle_material.id %>">
+                                    <input type="hidden" name="material_quantity_old[]" value="<%= detalle_material.cantidad %>">
+                                  <% end %>
+                                <% end %>
                           <input type="hidden" name="material[]" id="material_hd_<%= material.name.downcase %>" value="<%= material.id %>">
                         </div>
                       <div class="col-md-3 col-sm-3 text-left material_<%= material.name.downcase %>"></div>
