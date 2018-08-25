@@ -5,27 +5,23 @@
         <div class="container-card">
           <div class="row">
             <div class="col-md-12" style="margin-top:15px">
-              <h3 class="lato text-center">Iniciar sesion</h3>
-              <%= form_for(:session, :html => {class: 'form-horizontal', role: 'form'}, url: login_path) do |f| %>
+              <h3 class="lato text-center">Crea un nuevo password</h3>
+              <%= form_for(:password_reset, :html => {class: 'form-horizontal', role: 'form'}, url: password_resets_path) do |f| %>
                 <div class="form-group">
                   <div class="col-md-8 col-md-offset-2">
+                    <%= f.label :email %>
                     <%= f.email_field :email, class: 'form-control', placeholder: 'Ingresar Email' %>
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="col-md-8 col-md-offset-2">
-                    <%= f.password_field :password, class: 'form-control', placeholder: 'Ingresar contraseña' %>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-md-8 col-md-offset-2">
-                    <%= f.submit 'Iniciar sesion', class: 'btn btn-primary btn-block' %>
+                    <%= f.submit 'Enviar Email', class: 'btn btn-primary btn-block' %>
                   </div>
                 </div>
               <% end %>
             </div>
             <div class="col-md-12 text-center back_link">
-              <%= link_to "(Olvidaste tu password)", new_password_reset_path %>
+              <%= link_to 'Cancelar', root_path %>
             </div>
           </div>
           </div>
