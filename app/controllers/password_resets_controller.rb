@@ -30,9 +30,10 @@ class PasswordResetsController < ApplicationController
       @user.clean_reset_token
       @user.save(validate: false)
       session[:user_id] = @user.id
-      flash[:success] = "Bienvenido #{@user.name} Su contrasena ha sido cambiada."
+      flash[:success] = "Bienvenido #{@user.name},  su contrasena ha sido cambiada."
       redirect_to @user
     else
+      flash.now[:error] = 'Contrasenas invalidas'
       render 'edit'
     end
   end

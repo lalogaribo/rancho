@@ -37,7 +37,7 @@ class User < ApplicationRecord
 
   # Sets the password reset attributes.
   def create_reset_token
-    self.reset_digest = User.new_token
+    reset_digest = User.new_token
     update_attribute(:reset_token, reset_digest)
     update_attribute(:reset_sent_at, Time.zone.now)
   end

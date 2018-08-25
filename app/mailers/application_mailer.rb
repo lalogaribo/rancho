@@ -9,6 +9,6 @@ class ApplicationMailer < ActionMailer::Base
 
   def password_reset(user)
     @user = user
-    mail to: "#{user.name} <#{user.email}", subject: 'Resetear Contrasena'
+    mail to: "#{user.name} <#{user.email}", subject: 'Cambio de Contraseña'
   end
 end

@@ -1,4 +1,12 @@
-Bienvenido <%= @user.name %>,<br/>
-Gracias por registrarte! Para confirmar tu registro, da click en el ulr debajo.<br/>
+<h1>Confirmacion de registro</h1>
+<p>
+  Bienvenido <%= @user.name %>
+</p>
 
-<%=  link_to "confirm", confirm_email_url(@user.confirm_token)%>
+<p>
+  Gracias por registrarte! Para confirmar tu registro, da click en el ulr debajo.
+</p>
+
+<p>
+  <%=  link_to "Confirmar", confirm_email_url(@user.confirm_token)%>
+</p>
