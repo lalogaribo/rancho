@@ -4,10 +4,10 @@ class InfoPredioController < ApplicationController
 
   def index
     @predio_id = params[:id]
-    @info_predios = if @predio_id.nil?
-                      InfoPredio.includes(:predio).where(user_id: current_user.id)
-                    else
-                      InfoPredio.includes(:predio).find_by(predio_id: @predio_id)
+    unless @predio_id.nil?
+      @info_predios = InfoPredio.includes(:predio).find_by(predio_id: @predio_id).order(created_at: :desc)
+    else
+      @info_predios = InfoPredio.includes(:predio).where(user_id: current_user.id).order(created_at: :desc)
     end
   end
 
