@@ -9,9 +9,14 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
-      session[:user_id] = user.id
-      flash[:success] = 'Haz iniciado sesion exitosamente!'
-      redirect_to user
+      if user.email_confirmed
+        session[:user_id] = user.id
+        flash[:success] = 'Bienvenido, haz iniciado sesion exitosamente!'
+        redirect_to user
+      else
+        flash[:error] = 'Por favor activa tu cuenta, siguiendo las instrucciones en el correo de confirmacion que haz recibido.'
+        redirect_to login_url
+      end
     else
       flash.now[:error] = 'Hubo problemas con tus credenciales'
       render 'new'
