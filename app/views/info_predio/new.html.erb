@@ -15,7 +15,7 @@
                 <% @materials.each do |material| %>
                   <div class="row form-group">
                     <div class="col-md-4 text-right">
-                      <label for="<%= material.name %>"><%= material.name %></label>
+                      <label for="<%= material.name %>">Paquete <%= material.name %></label>
                     </div>
                     <div class="col-md-3 text-left">
                       <input type="number" name="material_quantity[]" id="material_<%= material.name.downcase %>" data-price="<%= material.price %>" class="form-control required number-materials" min="1" max="<%= material.quantity %>">
@@ -39,14 +39,6 @@
                   </div>
                   <div class="col-md-8 text-left">
                     <%= text_field_tag 'info_predio[nutriente]', nil, class: 'form-control required onlyPrice', placeholder: '$0.00' %>
-                  </div>
-                </div>
-                <div class="row form-group">
-                  <div class="col-md-4 text-right">
-                    <%= label_tag(:pago_trabaja, "Pago Trabajadores") %>
-                  </div>
-                  <div class="col-md-8 text-left">
-                    <%= text_field_tag 'info_predio[pago_trabaja]', nil, class: 'form-control required onlyPrice', placeholder: '$0.00' %>
                   </div>
                 </div>
               </div>
@@ -115,13 +107,59 @@
               </div>
             </div>
             <div class="row form-group">
-              <div class="col-md-offset-8 col-md-4 col-sm-4 text-right">
-                <button type="button" class="btn btn-primary" id='add-otros-pagos'>
-                  <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Otros Pagos
+              <div class="col-md-8">
+                <h2 class="legend">Pagos Trabajadores</h2>
+              </div>
+              <div class="col-md-4 col-sm-4 text-right">
+                <button type="button" class="btn btn-primary btn-legend" id='add-pagos-workers' style=" ">
+                  <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Agregar Pago Trabajadores
                 </button>
               </div>
+              <div class="col-md-12">
+                <hr class="hr-legend">
+              </div>
             </div>
-            <div class="row form-group" id="container-pagos" style="border: 1px solid #ccc;border-radius: 3px;padding: 8px;"></div>
+            <div class="row form-group" id="container-trabajadores">
+              <div class="col-md-12">
+                <table class="table table-bordered" id="tablePagos" style="margin: 10px 0;">
+                  <thead>
+                   <tr>
+                     <td>Nombre Trabajador</td>
+                     <td>Pago</td>
+                     <td>Acciones</td>
+                   </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-md-8">
+                <h2 class="legend">Otros Pagos</h2>
+              </div>
+              <div class=" col-md-4 col-sm-4 text-right">
+                <button type="button" class="btn btn-primary btn-legend" id='add-otros-pagos'>
+                  <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Agregar Otros Pagos
+                </button>
+              </div>
+              <div class="col-md-12">
+                <hr class="hr-legend">
+              </div>
+            </div>
+            <div class="row form-group" id="container-pagos">
+              <div class="col-md-12">
+                <table class="table table-bordered" id="tableOtherPagos" style="margin: 10px 0;">
+                  <thead>
+                  <tr>
+                    <td>Concepto</td>
+                    <td>Precio</td>
+                    <td>Acciones</td>
+                  </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
             <div class="row form-group">
               <div class="col-md-offset-8 col-md-4 col-sm-4 text-right">
                 <%= submit_tag "Completar", class: "btn btn-success", id: "savePredioInfo" %>
@@ -168,6 +206,7 @@
     </fieldset>
   </div>
 </div>
+
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -190,6 +229,35 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary" id="save-payment">Guardar Gasto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="pagoTrabajadoresModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">Gasto</h4>
+      </div>
+      <form id="pagoTrabajadoresForm" onsubmit="return false;">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">Trabajador:</label>
+            <%= select("", "worker_id", options_from_collection_for_select(current_user.workers, :id, :fullname), {prompt: 'Selecciona un trabajador'}, {class: 'form-control required'}) %>
+            <%=  %>
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">Precio:</label>
+            <input type="text" class="form-control" name="precioPago" id="txtPrecio">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" id="save-payment-worker">Guardar Pago</button>
         </div>
       </form>
     </div>
