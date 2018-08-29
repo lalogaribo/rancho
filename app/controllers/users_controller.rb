@@ -14,11 +14,8 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      UserMailer.registration_confirmation(@user).deliver_now
+      UserMailer.registration_confirmation(@user).deliver
       flash[:success] = 'Por favor confirma tu correo electronico, para continuar con el proceso'
-      # #session[:user_id] = @user.id
-      # #flash[:success] = "Bienvenido #{@user.name}"
-      # #redirect_to user_path(@user)
       redirect_to root_url
     else
       flash[:error] = 'Tu peticion no pudo ser procesada, intenta nuevamente.'

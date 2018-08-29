@@ -21,6 +21,7 @@
 /node_modules
 /yarn-error.log
 .idea/
+/config/secrets.yml
 
 .byebug_history
 It's an empty string!
@@ -28,3 +29,4 @@ The string is nonempty.
 else
 end
 if
+sendgrid.env
