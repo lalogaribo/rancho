@@ -205,7 +205,9 @@ window.OtrosPagos = (function($) {
             $(document).on('click', '#add-otros-pagos', function () {
                 $('#exampleModal').modal('show');
             });
-            $('#tableOtherPagos').hide();
+            if ($('#notHiddenOtrosPagos').length <= 0) {
+                $('#tableOtherPagos').hide();
+            }
             //Trigger otro pago and validate
             $(document).on('click', '#save-payment', function () {
                 addOtherPayment();
@@ -222,12 +224,12 @@ window.OtrosPagos = (function($) {
                         return false;
                     }
                 });
-            });
 
-            /*@TO-DO
-            * if (typeof idRemoved !== 'undefined') {
-                    $('#container-pagos').append('<input type="hidden" name="otros_pagos_removed[]" class="otros_pagos_hidden" value="' + idRemoved + '">');
-                }*/
+                var trEditRemoved = $(this).closest('tr').attr('data-row');
+                if (typeof trEditRemoved !== 'undefined') {
+                    $('#container-pagos').append('<input type="hidden" name="otros_pagos_removed[]" class="otros_pagos_hidden" value="' + trEditRemoved + '">');
+                }
+            });
         });
     };
 
@@ -305,7 +307,7 @@ window.Workers = (function($) {
         '<input type="text" name="pago_trabajador[]" id="pago_1" class="form-control" value="{:price_pago}" readonly="readonly" >\n' +
         '</td>\n' +
         '<td>\n' +
-        '<a href class="btn btn-danger removeWorkerPayment" data-row="{:id}"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>\n' +
+        '<a href class="btn btn-danger removeWorkerPayment" data-tr="{:id}" data-price="-{:price_pago}"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>\n' +
         '</td>\n' +
         '</tr>';
 
@@ -316,7 +318,11 @@ window.Workers = (function($) {
             $(document).on('click', '#add-pagos-workers', function () {
                 $('#pagoTrabajadoresModal').modal('show');
             });
-            $('#tablePagos').hide();
+
+            if ($('#notHidden').length <= 0) {
+                $('#tablePagos').hide();
+            }
+
             //Trigger pago trabajadores and validate
             $(document).on('click', '#save-payment-worker', function () {
                 addOtherPaymentWorker();
@@ -324,15 +330,22 @@ window.Workers = (function($) {
             //Remove payment
             $(document).on('click', '.removeWorkerPayment', function(e) {
                 e.preventDefault();
-                var deleteTr = $(this).data('row');
+                var deleteTr = $(this).data('tr');
+                var price = $(this).data('price');
 
                 $('#tablePagos tbody tr').each(function(index, value) {
                     var tr = $(value).attr('data-id');
                     if (deleteTr == tr) {
                         $(value).remove();
+                        addTotalPagoTrabajador(price);
                         return false;
                     }
                 });
+
+                var trEditRemoved = $(this).closest('tr').attr('data-row');
+                if (typeof trEditRemoved !== 'undefined') {
+                    $('#container-trabajadores').append('<input type="hidden" name="pagos_trabajadores_removed[]" class="otros_pagos_hidden" value="' + trEditRemoved + '">');
+                }
             });
         });
     };
@@ -376,7 +389,7 @@ window.Workers = (function($) {
 
                 var other_payment = TR_TEMPLATE.replace('{:nombre_trabajador}', worker)
                     .replace('{:id_trabajador}', workerId)
-                    .replace('{:price_pago}', valuePrice)
+                    .replace(/{:price_pago}/g, valuePrice)
                     .replace(/{:id}/g, CONTROL_ADD_PAYMENTS_WORKERS);
                 addTotalPagoTrabajador(valuePrice);
                 $('#tablePagos tbody').append(other_payment);

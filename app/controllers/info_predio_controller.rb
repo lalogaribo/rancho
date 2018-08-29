@@ -65,10 +65,12 @@ class InfoPredioController < ApplicationController
     @user = current_user
     @materials = current_user.materials.where(name: ['rafia', 'bolsa', 'cinta'])
 
-    @info_predio = InfoPredio.includes(:material, :otros_gasto, :predio)
+    @info_predio = InfoPredio.includes(:material, :otros_gasto, :predio, :worker)
                        .find(@info_predio_id)
     @detalle = @info_predio.info_predio_detalle
     @otros_pagos = @info_predio.otros_gasto
+    @workers = @info_predio.worker
+    @pagos_workers = @info_predio.info_predio_workers
     @predio = @info_predio.predio
   end
 
@@ -76,49 +78,20 @@ class InfoPredioController < ApplicationController
     @info_predio = InfoPredio.find(params[:id])
     if @info_predio.update_attributes(info_predio_params)
       #materials
-      @predio_material_hd = params[:material_predio_hd]
-      @materials_qty = params[:material_quantity]
-      @materials_qty_old = params[:material_quantity_old]
-      unless @predio_material_hd.nil?
-        @predio_material_hd.each_with_index do |predio_material_id, index|
-          info_predio_detalle = InfoPredioDetalle.find_by(id: predio_material_id)
-          qty = @materials_qty[index]
-          qty_save_old = @materials_qty_old[index]
-          next unless info_predio_detalle.update_attributes(cantidad: qty)
-          # update inventory
-          qty = qty.to_i - qty_save_old.to_i
-          material = Material.find(info_predio_detalle.material_id)
-          old_qty = material.quantity.to_i
-          if qty >= 0
-            new_qty = old_qty - qty.to_i
-          else
-            new_qty = old_qty + qty.abs
-          end
-          material.quantity = new_qty
-          material.save
-        end
-      end
+      updateMaterials
+
+      #remove pago workers
+      removePagoWorkers
+
+      #add nuevos pagos workers
+      savePagoTrabajadores
 
       #otros_pagos remove
-      @otros_pagos_remove = params[:otros_pagos_removed]
-      unless @otros_pagos_remove.nil?
-        @otros_pagos_remove.each_with_index do |otro_pago, index|
-          remove_otro_pago = OtrosGasto.find_by(id: otro_pago)
-          remove_otro_pago.destroy
-        end
-      end
-      #new otros_pagos
-      @otros_pagos = params[:otro_pago]
-      @precio_otros_pagos = params[:otro_pago_precio]
+      removeOtrosGastos
 
-      unless @otros_pagos.nil?
-        @otros_pagos.each_with_index do |otro_pago, index|
-          @precio = @precio_otros_pagos[index]
-          @otroGasto = OtrosGasto.new(nombre: otro_pago, precio: @precio)
-          @otroGasto.info_predio = @info_predio
-          @otroGasto.save
-        end
-      end
+      #add otros_pagos
+      saveOtrosPagos
+
       flash[:success] = 'Informacion del predio actualiza exitosamente'
       redirect_to info_predio_index_url
     else
@@ -193,6 +166,51 @@ class InfoPredioController < ApplicationController
         new_qty = old_qty - qty.to_i
         materialRow.quantity = new_qty
         materialRow.save
+      end
+    end
+  end
+
+  def updateMaterials
+    predio_material_ids = params[:material_predio_hd]
+    materials_qty = params[:material_quantity]
+    materials_qty_old = params[:material_quantity_old]
+    unless predio_material_ids.nil?
+      predio_material_ids.each_with_index do |predio_material_id, index|
+        info_predio_detalle = InfoPredioDetalle.find_by(id: predio_material_id)
+        qty = materials_qty[index]
+        qty_save_old = materials_qty_old[index]
+        next unless info_predio_detalle.update_attributes(cantidad: qty)
+        # update inventory
+        qty = qty.to_i - qty_save_old.to_i
+        material = Material.find(info_predio_detalle.material_id)
+        old_qty = material.quantity.to_i
+        if qty >= 0
+          new_qty = old_qty - qty.to_i
+        else
+          new_qty = old_qty + qty.abs
+        end
+        material.quantity = new_qty
+        material.save
+      end
+    end
+  end
+
+  def removeOtrosGastos
+    otros_pagos_remove = params[:otros_pagos_removed]
+    unless otros_pagos_remove.nil?
+      otros_pagos_remove.each_with_index do |otro_pago, index|
+        remove_otro_pago = OtrosGasto.find_by(id: otro_pago)
+        remove_otro_pago.destroy
+      end
+    end
+  end
+
+  def removePagoWorkers
+    otros_pagos_remove = params[:pagos_trabajadores_removed]
+    unless otros_pagos_remove.nil?
+      otros_pagos_remove.each_with_index do |otro_pago, index|
+        remove_otro_pago = InfoPredioWorker.find_by(id: otro_pago)
+        remove_otro_pago.destroy
       end
     end
   end
