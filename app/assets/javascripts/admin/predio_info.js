@@ -185,26 +185,6 @@ window.Predio = (function($) {
 
 window.OtrosPagos = (function($) {
     var self = {};
-    var NOTIFICATION_TEMPLATE =
-        '<div class = "row"><div class = "col-md-12"><button type = "button" class="close" aria-label = "Close"><span aria-hidden = "true" > &times; </span> </button> </div> </div> <div class = "otro_pago" >' +
-        '<div class="row form-group">\n' +
-        '<div class="col-md-4 text-right">\n' +
-        '<label> Pago </label>\n' +
-        '</div>\n' +
-        '<div class="col-md-8 text-left">\n' +
-        '<input type="text" name="otro_pago[]" id="otro_pago_1" class="form-control" value="{:nombre_pago}"  readonly="readonly">\n' +
-        '</div>\n' +
-        '</div>\n' +
-        '<div class="row">\n' +
-        '<div class="col-md-4 text-right">\n' +
-        '<label> Precio </label>\n' +
-        '</div>\n' +
-        '<div class="col-md-8 text-left">\n' +
-        '<input type="text" name="otro_pago_precio[]" id="otro_pago_precio_1" class="form-control" value="{:price_pago}" readonly="readonly" >\n' +
-        '</div>\n' +
-        '</div>\n' +
-        '<hr>' +
-        '</div>';
     var CONTROL_ADD_PAYMENTS = 0;
     var TR_TEMPLATE = '<tr data-id="{:id}">'+
         '<td>\n' +
@@ -398,7 +378,9 @@ window.Workers = (function($) {
                     .replace('{:id_trabajador}', workerId)
                     .replace('{:price_pago}', valuePrice)
                     .replace(/{:id}/g, CONTROL_ADD_PAYMENTS_WORKERS);
+                addTotalPagoTrabajador(valuePrice);
                 $('#tablePagos tbody').append(other_payment);
+
                 $('#tablePagos').show();
                 $('#pagoTrabajadoresModal').modal('hide');
                 $('#pagoTrabajadoresForm')
@@ -412,6 +394,14 @@ window.Workers = (function($) {
                 validator.focusInvalid();
             },
         });
+    }
+
+    function addTotalPagoTrabajador(price) {
+        var value = $('#pago_trabaja').val();
+        value = Number(value);
+        price = Number(price)
+        value += price;
+        $('#pago_trabaja').val(value);
     }
 
     return self;

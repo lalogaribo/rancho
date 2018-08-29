@@ -13,7 +13,7 @@ class InfoPredioController < ApplicationController
 
   def new
     @predio_id = params[:id]
-    @week = Date.parse(current_date).strftime("%W")
+    @week = Date.parse(current_date).strftime('%W')
     @user = current_user
     @materials = current_user.materials.where(name: ['rafia', 'bolsa', 'cinta'])
     @info_predios = InfoPredio.where(predio_id: @predio_id, user_id: current_user.id)
@@ -23,9 +23,7 @@ class InfoPredioController < ApplicationController
       redirect_to materials_path
     end
 
-    unless predio_week.nil?
-      redirect_to edit_info_predio_path(predio_week.id)
-    end
+    redirect_to edit_info_predio_path(predio_week.id) unless predio_week.nil?
 
     @info_predio = InfoPredio.new
   end
@@ -35,39 +33,14 @@ class InfoPredioController < ApplicationController
     @info_predio = InfoPredio.new(info_predio_params)
 
     if @info_predio.save
-      #otros_pagos
-      @otros_pagos = params[:otro_pago]
-      @precio_otros_pagos = params[:otro_pago_precio]
+      #pago Workers
+      savePagoTrabajadores
 
-      unless @otros_pagos.nil?
-        @otros_pagos.each_with_index do |otro_pago, index|
-          @precio = @precio_otros_pagos[index]
-          @otroGasto = OtrosGasto.new({:nombre => otro_pago, :precio => @precio})
-          @otroGasto.info_predio = @info_predio
-          @otroGasto.save
-        end
-      end
+      #otros_pagos
+      saveOtrosPagos
 
       #Materiales
-      @materials = params[:material]
-      @materials_qty = params[:material_quantity]
-
-      unless @materials.nil?
-        @materials.each_with_index do |material, index|
-          id = material
-          qty = @materials_qty[index]
-          @infoMaterial = InfoPredioDetalle.new({:material_id => id, :cantidad => qty})
-          @infoMaterial.info_predio = @info_predio
-
-          # update inventory
-          next unless @infoMaterial.save
-          @material = Material.find(material)
-          old_qty = @material.quantity.to_i
-          new_qty = old_qty - qty.to_i
-          @material.quantity = new_qty
-          @material.save
-        end
-      end
+      saveMaterials
 
       flash[:success] = 'Informacion del predio guardada exitosamente'
       @predio = params[:info_predio]
@@ -77,7 +50,7 @@ class InfoPredioController < ApplicationController
     else
       @predio = params[:info_predio]
       @predio_id = @predio['predio_id']
-      @week = Date.parse(current_date).strftime("%W")
+      @week = Date.parse(current_date).strftime('%W')
       @nutrientes = Nutriente.all
       @user = current_user
       @materials = Material.all
@@ -141,7 +114,7 @@ class InfoPredioController < ApplicationController
       unless @otros_pagos.nil?
         @otros_pagos.each_with_index do |otro_pago, index|
           @precio = @precio_otros_pagos[index]
-          @otroGasto = OtrosGasto.new({:nombre => otro_pago, :precio => @precio})
+          @otroGasto = OtrosGasto.new(nombre: otro_pago, precio: @precio)
           @otroGasto.info_predio = @info_predio
           @otroGasto.save
         end
@@ -153,14 +126,13 @@ class InfoPredioController < ApplicationController
     end
   end
 
-
   def show
     @info_predios = InfoPredio.all
   end
 
   def destroy
     @nutriente.destroy
-    flash[:success] = "Nutriente eliminado"
+    flash[:success] = 'Nutriente eliminado'
     redirect_to nutrientes_url
   end
 
@@ -168,10 +140,61 @@ class InfoPredioController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def info_predio_params
-    params.require(:info_predio).permit(:predio_id, :semana, :user_id,
-                                        :fumigada, :pago_trabaja, :color_cinta,
+    @params1 = params.require(:info_predio).permit(:predio_id, :semana, :user_id,
+                                        :fumigada, :color_cinta,
                                         :conteo_racimos, :fecha_embarque,
-                                        :precio, :venta, :nutriente, :ratio)
+                                        :precio, :venta, :nutriente, :ratio, :pago_trabaja)
+  end
+
+  def savePagoTrabajadores
+    workers = params[:trabajador_id]
+    pagoWorkers = params[:pago_trabajador]
+
+    unless workers.nil?
+      workers.each_with_index do |id, index|
+        pago = pagoWorkers[index]
+        precio = pago.to_i
+        pagoWorker = InfoPredioWorker.new(worker_id: id, precio: precio)
+        pagoWorker.info_predio = @info_predio
+        pagoWorker.save
+      end
+    end
+  end
+
+  def saveOtrosPagos
+    otros_pagos = params[:otro_pago]
+    precio_otros_pagos = params[:otro_pago_precio]
+
+    unless otros_pagos.nil?
+      otros_pagos.each_with_index do |otro_pago, index|
+        precio = precio_otros_pagos[index]
+        otroGasto = OtrosGasto.new(nombre: otro_pago, precio: precio)
+        otroGasto.info_predio = @info_predio
+        otroGasto.save
+      end
+    end
+  end
+
+  def saveMaterials
+    materials = params[:material]
+    materials_qty = params[:material_quantity]
+
+    unless materials.nil?
+      materials.each_with_index do |material, index|
+        id = material
+        qty = materials_qty[index]
+        infoMaterial = InfoPredioDetalle.new(material_id: id, cantidad: qty)
+        infoMaterial.info_predio = @info_predio
+
+        # update inventory
+        next unless infoMaterial.save
+        materialRow = Material.find(material)
+        old_qty = materialRow.quantity.to_i
+        new_qty = old_qty - qty.to_i
+        materialRow.quantity = new_qty
+        materialRow.save
+      end
+    end
   end
 
   def info_predio_nutrientes_params
@@ -179,7 +202,7 @@ class InfoPredioController < ApplicationController
   end
 
   def current_date
-    Time.now.strftime("%Y-%m-%d") # Week from monday to monday
+    Time.now.strftime('%Y-%m-%d') # Week from monday to monday
   end
 
   def set_info_predio
