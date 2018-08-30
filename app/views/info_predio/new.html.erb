@@ -126,6 +126,7 @@
                   <thead>
                    <tr>
                      <td>Nombre Trabajador</td>
+                     <td>Tipo</td>
                      <td>Pago</td>
                      <td>Remover</td>
                    </tr>
@@ -248,8 +249,13 @@
         <div class="modal-body">
           <div class="form-group">
             <label for="recipient-name" class="control-label">Trabajador:</label>
-            <%= select("", "worker_id", options_from_collection_for_select(current_user.workers, :id, :fullname), {prompt: 'Selecciona un trabajador'}, {class: 'form-control required'}) %>
-            <%=  %>
+            <% unless workersUser.nil? %>
+              <select class="form-control required" name="worker_id" id="worker_id"><option value="">Selecciona un trabajador</option>
+                <% workersUser.each do |worker| %>
+                  <option data-worker-type="<% unless worker.worker_type.nil? %><%= worker.worker_type.name %><% end %>" value="<%= worker.id %>"><%= worker.fullname %></option>
+                <% end %>
+              </select>
+            <% end %>
           </div>
           <div class="form-group">
             <label for="recipient-name" class="control-label">Precio:</label>

@@ -146,6 +146,7 @@
                   <thead>
                   <tr>
                     <td>Nombre Trabajador</td>
+                    <td>Tipo</td>
                     <td>Pago</td>
                     <td>Remover</td>
                   </tr>
@@ -158,6 +159,9 @@
                         <td>
                           <input type="text" name="trabajador[]" id="pago_trabajador_1" class="form-control" value="<%= @workers[index]['name'] + ' ' +  @workers[index]['last_name']%>"  disabled="disabled">
                           <input type="hidden" name="trabajador_id[]" id="pago_trabajador_1" class="form-control" value="<%= pago.worker_id %>" disabled="disabled">
+                        </td>
+                        <td>
+                          <input type="text" name="tipo_trabajador[]" id="pago_1" class="form-control price" value="<% unless pago.worker.worker_type.nil? %><%= pago.worker.worker_type.name %><% else %><%= 'No definido' %><% end%>" disabled="disabled" >
                         </td>
                         <td>
                           <input type="text" name="pago_trabajador[]" id="pago_1" class="form-control price" value="<%= pago.precio %>" disabled="disabled" >
@@ -269,8 +273,13 @@
         <div class="modal-body">
           <div class="form-group">
             <label for="recipient-name" class="control-label">Trabajador:</label>
-            <%= select("", "worker_id", options_from_collection_for_select(current_user.workers, :id, :fullname), {prompt: 'Selecciona un trabajador'}, {class: 'form-control required'}) %>
-            <%=  %>
+            <% unless workersUser.nil? %>
+              <select class="form-control required" name="worker_id" id="worker_id"><option value="">Selecciona un trabajador</option>
+                <% workersUser.each do |worker| %>
+                  <option data-worker-type="<% unless worker.worker_type.nil? %><%= worker.worker_type.name %><% end %>" value="<%= worker.id %>"><%= worker.fullname %></option>
+                <% end %>
+              </select>
+            <% end %>
           </div>
           <div class="form-group">
             <label for="recipient-name" class="control-label">Precio:</label>

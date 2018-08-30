@@ -304,6 +304,9 @@ window.Workers = (function($) {
         '<input type="hidden" name="trabajador_id[]" id="pago_trabajador_1" class="form-control" value="{:id_trabajador}">\n' +
         '</td>\n' +
         '<td>\n' +
+        '<input type="text" name="tipo_trabajador[]" id="pago_1" class="form-control price" value="{:tipo_trabajador}" disabled="disabled" >\n' +
+        '</td>\n' +
+        '<td>\n' +
         '<input type="text" name="pago_trabajador[]" id="pago_1" class="form-control" value="{:price_pago}" readonly="readonly" >\n' +
         '</td>\n' +
         '<td>\n' +
@@ -386,9 +389,13 @@ window.Workers = (function($) {
                 var valuePrice = $('#pagoTrabajadoresForm')
                     .find('#txtPrecio')
                     .val();
+                var tipoTrabajador = $('#worker_id')
+                    .find(':selected')
+                    .data('worker-type');
 
                 var other_payment = TR_TEMPLATE.replace('{:nombre_trabajador}', worker)
                     .replace('{:id_trabajador}', workerId)
+                    .replace('{:tipo_trabajador}', (tipoTrabajador) ? tipoTrabajador : 'No definido')
                     .replace(/{:price_pago}/g, valuePrice)
                     .replace(/{:id}/g, CONTROL_ADD_PAYMENTS_WORKERS);
                 addTotalPagoTrabajador(valuePrice);

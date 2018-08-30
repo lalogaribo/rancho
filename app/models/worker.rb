@@ -6,7 +6,7 @@ class Worker < ApplicationRecord
             numericality: {message: 'Ingresar numero valido'},
             format: {with: /\A\d+(?:\.\d{0,2})?\z/, message: 'Ingresar numero valido'}
   belongs_to :user
-  has_one :worker_type
+  belongs_to :worker_type
   has_many :info_predio_worker
   has_many :info_predio, through: :info_predio_worker
 
