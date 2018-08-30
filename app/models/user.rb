@@ -8,16 +8,16 @@ class User < ApplicationRecord
                     length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
-  has_many :predios
+  has_many :predios, dependent: :destroy
   has_secure_password
   validates :password, presence: { message: 'Contraseña es requerdo' },
                        length: { minimum: 5, maximum: 255 },
                        allow_nil: true
-  has_many :materials
-  has_many :info_predio
-  has_many :vuelos
-  has_many :requests
-  has_many :workers
+  has_many :materials, dependent: :destroy
+  has_many :info_predio, dependent: :destroy
+  has_many :vuelos, dependent:  :destroy
+  has_many :requests, dependent: :destroy
+  has_many :workers, dependent: :destroy
 
   # Activate user
   def validate_email
