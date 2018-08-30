@@ -21,7 +21,7 @@
 /node_modules
 /yarn-error.log
 .idea/
-secrets.yml
+config/secrets.yml
 
 .byebug_history
 It's an empty string!
