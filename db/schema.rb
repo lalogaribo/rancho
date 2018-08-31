@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180824042304) do
+ActiveRecord::Schema.define(version: 20180830053122) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,16 @@ ActiveRecord::Schema.define(version: 20180824042304) do
     t.datetime "updated_at", null: false
     t.index ["info_predio_id"], name: "index_info_predio_detalles_on_info_predio_id"
     t.index ["material_id"], name: "index_info_predio_detalles_on_material_id"
+  end
+
+  create_table "info_predio_workers", force: :cascade do |t|
+    t.bigint "worker_id"
+    t.decimal "precio"
+    t.bigint "info_predio_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["info_predio_id"], name: "index_info_predio_workers_on_info_predio_id"
+    t.index ["worker_id"], name: "index_info_predio_workers_on_worker_id"
   end
 
   create_table "info_predios", force: :cascade do |t|
@@ -122,7 +132,7 @@ ActiveRecord::Schema.define(version: 20180824042304) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
-    t.integer "worker_types_id"
+    t.integer "worker_type_id"
   end
 
   add_foreign_key "requests", "users"

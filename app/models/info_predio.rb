@@ -3,6 +3,8 @@ class InfoPredio < ApplicationRecord
   belongs_to :user
   has_many :info_predio_detalle
   has_many :material, through: :info_predio_detalle
+  has_many :info_predio_workers
+  has_many :worker, through: :info_predio_workers
   has_many :otros_gasto
   validates :fumigada, presence: {message: ' es un campo requerido'}
   validates :pago_trabaja, presence: {message: 'Es un campo requerido'}

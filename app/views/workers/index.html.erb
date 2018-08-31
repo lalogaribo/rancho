@@ -13,6 +13,8 @@
           <th>Nombre</th>
           <th>Apellido</th>
           <th>No celular</th>
+          <th>Tipo</th>
+          <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -21,8 +23,13 @@
             <td><%= link_to worker.name, edit_worker_path(worker) %></td>
             <td><%= worker.last_name %></td>
             <td><%= worker.phone_number %></td>
-            <td><%= link_to 'Editar', edit_worker_path(worker) %></td>
-            <td><%= link_to 'Eliminar', worker_path(worker), method: :delete, data: {confirm: "Dar de baja empleado"}, class: 'pull-right' %> </td>
+            <td><%= worker.worker_type.name %></td>
+            <td align="left">
+              <a rel="tooltip" title="Edit" class="btn btn-simple btn-warning btn-icon table-action edit" href="<%= edit_worker_path(worker) %>"><i class="glyphicon glyphicon-pencil"></i>
+              </a>
+              <a rel="tooltip" title="Edit" class="btn btn-simple btn-danger btn-icon table-action remove" rel="nofollow" data-method="delete" data-confirm="Dar de baja empleado" href="/workers/<%= worker.id %>"><i class="glyphicon glyphicon-remove"></i>
+              </a>
+            </td>
           </tr>
         <% end %>
         </tbody>

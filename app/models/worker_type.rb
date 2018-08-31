@@ -1,4 +1,4 @@
 class WorkerType < ApplicationRecord
-  belongs_to :worker
+  has_many :worker
   validates :name, presence: true
 end

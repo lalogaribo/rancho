@@ -133,10 +133,11 @@ class StatsController < ApplicationController
     query = "select venta, semana
               from info_predios
               where info_predios.predio_id = %d
+              and info_predios.user_id = %u
               and info_predios.created_at BETWEEN date_trunc('year', now()) AND CURRENT_TIMESTAMP
               GROUP BY semana, venta"
 
-    @sales = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id))
+    @sales = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id, current_user.id))
     my_array = Hash.new
     unless @sales.nil?
       Array(@sales).each do |data|
@@ -151,11 +152,12 @@ class StatsController < ApplicationController
     query = "select SUM(venta) as venta, date_part('month', info_predios.created_at)  AS mes
               from info_predios
               where info_predios.predio_id = %d
+              and info_predios.user_id = %u
               and info_predios.created_at BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
               GROUP BY mes
               ORDER BY mes"
 
-    @sales = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id))
+    @sales = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id, current_user.id))
     my_array = Hash.new
     unless @sales.nil?
       Array(@sales).each do |data|
@@ -197,9 +199,10 @@ class StatsController < ApplicationController
     query = "select SUM(venta) as venta,  date_part('year', info_predios.created_at)  AS anual
               from info_predios 
               where info_predios.predio_id = %d
+              and info_predios.user_id = %u
               GROUP BY anual"
 
-    @sales = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id))
+    @sales = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id, current_user.id))
     my_array = Hash.new
     unless @sales.nil?
       Array(@sales).each do |data|
@@ -427,6 +430,7 @@ class StatsController < ApplicationController
               INNER JOIN info_predio_detalles ON  info_predio_detalles.info_predio_id = info_predios.id
               INNER JOIN materials ON  materials.id = info_predio_detalles.material_id
               where info_predios.predio_id = " + @predio_id + "
+              and info_predios.user_id =  " + current_user.id.to_s + "
               and materials.name LIKE \'%bolsa%\'
               and info_predios.created_at BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
               GROUP BY semana, cantidad"
@@ -450,6 +454,7 @@ class StatsController < ApplicationController
               where info_predios.predio_id = " + @predio_id + "
               and materials.name LIKE \'%bolsa%\'
               and info_predios.created_at BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
+              and info_predios.user_id =  " + current_user.id.to_s + "
               GROUP BY mes
               ORDER BY mes"
 
@@ -496,6 +501,7 @@ class StatsController < ApplicationController
               INNER JOIN info_predio_detalles ON  info_predio_detalles.info_predio_id = info_predios.id
               INNER JOIN materials ON  materials.id = info_predio_detalles.material_id
               where info_predios.predio_id = " + @predio_id + "
+              and info_predios.user_id =  " + current_user.id.to_s + "
               and materials.name LIKE \'%bolsa%\'
               GROUP BY anual"
 
@@ -514,10 +520,11 @@ class StatsController < ApplicationController
     query = "select ROUND(conteo_racimos * ratio) as ratiopredio, semana
               from info_predios
               where info_predios.predio_id = %d
+              and info_predios.user_id = %u
               and info_predios.created_at BETWEEN date_trunc('year', now()) AND CURRENT_TIMESTAMP
               GROUP BY semana, ratiopredio"
 
-    @ratio = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id))
+    @ratio = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id, current_user.id))
     my_array = Hash.new
     unless @ratio.nil?
       Array(@ratio).each do |data|
@@ -532,11 +539,12 @@ class StatsController < ApplicationController
     query = "select SUM(ROUND(conteo_racimos * ratio)) as ratiopredio, date_part('month', info_predios.created_at)  AS mes
               from info_predios
               where info_predios.predio_id = %d
+              and info_predios.user_id = %u
               and info_predios.created_at BETWEEN  date_trunc('year', now()) AND CURRENT_TIMESTAMP
               GROUP BY mes
               ORDER BY mes"
 
-    @ratio = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id))
+    @ratio = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id, current_user.id))
     my_array = Hash.new
     unless @ratio.nil?
       Array(@ratio).each do |data|
@@ -578,9 +586,10 @@ class StatsController < ApplicationController
     query = "select SUM(ROUND(conteo_racimos * ratio)) as ratiopredio,  date_part('year', info_predios.created_at)  AS anual
               from info_predios
               where info_predios.predio_id = %d
+              and info_predios.user_id = %u
               GROUP BY anual"
 
-    @ratio = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id))
+    @ratio = ActiveRecord::Base.connection.execute(sprintf(query, @predio_id, current_user.id))
     my_array = Hash.new
     unless @ratio.nil?
       Array(@ratio).each do |data|

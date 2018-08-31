@@ -1,10 +1,12 @@
 window.Chart = (function($) {
     var PREDIO_ID = undefined;
     var TITLE_AXIS = 'Semana';
+    var NAME_PREDIO = '';
 
     // Initialize
     self.init = function() {
         $(document).ready(function() {
+            $('.alert').hide();
             google.charts.load('current', {
                 'packages': ['corechart' ,'bar']
             });
@@ -58,8 +60,8 @@ window.Chart = (function($) {
         PREDIO_ID = trigger.find(':selected').val();
         if ($.isNumeric(PREDIO_ID)) {
             $('#filterDate').attr('disabled', false);
-            var name = trigger.find(':selected').text();
-            $('.namePredio').text(name);
+            NAME_PREDIO = trigger.find(':selected').text();
+            $('.namePredio').text(NAME_PREDIO);
             Chart.Earnings.loadEarnings(PREDIO_ID, '')
         }
     }
@@ -77,20 +79,21 @@ window.Chart = (function($) {
                 format: '',
                 title: Chart.getTitleAxis()
             },
-            height: 400,
+            height:400,
+            width: '100%',
             animation: {
                 duration: 1500,
                 easing: 'out',
                 startup: true
             },
-            bar: { groupWidth: '93%' },
+            bar: { groupWidth: '50%' },
             chartArea: {
                 width: '80%'
             }
         };
 
         return options;
-    }
+    };
 
     /**
     *
@@ -104,6 +107,18 @@ window.Chart = (function($) {
             errorMessage = xhr.responseJSON.error;
         }
         console.log(errorMessage);
+    };
+
+    self.isEmpty = function (obj) {
+        for(var key in obj) {
+            if(obj.hasOwnProperty(key))
+                return false;
+        }
+        return true;
+    };
+
+    self.getNamePredio = function() {
+        return NAME_PREDIO;
     }
 
     // Initialize
@@ -134,25 +149,41 @@ window.Chart.Earnings = (function($) {
     }
 
     function onSuccess(data) {
-        var valuesObj = Object.values(data);
-        var keysObj = Object.keys(data);
-        VALUES = [];
-        if ($.isArray(valuesObj) && $.isArray(keysObj)) {
-            VALUES.push(HEADERS);
-            $.each(valuesObj, function(indexArray, value) {
-                var reference = [];
-                reference.push(value.semana);
-                reference.push(value.produccion);
-                reference.push(value.venta);
-                reference.push(value.inversion);
-                reference.push(value.utilidad);
-                VALUES.push(reference)
-            });
+        if (!Chart.isEmpty(data)) {
+            $('.alert').hide();
+            $('#filterDate').attr('disabled', false);
+
+            console.log('print')
+            var valuesObj = Object.values(data);
+            var keysObj = Object.keys(data);
+            VALUES = [];
+            if ($.isArray(valuesObj) && $.isArray(keysObj)) {
+                VALUES.push(HEADERS);
+                $.each(valuesObj, function(indexArray, value) {
+                    var reference = [];
+                    reference.push(value.semana);
+                    reference.push(value.produccion);
+                    reference.push(value.venta);
+                    reference.push(value.inversion);
+                    reference.push(value.utilidad);
+                    VALUES.push(reference)
+                });
+            }
+            // Load chart
+            google
+                .charts
+                .setOnLoadCallback(drawPaymentChart);
         }
-        // Load chart
-        google
-            .charts
-            .setOnLoadCallback(drawPaymentChart);
+        else {
+            $('.alert .name-predio').text(Chart.getNamePredio());
+            $('#filterDate').attr('disabled', true);
+            $('.alert').show();
+            $('#barchart_earnings').empty();
+            $('#trendline_ratio').empty();
+            $('#barchart_sales').empty();
+            $('#barchart_investments').empty();
+            $('#barchart_materials').empty();
+        }
     }
 
     function drawPaymentChart() {
@@ -178,7 +209,6 @@ window.Chart.Earnings = (function($) {
         };
         
         var chart = new google.visualization.ComboChart(document.getElementById('barchart_earnings'));
-
         chart.draw(data, options);
     }
 
@@ -206,23 +236,25 @@ window.Chart.Ratio = (function($) {
     }
 
     function onSuccess(data) {
-        var valuesObj = Object.values(data);
-        var keysObj = Object.keys(data);
-        VALUES = [];
-        if ($.isArray(valuesObj) && $.isArray(keysObj)) {
-            VALUES.push(HEADERS);
-            $.each(valuesObj, function(index, value) {
-                var reference = [];
-                reference.push(keysObj[index]);
-                reference.push(Number(value));
-                reference.push(Number(value));
-                VALUES.push(reference)
-            });
+        if (!Chart.isEmpty(data)) {
+            var valuesObj = Object.values(data);
+            var keysObj = Object.keys(data);
+            VALUES = [];
+            if ($.isArray(valuesObj) && $.isArray(keysObj)) {
+                VALUES.push(HEADERS);
+                $.each(valuesObj, function(index, value) {
+                    var reference = [];
+                    reference.push(keysObj[index]);
+                    reference.push(Number(value));
+                    reference.push(Number(value));
+                    VALUES.push(reference)
+                });
+            }
+            // Load chart
+            google
+                .charts
+                .setOnLoadCallback(drawRatioChart);
         }
-        // Load chart
-        google
-            .charts
-            .setOnLoadCallback(drawRatioChart);
     }
 
     function drawRatioChart() {
@@ -238,6 +270,7 @@ window.Chart.Ratio = (function($) {
                 title: Chart.getTitleAxis()
             },
             height: 400,
+            width: '100%',
             pointShape: 'diamond',
             animation: {
                 duration: 1500,
@@ -277,23 +310,25 @@ window.Chart.Investment = (function($) {
     }
 
     function onSuccess(data) {
-        var valuesObj = Object.values(data);
-        var keysObj = Object.keys(data);
-        VALUES = [];
-        if ($.isArray(valuesObj) && $.isArray(keysObj)) {
-            VALUES.push(HEADERS);
-            $.each(valuesObj, function(index, value) {
-                var reference = [];
-                reference.push(keysObj[index]);
-                reference.push(Number(value));
-                reference.push(Number(value));
-                VALUES.push(reference)
-            });
+        if (!Chart.isEmpty(data)) {
+            var valuesObj = Object.values(data);
+            var keysObj = Object.keys(data);
+            VALUES = [];
+            if ($.isArray(valuesObj) && $.isArray(keysObj)) {
+                VALUES.push(HEADERS);
+                $.each(valuesObj, function(index, value) {
+                    var reference = [];
+                    reference.push(keysObj[index]);
+                    reference.push(Number(value));
+                    reference.push(Number(value));
+                    VALUES.push(reference)
+                });
+            }
+            // Load chart
+            google
+                .charts
+                .setOnLoadCallback(drawPaymentChart);
         }
-        // Load chart
-        google
-            .charts
-            .setOnLoadCallback(drawPaymentChart);
     }
 
     function drawPaymentChart() {
@@ -332,23 +367,25 @@ window.Chart.Sales = (function($) {
     }
 
     function onSuccess(data) {
-        var valuesObj = Object.values(data);
-        var keysObj = Object.keys(data);
-        VALUES = [];
-        if ($.isArray(valuesObj) && $.isArray(keysObj)) {
-            VALUES.push(HEADERS);
-            $.each(valuesObj, function(index, value) {
-                var reference = [];
-                reference.push(keysObj[index]);
-                reference.push(Number(value));
-                reference.push(Number(value));
-                VALUES.push(reference)
-            });
+        if (!Chart.isEmpty(data)) {
+            var valuesObj = Object.values(data);
+            var keysObj = Object.keys(data);
+            VALUES = [];
+            if ($.isArray(valuesObj) && $.isArray(keysObj)) {
+                VALUES.push(HEADERS);
+                $.each(valuesObj, function(index, value) {
+                    var reference = [];
+                    reference.push(keysObj[index]);
+                    reference.push(Number(value));
+                    reference.push(Number(value));
+                    VALUES.push(reference)
+                });
+            }
+            // Load chart
+            google
+                .charts
+                .setOnLoadCallback(drawPaymentChart);
         }
-        // Load chart
-        google
-            .charts
-            .setOnLoadCallback(drawPaymentChart);
     }
 
     function drawPaymentChart() {
@@ -387,23 +424,25 @@ window.Chart.Materials = (function($) {
     }
 
     function onSuccess(data) {
-        var valuesObj = Object.values(data);
-        var keysObj = Object.keys(data);
-        VALUES = [];
-        if ($.isArray(valuesObj) && $.isArray(keysObj)) {
-            VALUES.push(HEADERS);
-            $.each(valuesObj, function(index, value) {
-                var reference = [];
-                reference.push(keysObj[index]);
-                reference.push(Number(value));
-                reference.push(Number(value));
-                VALUES.push(reference)
-            });
+        if (!Chart.isEmpty(data)) {
+            var valuesObj = Object.values(data);
+            var keysObj = Object.keys(data);
+            VALUES = [];
+            if ($.isArray(valuesObj) && $.isArray(keysObj)) {
+                VALUES.push(HEADERS);
+                $.each(valuesObj, function(index, value) {
+                    var reference = [];
+                    reference.push(keysObj[index]);
+                    reference.push(Number(value));
+                    reference.push(Number(value));
+                    VALUES.push(reference)
+                });
+            }
+            // Load chart
+            google
+                .charts
+                .setOnLoadCallback(drawPaymentChart);
         }
-        // Load chart
-        google
-            .charts
-            .setOnLoadCallback(drawPaymentChart);
     }
 
     function drawPaymentChart() {
