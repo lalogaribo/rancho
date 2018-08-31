@@ -23,7 +23,7 @@
                   <% @materials.each_with_index do |material, index| %>
                     <div class="row form-group">
                       <div class="col-md-4 col-sm-4 text-right">
-                        <label for="<%= material.name %>"><%= material.name %></label>
+                        <label for="<%= material.name %>">Paquete <%= material.name %></label>
                       </div>
                       <div class="col-md-3 col-sm-3 text-left">
                         <input type="number" name="material_quantity[]" id="material_<%= material.name.downcase %>" data-price="<%= material.price %>"
@@ -91,7 +91,7 @@
                 </div>
                 <div class="row form-group">
                   <div class="col-md-4 text-right">
-                    <%= label_tag(:ratio, 'Ratio') %>
+                    <%= label_tag(:ratio, 'Conversion') %>
                   </div>
                   <div class="col-md-8 text-left">
                     <%= select_tag "info_predio[ratio]",
@@ -128,7 +128,7 @@
 
             <div class="row form-group">
               <div class="col-md-8">
-                <h2 class="legend">Pagos Trabajadores</h2>
+                <h2 class="legend">Pagos Trabajadores: <span class="totalPagoTrabajo">$<%= @info_predio.pago_trabaja || '0.00' %></span></h2>
               </div>
               <div class="col-md-4 col-sm-4 text-right">
                 <button type="button" class="btn btn-primary btn-legend" id='add-pagos-workers' style=" ">
@@ -179,7 +179,7 @@
 
             <div class="row form-group">
               <div class="col-md-8">
-                <h2 class="legend">Otros Pagos</h2>
+                <h2 class="legend">Otros Pagos: <span class="totalOtroPago">$0.00</span></h2>
               </div>
               <div class=" col-md-4 col-sm-4 text-right">
                 <button type="button" class="btn btn-primary btn-legend" id='add-otros-pagos'>
@@ -209,7 +209,7 @@
                           <input type="text" name="otro_pago[]" id="otro_pago_1" class="form-control" value="<%= otro_pago.nombre %>"  disabled="disabled">
                         </td>
                         <td>
-                          <input type="text" name="otro_pago_precio[]" id="otro_pago_precio_1" class="form-control" value="<%= otro_pago.precio %>" disabled="disabled" >
+                          <input type="text" name="otro_pago_precio[]" id="otro_pago_precio_1" class="form-control otroPago" value="<%= otro_pago.precio %>" disabled="disabled" >
                         </td>
                         <td>
                           <a href class="btn btn-danger removerOtherPayment" data-row="<%= otro_pago.id %>"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>

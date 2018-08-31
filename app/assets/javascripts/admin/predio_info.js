@@ -191,12 +191,13 @@ window.OtrosPagos = (function($) {
         '<input type="text" name="otro_pago[]" id="otro_pago_1" class="form-control" value="{:nombre_pago}"  readonly="readonly">\n' +
         '</td>\n' +
         '<td>\n' +
-        '<input type="text" name="otro_pago_precio[]" id="otro_pago_precio_1" class="form-control" value="{:price_pago}" readonly="readonly" >\n' +
+        '<input type="text" name="otro_pago_precio[]" id="otro_pago_precio_1" class="form-control otroPago" value="{:price_pago}" readonly="readonly" >\n' +
         '</td>\n' +
         '<td>\n' +
-        '<a href class="btn btn-danger removerOtherPayment" data-row="{:id}"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>\n' +
+        '<a href class="btn btn-danger removerOtherPayment" data-row="{:id}" data-price="-{:price_pago}"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>\n' +
         '</td>\n' +
         '</tr>';
+    var TOTAL = 0;
 
     // Initialize
     self.init = function() {
@@ -216,11 +217,13 @@ window.OtrosPagos = (function($) {
             $(document).on('click', '.removerOtherPayment', function(e) {
                 e.preventDefault();
                 var deleteTr = $(this).data('row');
+                var price = $(this).data('price');
 
                 $('#tableOtherPagos tbody tr').each(function(index, value) {
                     var tr = $(value).attr('data-id');
                     if (deleteTr == tr) {
                         $(value).remove();
+                        calculateTotalOtrosPagos(price);
                         return false;
                     }
                 });
@@ -230,8 +233,20 @@ window.OtrosPagos = (function($) {
                     $('#container-pagos').append('<input type="hidden" name="otros_pagos_removed[]" class="otros_pagos_hidden" value="' + trEditRemoved + '">');
                 }
             });
+            calculateTotal();
         });
     };
+
+    function calculateTotal() {
+        $('#tableOtherPagos').find('.otroPago').each(function(index, value){
+            TOTAL = Number(TOTAL);
+            var price = $(value).val();
+            price = Number(price);
+            TOTAL += price;
+            TOTAL = Number(TOTAL).toFixed(2);
+        });
+        $('.totalOtroPago').text('$' + TOTAL);
+    }
 
     function addOtherPayment() {
         $.validator.addMethod('price', function (value, element) {
@@ -270,9 +285,10 @@ window.OtrosPagos = (function($) {
                     .val();
 
                 var other_payment = TR_TEMPLATE.replace('{:nombre_pago}', valuePago)
-                    .replace('{:price_pago}', valuePrice)
+                    .replace(/{:price_pago}/g, valuePrice)
                     .replace(/{:id}/g, CONTROL_ADD_PAYMENTS);
                 $('#tableOtherPagos tbody').append(other_payment);
+                calculateTotalOtrosPagos(valuePrice);
                 $('#tableOtherPagos').show();
 
                 $('#exampleModal').modal('hide');
@@ -290,6 +306,14 @@ window.OtrosPagos = (function($) {
                 validator.focusInvalid();
             },
         });
+    }
+
+    function calculateTotalOtrosPagos(price) {
+        price = Number(price);
+        TOTAL = Number(TOTAL);
+        TOTAL += price;
+        TOTAL = Number(TOTAL).toFixed(2);
+        $('.totalOtroPago').text('$' + TOTAL);
     }
 
     return self;
@@ -421,7 +445,9 @@ window.Workers = (function($) {
         value = Number(value);
         price = Number(price)
         value += price;
+        value = Number(value).toFixed(2);
         $('#pago_trabaja').val(value);
+        $('.totalPagoTrabajo').text('$' + value)
     }
 
     return self;
