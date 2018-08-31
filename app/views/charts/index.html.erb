@@ -89,10 +89,11 @@
           <span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="exampleModalLabel">Graficas de Utilidades</h4>
       </div>
-      <form id="pagoTrabajadoresForm" onsubmit="return false;">
+      <form id="generateChartForm" onsubmit="return false;">
         <div class="modal-body">
           <div class="form-group">
             <input type="hidden" id="token" name="token" value="<%= current_user.token_chart %>">
+            <input type="hidden" id="predioId" name="predio">
             <label for="recipient-name" class="control-label">Introduce el codigo para generar las graficas:</label>
             <input type="text" class="form-control" name="tokenChart" id="txtTokenChart">
           </div>

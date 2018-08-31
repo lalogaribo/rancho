@@ -2,6 +2,8 @@ window.Chart = (function($) {
     var PREDIO_ID = undefined;
     var TITLE_AXIS = 'Semana';
     var NAME_PREDIO = '';
+    var EARNINGS = false;
+    var TOKEN = undefined;
 
     // Initialize
     self.init = function() {
@@ -10,49 +12,118 @@ window.Chart = (function($) {
             google.charts.load('current', {
                 'packages': ['corechart' ,'bar']
             });
-
+            // Load if set the predio in URL
             if (predioExist()) {
                 Chart.Summary.loadSummary(PREDIO_ID, '');
                 $('#filterDate').attr('disabled', false);
             } else {
                 $('#filterDate').attr('disabled', true);
             }
-
+            // Load by predio select
             $(document).on('change', '#predio', function() {
                 fetchStatsPredio($(this));
+                if (!hasTokenChart()) {
+                    $("#addUtility").prop( "checked", false );
+                }
+                $('#filterDate').val(1);
             });
-
+            // Load by date select
             $(document).on('change', '#filterDate', function() {
                 fetchStatsPredioByDate($(this));
             });
-
+            // Checkbox trigger modal
             $(document).on('change', '#addUtility', function() {
-                var predioSelected = $('#predio').find(':selected').val()
+                var predioSelected = $('#predio').find(':selected').val();
                 if ($(this).is(':checked') && (predioExist() || predioSelected)) {
+                    $('#filterDate').val(1);
                     $('#authenticationChart').modal('show');
                 }
                 else {
                     $('#authenticationChart').modal('hide');
+                    TOKEN = undefined;
+                    EARNINGS = false;
                 }
             });
-
-            $('#generate-chart').click();
+            // Validate token
+            $('#generate-chart').click(validateTokenChart);
         });
     };
 
-    function predioExist() {
-        PREDIO_ID = $('#hdPredioId').val();
-        if ($.isNumeric(PREDIO_ID)) {
-            $('#predio').val(PREDIO_ID);
-            return true;
-        } else {
+    function hasTokenChart() {
+        if (typeof TOKEN === 'undefined') {
             return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    function validateTokenChart() {
+        $.validator.addMethod('checkToken', function (value, element) {
+            var token = $('#token').val();
+            if (token === value) {
+                return true;
+            }
+            else {
+                TOKEN = undefined;
+                return false;
+            }
+        }, 'El token es invalido');
+
+
+        $('#generateChartForm').validate({
+            ignore: [],
+            rules: {
+                tokenChart: {
+                    checkToken: true,
+                }
+            },
+            messages: {
+                tokenChart: {
+                    checkToken: 'El token es invalido',
+                }
+            },
+            submitHandler: function () {
+                TOKEN = $('#txtTokenChart').val();
+                EARNINGS = true;
+                var predioId = $('#predio').find(':selected').val();
+                Chart.Earnings.loadEarnings(predioId, '',  TOKEN)
+            },
+            invalidHandler: function (form, validator) {
+                var errors = validator.numberOfInvalids();
+                console.log(errors);
+                console.log(validator);
+                validator.focusInvalid();
+            },
+        });
+    }
+
+    function predioExist() {
+        if ($('#hdPredioId').length > 0) {
+            PREDIO_ID = $('#hdPredioId').val();
+            if ($.isNumeric(PREDIO_ID)) {
+                $('#predio').val(PREDIO_ID);
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    function fetchStatsPredio(trigger) {
+        PREDIO_ID = trigger.find(':selected').val();
+        if ($.isNumeric(PREDIO_ID)) {
+            $('#filterDate').attr('disabled', false);
+            NAME_PREDIO = trigger.find(':selected').text();
+            $('.namePredio').text(NAME_PREDIO);
+            getChart('')
         }
     }
 
     function fetchStatsPredioByDate(trigger) {
         var typeFilter = trigger.find(':selected').val();
         if ($.isNumeric(PREDIO_ID)) {
+            console.log(typeFilter);
             var type;
             if (typeFilter == '1') {
                 type = '';
@@ -64,17 +135,16 @@ window.Chart = (function($) {
                 type = '/year';
                 TITLE_AXIS = 'Año';
             }
-            Chart.Summary.loadSummary(PREDIO_ID, type)
+            getChart(type);
         }
     }
 
-    function fetchStatsPredio(trigger) {
-        PREDIO_ID = trigger.find(':selected').val();
-        if ($.isNumeric(PREDIO_ID)) {
-            $('#filterDate').attr('disabled', false);
-            NAME_PREDIO = trigger.find(':selected').text();
-            $('.namePredio').text(NAME_PREDIO);
-            Chart.Summary.loadSummary(PREDIO_ID, '')
+    function getChart(type) {
+        if (EARNINGS && hasTokenChart()) {
+            Chart.Earnings.loadEarnings(PREDIO_ID, type, TOKEN);
+        }
+        else{
+            Chart.Summary.loadSummary(PREDIO_ID, type);
         }
     }
 
@@ -131,7 +201,7 @@ window.Chart = (function($) {
 
     self.getNamePredio = function() {
         return NAME_PREDIO;
-    }
+    };
 
     // Initialize
     self.init();
@@ -181,6 +251,7 @@ window.Chart.Summary = (function($) {
                 });
             }
             // Load chart
+            $('#barchart_earnings').empty();
             google
                 .charts
                 .setOnLoadCallback(drawPaymentChart);
@@ -231,15 +302,15 @@ window.Chart.Earnings = (function($) {
     var HEADERS = ['Semana','Produccion', 'Ventas', 'Gastos', 'Utilidad'];
     var VALUES = [];
 
-    self.loadEarnings = function(predio_id, type) {
-        earnings(predio_id, type);
+    self.loadEarnings = function(predio_id, type, token) {
+        earnings(predio_id, type, token);
         Chart.Ratio.loadRatio(predio_id, type)
     };
 
-    function earnings(predio_id, type) {
+    function earnings(predio_id, type, token) {
         var settings = {
             type: "GET",
-            url: '/predios/' + predio_id + '/earnings' + type,
+            url: '/predios/' + predio_id + '/' + token + '/earnings' + type,
             dataType: "json",
             error: Chart.onError,
             success: onSuccess
@@ -252,7 +323,6 @@ window.Chart.Earnings = (function($) {
             $('.alert').hide();
             $('#filterDate').attr('disabled', false);
 
-            console.log('print')
             var valuesObj = Object.values(data);
             var keysObj = Object.keys(data);
             VALUES = [];
@@ -269,6 +339,8 @@ window.Chart.Earnings = (function($) {
                 });
             }
             // Load chart
+            $('#barchart_summary').empty();
+            $('#authenticationChart').modal('hide');
             google
                 .charts
                 .setOnLoadCallback(drawPaymentChart);
@@ -277,6 +349,7 @@ window.Chart.Earnings = (function($) {
             $('.alert .name-predio').text(Chart.getNamePredio());
             $('#filterDate').attr('disabled', true);
             $('.alert').show();
+            $('#barchart_summary').empty();
             $('#barchart_earnings').empty();
             $('#trendline_ratio').empty();
             $('#barchart_sales').empty();

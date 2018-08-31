@@ -151,8 +151,6 @@ window.Predio = (function($) {
             });
     }
 
-
-
     function calculateSale() {
         var precio = $('#info_predio_precio').val();
         var cajas = ($('#info_predio_cajas').val()) ? $('#info_predio_cajas').val() : 0;
