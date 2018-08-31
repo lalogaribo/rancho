@@ -42,7 +42,6 @@ window.Predio = (function($) {
             $(document).on('change', '#ratio-convert', calculateRatio);
             $('#info_predio_conteo_racimos').blur(function() {
                 calculateRatio();
-                calculateSale();
             });
 
             //Calculate venta info predio
@@ -152,14 +151,13 @@ window.Predio = (function($) {
             });
     }
 
-
-
     function calculateSale() {
         var precio = $('#info_predio_precio').val();
-        var racimos = ($('#info_predio_conteo_racimos').val()) ? $('#info_predio_conteo_racimos').val() : 0;
+        var cajas = ($('#info_predio_cajas').val()) ? $('#info_predio_cajas').val() : 0;
 
-        if (!isNaN(precio) && !isNaN(racimos)) {
-            var venta = precio * racimos;
+        if (!isNaN(precio) && !isNaN(cajas)) {
+            var venta = precio * cajas;
+            venta = Number(venta).toFixed(2);
             $('#info_predio_venta').val(venta);
         }
     }
@@ -171,6 +169,7 @@ window.Predio = (function($) {
         if(!isNaN(conteoRacimos)) {
             var cajas = Math.round(ratio * conteoRacimos);
             $('#info_predio_cajas').val(cajas)
+            calculateSale();
         }
     }
 

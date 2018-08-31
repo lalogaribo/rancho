@@ -11,6 +11,11 @@ module ApplicationHelper
     racimo * ratio
   end
 
+  def calculate_sales(price, boxes)
+    sale = price * boxes
+    sale.round(2)
+  end
+
   def show_car(racimo, rat)
     if calculate_weekly_production(racimo, rat) > 1400
       '<i class="fa fa-truck" aria-hidden="true"></i>'.html_safe

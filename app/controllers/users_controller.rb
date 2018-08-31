@@ -14,6 +14,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
+      @user.create_new_token_chart
       UserMailer.registration_confirmation(@user).deliver
       flash[:success] = 'Por favor confirma tu correo electronico, para continuar con el proceso'
       redirect_to root_url
@@ -53,6 +54,19 @@ class UsersController < ApplicationController
     else
       flash[:error] = 'Lo sentimos, este usuario ya fue confirmado previamente.'
       redirect_to root_url
+    end
+  end
+
+  def reset_chart_token
+    user = User.find_by_id(params[:id])
+    if user
+      user.create_new_token_chart
+      UserMailer.reset_chart_token(user).deliver_now
+      flash[:success] = 'Se ha enviado un correo electronico con tu nuevo token.'
+      redirect_to charts_url
+    else
+      flash[:error] = 'Lo sentimos, este usuario no existe en nuestros records.'
+      redirect_to charts_url
     end
   end
 
