@@ -1,6 +1,3 @@
-<h1>Editar Trabajador</h1>
-
+<%= render 'shared/page_title', title: 'Editar Trabajador' %>
+<%= render 'shared/error', obj: @worker %>
 <%= render 'form', worker: @worker %>
-
-<%= link_to 'Ver', @worker %> |
-<%= link_to 'Regresar', workers_path %>

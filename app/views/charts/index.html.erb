@@ -15,9 +15,11 @@
                    multiple: false, prompt: "Selecciona un predio", class: 'form-control', id: 'predio' %>
   </div>
   <div class="col-md-6 text-left">
-    <%= select_tag "filterDate[date]",
-                   options_for_select([['Semana', 1], ['Mes', 2], ['Año', 3]]),
-                   multiple: false, class: 'form-control required', id: 'filterDate', prompt: "Filtro Adicional" %>
+    <%=
+      prompt = "Filtro Adicional"
+      select_tag "filterDate[date]",
+                   options_for_select([['Semana', 1], ['Mes', 2], ['Año', 3]].unshift(prompt), selected: prompt, disabled: prompt),
+                   multiple: false, class: 'form-control required', id: 'filterDate' %>
   </div>
 </div>
 <div class="row form-group">

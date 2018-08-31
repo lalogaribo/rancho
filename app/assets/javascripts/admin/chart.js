@@ -178,6 +178,11 @@ window.Chart.Earnings = (function($) {
             $('.alert .name-predio').text(Chart.getNamePredio());
             $('#filterDate').attr('disabled', true);
             $('.alert').show();
+            $('#barchart_earnings').empty();
+            $('#trendline_ratio').empty();
+            $('#barchart_sales').empty();
+            $('#barchart_investments').empty();
+            $('#barchart_materials').empty();
         }
     }
 
