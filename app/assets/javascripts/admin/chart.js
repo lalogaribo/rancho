@@ -12,7 +12,7 @@ window.Chart = (function($) {
             });
 
             if (predioExist()) {
-                Chart.Earnings.loadEarnings(PREDIO_ID, '');
+                Chart.Summary.loadSummary(PREDIO_ID, '');
                 $('#filterDate').attr('disabled', false);
             } else {
                 $('#filterDate').attr('disabled', true);
@@ -55,16 +55,16 @@ window.Chart = (function($) {
         if ($.isNumeric(PREDIO_ID)) {
             var type;
             if (typeFilter == '1') {
-                type = ''
+                type = '';
                 TITLE_AXIS = 'Semana';
             } else if (typeFilter == '2') {
-                type = '/month'
+                type = '/month';
                 TITLE_AXIS = 'Mes';
             } else {
-                type = '/year'
+                type = '/year';
                 TITLE_AXIS = 'Año';
             }
-            Chart.Earnings.loadEarnings(PREDIO_ID, type)
+            Chart.Summary.loadSummary(PREDIO_ID, type)
         }
     }
 
@@ -74,13 +74,13 @@ window.Chart = (function($) {
             $('#filterDate').attr('disabled', false);
             NAME_PREDIO = trigger.find(':selected').text();
             $('.namePredio').text(NAME_PREDIO);
-            Chart.Earnings.loadEarnings(PREDIO_ID, '')
+            Chart.Summary.loadSummary(PREDIO_ID, '')
         }
     }
 
     self.getTitleAxis = function() {
         return TITLE_AXIS;
-    }
+    };
 
     self.getOptionsChart =function() {
         var options = {
@@ -138,6 +138,93 @@ window.Chart = (function($) {
 
     return self;
 
+})(jQuery);
+
+window.Chart.Summary = (function($) {
+    var HEADERS = ['Semana','Produccion', 'Ventas', 'Gastos'];
+    var VALUES = [];
+
+    self.loadSummary = function(predio_id, type) {
+        summary(predio_id, type);
+        Chart.Ratio.loadRatio(predio_id, type)
+    };
+
+    function summary(predio_id, type) {
+        var settings = {
+            type: "GET",
+            url: '/predios/' + predio_id + '/summary' + type,
+            dataType: "json",
+            error: Chart.onError,
+            success: onSuccess
+        };
+        return $.ajax(settings);
+    }
+
+    function onSuccess(data) {
+        if (!Chart.isEmpty(data)) {
+            $('.alert').hide();
+            $('#filterDate').attr('disabled', false);
+
+            console.log('summary')
+            var valuesObj = Object.values(data);
+            var keysObj = Object.keys(data);
+            VALUES = [];
+            if ($.isArray(valuesObj) && $.isArray(keysObj)) {
+                VALUES.push(HEADERS);
+                $.each(valuesObj, function(indexArray, value) {
+                    var reference = [];
+                    reference.push(value.semana);
+                    reference.push(value.produccion);
+                    reference.push(value.venta);
+                    reference.push(value.inversion);
+                    VALUES.push(reference)
+                });
+            }
+            // Load chart
+            google
+                .charts
+                .setOnLoadCallback(drawPaymentChart);
+        }
+        else {
+            $('.alert .name-predio').text(Chart.getNamePredio());
+            $('#filterDate').attr('disabled', true);
+            $('.alert').show();
+            $('#barchart_summary').empty();
+            $('#barchart_earnings').empty();
+            $('#trendline_ratio').empty();
+            $('#barchart_sales').empty();
+            $('#barchart_investments').empty();
+            $('#barchart_materials').empty();
+        }
+    }
+
+    function drawPaymentChart() {
+        var data = google
+            .visualization
+            .arrayToDataTable(VALUES);
+
+        var tickMarks = [];
+        //add first
+        tickMarks.push(data.getValue(0, 0));
+        //add last
+        tickMarks.push(data.getValue(data.getNumberOfRows() - 1, 0));
+
+        var options = Chart.getOptionsChart();
+        options.seriesType = 'bars';
+        options.series= {5: {type: 'line'}};
+        options.title = 'Reporte General',
+        options.colors = ['#210f2b', '#428bca', '#d95f02',];
+        options.hAxis = {
+            format: '',
+            title: Chart.getTitleAxis(),
+            ticks: tickMarks
+        };
+
+        var chart = new google.visualization.ComboChart(document.getElementById('barchart_summary'));
+        chart.draw(data, options);
+    }
+
+    return self;
 })(jQuery);
 
 window.Chart.Earnings = (function($) {

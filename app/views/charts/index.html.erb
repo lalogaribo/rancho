@@ -47,6 +47,12 @@
 
 <div class="row form-group">
   <div class="col-md-12">
+    <div id="barchart_summary" class="card"></div>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-md-12">
     <div id="barchart_earnings" class="card"></div>
   </div>
 </div>
@@ -86,8 +92,9 @@
       <form id="pagoTrabajadoresForm" onsubmit="return false;">
         <div class="modal-body">
           <div class="form-group">
+            <input type="hidden" id="token" name="token" value="<%= current_user.token_chart %>">
             <label for="recipient-name" class="control-label">Introduce el codigo para generar las graficas:</label>
-            <input type="text" class="form-control" name="precioPago" id="txtPrecio">
+            <input type="text" class="form-control" name="tokenChart" id="txtTokenChart">
           </div>
           <div class="form-group">
             <a href="/users/<%= current_user.id %>/reset_chart_token">Si olvidaste la contrasena da click en este link para generar otra</a>
