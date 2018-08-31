@@ -25,6 +25,18 @@ window.Chart = (function($) {
             $(document).on('change', '#filterDate', function() {
                 fetchStatsPredioByDate($(this));
             });
+
+            $(document).on('change', '#addUtility', function() {
+                var predioSelected = $('#predio').find(':selected').val()
+                if ($(this).is(':checked') && (predioExist() || predioSelected)) {
+                    $('#authenticationChart').modal('show');
+                }
+                else {
+                    $('#authenticationChart').modal('hide');
+                }
+            });
+
+            $('#generate-chart').click();
         });
     };
 

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get '/signup', to: 'sessions#new_user'
   get 'login', to: 'sessions#new'
   get '/:token/confirm_email/', to: 'users#confirm_email', as: 'confirm_email'
+  get '/signup', to: 'users#new'
   post '/login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
   resources :password_resets, only: [:new, :create, :edit, :update]
@@ -37,6 +38,6 @@ Rails.application.routes.draw do
     get "/ratio/year", to: "stats#ratioByYear"
   end
   get 'predios/:id/info', to: 'info_predio#new', as: 'info'
-  get '/signup', to: 'users#new'
+  get 'users/:id/reset_chart_token', to: 'users#reset_chart_token', as: 'reset_chart_token'
   match '*unmatched', to: 'application#route_not_found', via: :all
 end
