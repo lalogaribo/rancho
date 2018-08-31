@@ -211,7 +211,7 @@ window.Chart = (function($) {
 })(jQuery);
 
 window.Chart.Summary = (function($) {
-    var HEADERS = ['Semana','Produccion', 'Ventas', 'Gastos'];
+    var HEADERS = ['Semana','Produccion', 'Ingresos', 'Egresos'];
     var VALUES = [];
 
     self.loadSummary = function(predio_id, type) {
@@ -299,7 +299,7 @@ window.Chart.Summary = (function($) {
 })(jQuery);
 
 window.Chart.Earnings = (function($) {
-    var HEADERS = ['Semana','Produccion', 'Ventas', 'Gastos', 'Utilidad'];
+    var HEADERS = ['Semana','Produccion', 'Ingresos', 'Egresos', 'Utilidad'];
     var VALUES = [];
 
     self.loadEarnings = function(predio_id, type, token) {
@@ -462,7 +462,7 @@ window.Chart.Ratio = (function($) {
 })(jQuery);
 
 window.Chart.Investment = (function($) {
-    var HEADERS = ['Semana', 'Gastos', { role: 'annotation' }];
+    var HEADERS = ['Semana', 'Egresos', { role: 'annotation' }];
     var VALUES = [];
 
     self.loadInvestment = function(predio_id, type) {
@@ -507,7 +507,7 @@ window.Chart.Investment = (function($) {
         var data = google.visualization.arrayToDataTable(VALUES);
 
         var options = Chart.getOptionsChart();
-        options.title = 'Pagos';
+        options.title = 'Egresos';
         options.colors = ['#d95f02'];
         
         var chart = new google.visualization.ColumnChart(document.getElementById('barchart_investments'));
@@ -519,7 +519,7 @@ window.Chart.Investment = (function($) {
 })(jQuery);
 
 window.Chart.Sales = (function($) {
-    var HEADERS = ['Semana', 'Ventas',  { role: 'annotation' }];
+    var HEADERS = ['Semana', 'Ingresos',  { role: 'annotation' }];
     var VALUES = [];
 
     self.loadSales = function(predio_id, type) {
@@ -566,7 +566,7 @@ window.Chart.Sales = (function($) {
             .arrayToDataTable(VALUES);
 
         var options = Chart.getOptionsChart();
-        options.title = 'Ventas';
+        options.title = 'Ingresos';
         options.colors = ['#428bca'];
 
         var chart = new google.visualization.ColumnChart(document.getElementById('barchart_sales'));
