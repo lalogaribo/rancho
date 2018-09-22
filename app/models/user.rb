@@ -10,14 +10,17 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false }
   has_many :predios, dependent: :destroy
   has_secure_password
-  validates :password, presence: { message: 'Contraseña es requerdo' },
+  validates :password, presence: { message: 'Contraseña es requerida' },
                        length: { minimum: 5, maximum: 255 },
                        allow_nil: true
   has_many :materials, dependent: :destroy
   has_many :info_predio, dependent: :destroy
-  has_many :vuelos, dependent:  :destroy
+  has_many :vuelos, dependent: :destroy
   has_many :requests, dependent: :destroy
   has_many :workers, dependent: :destroy
+
+  before_validation :set_random_password, if: :new_record?
+  # after_save :send_confirmation
 
   # Activate user
   def validate_email
@@ -68,5 +71,14 @@ class User < ApplicationRecord
   # Returns a random token.
   def User.new_token
     SecureRandom.urlsafe_base64
+  end
+
+  def set_random_password
+    self.password = rand(36**15).to_s(36)
+  end
+
+  def send_confirmation
+    UserMailer.registration_confirmation(self).deliver
+    debugger
   end
 end

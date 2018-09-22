@@ -67,4 +67,4 @@ gem 'groupdate'
 gem 'simple_form'
 gem 'toastr-rails'
 gem 'sendgrid-ruby'
-
+gem 'activeadmin'

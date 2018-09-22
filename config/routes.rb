@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  ActiveAdmin.routes(self)
   root 'pages#home'
   get '/index', to: 'pages#index'
   get '/signup', to: 'sessions#new_user'

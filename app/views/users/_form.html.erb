@@ -48,9 +48,11 @@
                 </div>
               <% end %>
             </div>
-            <div class="col-md-12 text-center back_link">
-              <%= link_to 'Cancelar proceso de creacion de cuenta', root_path %>
-            </div>
+            <% if @user.new_record? %>
+              <div class="col-md-12 text-center back_link">
+                <%= link_to 'Cancelar proceso de creacion de cuenta', root_path %>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>
