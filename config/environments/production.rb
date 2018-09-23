@@ -93,12 +93,12 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
   config.action_mailer.smtp_settings = {
-      :user_name => "app99052741@heroku.com",
-      :password => "d4iygkrx3806",
-      :domain => 'heroku.com',
-      :address => 'smtp.sendgrid.net',
+      :user_name => 'ing.ivan.sanchez.31@gmail.com',
+      :password => 'Laniv_222731',
+      :domain => 'asociacion-platanera.herokuapp.com',
+      :address => 'smtp.gmail.com',
       :port => 587,
-      :authentication => :plain,
+      :authentication => :login,
       :enable_starttls_auto => true
   }
 end
