@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
+  ActiveAdmin.routes(self)
   root 'pages#home'
   get '/index', to: 'pages#index'
-  get '/signup', to: 'sessions#new_user'
+  # get '/signup', to: 'sessions#new_user'
   get 'login', to: 'sessions#new'
   get '/:token/confirm_email/', to: 'users#confirm_email', as: 'confirm_email'
   get '/signup', to: 'users#new'
+
   post '/login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
   resources :password_resets, only: [:new, :create, :edit, :update]

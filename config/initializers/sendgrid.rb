@@ -1,3 +1,4 @@
+
 ActionMailer::Base.smtp_settings = {
     :user_name => 'apikey',
     :password => Rails.application.secrets.sendgrid_api_key,
