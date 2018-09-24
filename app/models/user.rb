@@ -19,8 +19,8 @@ class User < ApplicationRecord
   has_many :requests, dependent: :destroy
   has_many :workers, dependent: :destroy
 
-  # before_validation :set_random_password, if: :new_record?
-  # before_save :send_confirmation
+  before_validation :set_random_password, if: :new_record?
+  after_create :send_confirmation
 
   # Activate user
   def validate_email

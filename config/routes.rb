@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get '/index', to: 'pages#index'
   get '/signup', to: 'sessions#new_user'
   get 'login', to: 'sessions#new'
-  get '/:token/confirm_email/', to: 'users#confirm_email', as: 'confirm_email'
+  get '/:token/confirm_email/', to: 'users#confirm_email', as: 'confirm_email',  constraints: { token: /[A-Za-z0-9\-\_\+]+/ }
   post '/login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
   resources :password_resets, only: [:new, :create, :edit, :update]
