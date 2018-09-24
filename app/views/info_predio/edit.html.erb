@@ -20,23 +20,22 @@
             <div class="row">
               <div class="col-md-6">
                 <% unless @materials.nil? %>
-                  <% @materials.each do |material| %>
+                  <% @materials.each_with_index do |material, index| %>
                     <div class="row form-group">
                       <div class="col-md-4 col-sm-4 text-right">
-                        <label for="<%= material.name %>"><%= material.name %></label>
+                        <label for="<%= material.name %>">Paquete <%= material.name %></label>
                       </div>
                       <div class="col-md-3 col-sm-3 text-left">
                         <input type="number" name="material_quantity[]" id="material_<%= material.name.downcase %>" data-price="<%= material.price %>"
-                               class="form-control required number-materials" min="1"
-                               max="<%= material.quantity %>"
+                               class="form-control required number-materials" min="1"  max="<% if material.quantity > 0 %><%= material.quantity %><% else %><%= @detalle[index].cantidad %><% end %>"
 
                                <% @detalle.each do |detalle_material| %>
-                               <% if detalle_material.material_id == material.id %>
-                               value="<%= detalle_material.cantidad %>">
-                                 <input type="hidden" name="material_predio_hd[]" value="<%= detalle_material.id %>">
-                                 <input type="hidden" name="material_quantity_old[]" value="<%= detalle_material.cantidad %>">
-                          <% end %>
-                          <% end %>
+                                  <% if detalle_material.material_id == material.id %>
+                                    value="<%= detalle_material.cantidad %>">
+                                    <input type="hidden" name="material_predio_hd[]" value="<%= detalle_material.id %>">
+                                    <input type="hidden" name="material_quantity_old[]" value="<%= detalle_material.cantidad %>">
+                                  <% end %>
+                                <% end %>
                           <input type="hidden" name="material[]" id="material_hd_<%= material.name.downcase %>" value="<%= material.id %>">
                         </div>
                       <div class="col-md-3 col-sm-3 text-left material_<%= material.name.downcase %>"></div>
@@ -50,14 +49,6 @@
                   </div>
                   <div class="col-md-8 col-sm-8 text-left">
                     <%= text_field_tag 'info_predio[fumigada]', @info_predio.fumigada, class: 'form-control required onlyPrice', placeholder: '$0.00' %>
-                  </div>
-                </div>
-                <div class="row form-group">
-                  <div class="col-md-4 col-sm-4 text-right">
-                    <%= label_tag(:pago_trabaja, "Pago Trabajadores") %>
-                  </div>
-                  <div class="col-md-8 col-sm-8 text-left">
-                    <%= text_field_tag 'info_predio[pago_trabaja]', @info_predio.pago_trabaja, class: 'form-control required onlyPrice', placeholder: '$0.00' %>
                   </div>
                 </div>
                 <div class="row form-group">
@@ -91,8 +82,16 @@
                   </div>
                 </div>
                 <div class="row form-group">
+                  <div class="col-md-4 col-sm-4 text-right">
+                    <%= label_tag(:conteo_racimos, "Conteo racimos") %>
+                  </div>
+                  <div class="col-md-8 col-sm-8 text-left">
+                    <%= text_field_tag 'info_predio[conteo_racimos]', @info_predio.conteo_racimos, class: 'form-control required onlyNumbers', placeholder: '0' %>
+                  </div>
+                </div>
+                <div class="row form-group">
                   <div class="col-md-4 text-right">
-                    <%= label_tag(:ratio, 'Ratio') %>
+                    <%= label_tag(:ratio, 'Conversion') %>
                   </div>
                   <div class="col-md-8 text-left">
                     <%= select_tag "info_predio[ratio]",
@@ -101,11 +100,11 @@
                   </div>
                 </div>
                 <div class="row form-group">
-                  <div class="col-md-4 col-sm-4 text-right">
-                    <%= label_tag(:conteo_racimos, "Conteo racimos") %>
+                  <div class="col-md-4 text-right">
+                    <%= label_tag(:cajas, "Cajas") %>
                   </div>
-                  <div class="col-md-8 col-sm-8 text-left">
-                    <%= text_field_tag 'info_predio[conteo_racimos]', @info_predio.conteo_racimos, class: 'form-control required onlyNumbers', placeholder: '0' %>
+                  <div class="col-md-8 text-left">
+                    <%= text_field_tag 'info_predio[cajas]', calculate_weekly_production(@info_predio.ratio, @info_predio.conteo_racimos), class: 'form-control required', readonly: true, placeholder: '0.00' %>
                   </div>
                 </div>
                 <div class="row form-group">
@@ -126,44 +125,101 @@
                 </div>
               </div>
             </div>
+
             <div class="row form-group">
-              <div class="col-md-offset-8 col-md-4 col-sm-4 text-right">
-                <button type="button" class="btn btn-primary" id='add-otros-pagos'>
-                  <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Otros Pagos
+              <div class="col-md-8">
+                <h2 class="legend">Pagos Trabajadores: <span class="totalPagoTrabajo">$<%= @info_predio.pago_trabaja || '0.00' %></span></h2>
+              </div>
+              <div class="col-md-4 col-sm-4 text-right">
+                <button type="button" class="btn btn-primary btn-legend" id='add-pagos-workers' style=" ">
+                  <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Agregar Pago Trabajadores
                 </button>
               </div>
+              <div class="col-md-12">
+                <hr class="hr-legend">
+              </div>
             </div>
-            <div class="row form-group" id="container-pagos" style="border: 1px solid #ccc;border-radius: 3px;padding: 8px;">
-              <% unless @otros_pagos.nil? %>
-                <% @otros_pagos.each do |otro_pago| %>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <button type="button" class="close" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="otro_pago" data-id="<%= otro_pago.id %>">
-                    <div class="row form-group">
-                      <div class="col-md-4 col-sm-4 text-right">
-                        <label> Pago </label>
-                      </div>
-                      <div class="col-md-8 col-sm-8 text-left">
-                        <input type="text" id="otro_pago_1" class="form-control" value="<%= otro_pago.nombre %>" readonly="readonly">
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-4 col-sm-4 text-right">
-                        <label> Precio </label>
-                      </div>
-                      <div class="col-md-8 col-sm-8 text-left">
-                        <input type="text" id="otro_pago_precio_1" class="form-control" value="<%= otro_pago.precio %>" readonly="readonly">
-                      </div>
-                    </div>
-                    <hr>
-                  </div>
-                <% end %>
-              <% end %>
+            <div class="row form-group" id="container-trabajadores">
+              <div class="col-md-12">
+                <input type="hidden" name="info_predio[pago_trabaja]" id="pago_trabaja" value="<%= @info_predio.pago_trabaja %>">
+                <table class="table table-bordered" id="tablePagos" style="margin: 10px 0;">
+                  <thead>
+                  <tr>
+                    <td>Nombre Trabajador</td>
+                    <td>Tipo</td>
+                    <td>Pago</td>
+                    <td>Remover</td>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <% unless @pagos_workers.nil? %>
+                    <input type="hidden" id="notHidden" value="true">
+                    <% @pagos_workers.each_with_index do |pago, index| %>
+                      <tr data-id="<%= pago.id %>" data-row="<%= pago.id %>">
+                        <td>
+                          <input type="text" name="trabajador[]" id="pago_trabajador_1" class="form-control" value="<%= @workers[index]['name'] + ' ' +  @workers[index]['last_name']%>"  disabled="disabled">
+                          <input type="hidden" name="trabajador_id[]" id="pago_trabajador_1" class="form-control" value="<%= pago.worker_id %>" disabled="disabled">
+                        </td>
+                        <td>
+                          <input type="text" name="tipo_trabajador[]" id="pago_1" class="form-control price" value="<% unless pago.worker.worker_type.nil? %><%= pago.worker.worker_type.name %><% else %><%= 'No definido' %><% end%>" disabled="disabled" >
+                        </td>
+                        <td>
+                          <input type="text" name="pago_trabajador[]" id="pago_1" class="form-control price" value="<%= pago.precio %>" disabled="disabled" >
+                        </td>
+                        <td>
+                          <a href class="btn btn-danger removeWorkerPayment" data-tr="<%= pago.id %>" data-price="-<%= pago.precio %>"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                        </td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="row form-group">
+              <div class="col-md-8">
+                <h2 class="legend">Otros Pagos: <span class="totalOtroPago">$0.00</span></h2>
+              </div>
+              <div class=" col-md-4 col-sm-4 text-right">
+                <button type="button" class="btn btn-primary btn-legend" id='add-otros-pagos'>
+                  <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Agregar Otros Pagos
+                </button>
+              </div>
+              <div class="col-md-12">
+                <hr class="hr-legend">
+              </div>
+            </div>
+            <div class="row form-group" id="container-pagos">
+              <div class="col-md-12">
+                <table class="table table-bordered" id="tableOtherPagos" style="margin: 10px 0;">
+                  <thead>
+                  <tr>
+                    <td>Concepto</td>
+                    <td>Precio</td>
+                    <td>Remover</td>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <% unless @otros_pagos.nil? %>
+                  <input type="hidden" id="notHiddenOtrosPagos" value="true">
+                    <% @otros_pagos.each do |otro_pago| %>
+                      <tr data-id="<%= otro_pago.id %>" data-row="<%= otro_pago.id %>">
+                        <td>
+                          <input type="text" name="otro_pago[]" id="otro_pago_1" class="form-control" value="<%= otro_pago.nombre %>"  disabled="disabled">
+                        </td>
+                        <td>
+                          <input type="text" name="otro_pago_precio[]" id="otro_pago_precio_1" class="form-control otroPago" value="<%= otro_pago.precio %>" disabled="disabled" >
+                        </td>
+                        <td>
+                          <a href class="btn btn-danger removerOtherPayment" data-row="<%= otro_pago.id %>"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                        </td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                  </tbody>
+                </table>
+              </div>
             </div>
             <div class="row form-group">
               <div class="col-md-offset-8 col-md-4 col-sm-4 text-right">
@@ -176,6 +232,7 @@
     </fieldset>
   </div>
 </div>
+
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -198,6 +255,40 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary" id="save-payment">Guardar Gasto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="pagoTrabajadoresModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">Gasto</h4>
+      </div>
+      <form id="pagoTrabajadoresForm" onsubmit="return false;">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">Trabajador:</label>
+            <% unless workersUser.nil? %>
+              <select class="form-control required" name="worker_id" id="worker_id"><option value="">Selecciona un trabajador</option>
+                <% workersUser.each do |worker| %>
+                  <option data-worker-type="<% unless worker.worker_type.nil? %><%= worker.worker_type.name %><% end %>" value="<%= worker.id %>"><%= worker.fullname %></option>
+                <% end %>
+              </select>
+            <% end %>
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">Precio:</label>
+            <input type="text" class="form-control" name="precioPago" id="txtPrecio">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" id="save-payment-worker">Guardar Pago</button>
         </div>
       </form>
     </div>

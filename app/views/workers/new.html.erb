@@ -1,3 +1,4 @@
-<h1 class="text-center">Dar de alta trabajador</h1>
+<%= render 'shared/page_title', title: 'Nuevo Trabajador' %>
+<%= render 'shared/error', obj: @worker %>
 <%= render 'form', worker: @worker %>
 <%#= link_to 'Back', workers_path %>

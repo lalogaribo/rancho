@@ -55,6 +55,12 @@ class User < ApplicationRecord
     self.reset_sent_at = nil
   end
 
+  # Sets new chart token
+  def create_new_token_chart
+    reset_digest = User.new_token
+    update_attribute(:token_chart, reset_digest)
+  end
+
   private
 
   # Converts email to all lower-case.

@@ -5,10 +5,11 @@
         <%= f.input :name, label: 'Nombre', placeholder: 'Ingresar Nombre', class: 'form-control ' %>
         <%= f.input :last_name, label: 'Apellido', placeholder: 'Ingresar Apellido', class: 'form-control' %>
         <%= f.input :phone_number, label: 'Numero celular', placeholder: 'Ingresar numero celular', class: 'form-control' %>
+        <%= f.input :worker_type_id, :collection => @workerTypes, :selected => @worker.worker_type_id, :label_method => :name, :value_method => :id,:label => "Tipo de Trabajador" ,:include_blank => true %>
       </div>
 
       <div class="form-actions">
-        <%= f.button :submit, label: 'Crear', class: 'btn btn-primary' %>
+        <%= f.button :submit, 'Crear Trabajador', class: 'btn btn-primary' %>
         <%= link_to 'Regresar', workers_path, class: 'btn btn-warning' %>
       </div>
     <% end %>

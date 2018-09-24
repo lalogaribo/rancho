@@ -14,16 +14,42 @@
                    options_from_collection_for_select(@predios, "id", "name"),
                    multiple: false, prompt: "Selecciona un predio", class: 'form-control', id: 'predio' %>
   </div>
-  <div class="col-md-6 text-left">
-    <%= select_tag "filterDate[date]",
-                   options_for_select([['Semana', 1], ['Mes', 2], ['Año', 3]]),
-                   multiple: false, class: 'form-control required', id: 'filterDate', prompt: "Filtro Adicional" %>
+  <div class="col-md-3 text-left">
+    <%=
+      prompt = "Filtro Adicional"
+      select_tag "filterDate[date]",
+                   options_for_select([['Semana', 1], ['Mes', 2], ['Año', 3]].unshift(prompt), selected: prompt, disabled: prompt),
+                   multiple: false, class: 'form-control required', id: 'filterDate' %>
+  </div>
+  <div class="col-md-3 text-left">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" id="addUtility" style="margin: 18px 0 0;">
+      <label class="form-check-label" for="addUtility" style="font-size: 1.5em;">
+        Incluir Utilidad
+      </label>
+    </div>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-md-12">
+    <div id="failure-data" class="alert alert-danger alert-dismissible" role="alert">
+      <strong class="name-predio">Holy guacamole!</strong> no tiene la informacion correspondiente para obtener graficas
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
   </div>
 </div>
 
 <% unless @predio_id.nil? %>
   <input type="hidden" id="hdPredioId" value="<%= @predio.id %>">
 <% end %>
+
+<div class="row form-group">
+  <div class="col-md-12">
+    <div id="barchart_summary" class="card"></div>
+  </div>
+</div>
 
 <div class="row form-group">
   <div class="col-md-12">
@@ -55,3 +81,31 @@
   </div>
 </div>
 
+<div class="modal fade" id="authenticationChart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">Graficas de Utilidades</h4>
+      </div>
+      <form id="generateChartForm" onsubmit="return false;">
+        <div class="modal-body">
+          <div class="form-group">
+            <input type="hidden" id="token" name="token" value="<%= current_user.token_chart %>">
+            <input type="hidden" id="predioId" name="predio">
+            <label for="recipient-name" class="control-label">Introduce el codigo para generar las graficas:</label>
+            <input type="text" class="form-control" name="tokenChart" id="txtTokenChart">
+          </div>
+          <div class="form-group">
+            <a href="/users/<%= current_user.id %>/reset_chart_token">Si olvidaste la contrasena da click en este link para generar otra</a>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="generate-chart">Generar Grafica</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
