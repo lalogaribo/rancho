@@ -59,8 +59,8 @@ class UsersController < ApplicationController
   def reset_chart_token
     user = User.find_by_id(params[:id])
     if user
-      user.create_new_token_chart
-      UserMailer.reset_chart_token(user).deliver_now
+      user.reset_token_chart
+      UserMailer.reset_chart_token(user).deliver
       flash[:success] = 'Se ha enviado un correo electronico con tu nuevo token.'
       redirect_to charts_url
     else

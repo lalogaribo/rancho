@@ -52,6 +52,9 @@ a:hover {
   background-color: #fff;
   border: .05rem solid #fff;
 }
+.btn.btn-primary, .btn.btn-warning, .btn.btn-danger  {
+  color: #fff !important
+}
 
 @import "bootstrap-sprockets";
 @import "bootstrap";

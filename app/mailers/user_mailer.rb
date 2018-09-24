@@ -11,7 +11,7 @@ class UserMailer < ApplicationMailer
 
   def reset_chart_token(user)
     @user = user
-    mail to: "#{user.name} <#{user.email}", subject: 'Nuevo token para generacion de graficas'
+    mail to: "#{user.name} <#{user.email}>", subject: 'Nuevo token para generacion de graficas'
   end
 
   def send_signup_email(user)

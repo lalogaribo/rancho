@@ -62,6 +62,12 @@ class User < ApplicationRecord
     self.token_chart = chart_token
   end
 
+  # Reset new chart token
+  def reset_token_chart
+    reset_digest = rand(36 ** 15).to_s(36)
+    update_attribute(:token_chart, reset_digest)
+  end
+
   private
 
   # Converts email to all lower-case.
