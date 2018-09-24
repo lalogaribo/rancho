@@ -19,8 +19,8 @@ class User < ApplicationRecord
   has_many :requests, dependent: :destroy
   has_many :workers, dependent: :destroy
 
-  before_validation :set_random_password, if: :new_record?
-  # after_save :send_confirmation
+  # before_validation :set_random_password, if: :new_record?
+  # before_save :send_confirmation
 
   # Activate user
   def validate_email
@@ -74,11 +74,12 @@ class User < ApplicationRecord
   end
 
   def set_random_password
-    self.password = rand(36**15).to_s(36)
+    psw = rand(36**15).to_s(36)
+    self.password = psw
+    self.password_confirmation = psw
   end
 
   def send_confirmation
     UserMailer.registration_confirmation(self).deliver
-    debugger
   end
 end
