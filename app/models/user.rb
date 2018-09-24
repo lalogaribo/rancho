@@ -20,6 +20,7 @@ class User < ApplicationRecord
   has_many :workers, dependent: :destroy
 
   before_validation :set_random_password, if: :new_record?
+  before_validation :create_new_token_chart, if: :new_record?
   after_create :send_confirmation
 
   # Activate user
@@ -57,8 +58,8 @@ class User < ApplicationRecord
 
   # Sets new chart token
   def create_new_token_chart
-    reset_digest = User.new_token
-    update_attribute(:token_chart, reset_digest)
+    chart_token = rand(36 ** 15).to_s(36)
+    self.token_chart = chart_token
   end
 
   private

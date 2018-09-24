@@ -14,7 +14,6 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      @user.create_new_token_chart
       UserMailer.registration_confirmation(@user).deliver
       flash[:success] = 'Por favor confirma tu correo electronico, para continuar con el proceso'
       redirect_to root_url

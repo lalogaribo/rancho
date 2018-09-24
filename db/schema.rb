@@ -10,9 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20180831011443) do
-
+ActiveRecord::Schema.define(version: 20180831052725) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,14 +67,6 @@ ActiveRecord::Schema.define(version: 20180831011443) do
     t.decimal "ratio"
     t.index ["predio_id"], name: "index_info_predios_on_predio_id"
     t.index ["user_id"], name: "index_info_predios_on_user_id"
-  end
-
-  create_table "materiales", force: :cascade do |t|
-    t.string "name"
-    t.integer "price"
-    t.integer "quantity"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "materials", force: :cascade do |t|

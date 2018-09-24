@@ -8,4 +8,10 @@
 # 10.times do |usr|
 #   User.create!(name: "Productor #{usr}", email: "eduardo#{usr}@hotmail.com")
 # end
+#
+#
 
+
+['Desaijador', 'General', 'Regador', 'Ariero', 'Limpieza empaque', 'Desbrosador', 'Ingeniero', 'Administrador'].each do |x|
+  WorkerType.create!(name: x)
+end
