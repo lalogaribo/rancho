@@ -25,6 +25,7 @@ class UsersController < ApplicationController
 
   def show
     @user_predios = @user.predios
+    @predios = current_user.predios
   end
 
   def update

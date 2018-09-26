@@ -5,6 +5,10 @@
   </div>
 </div>
 <hr>
-<h2 align="left">Predios</h2>
-<%= render 'predios/predio', obj: @user.predios %>
-</div>
+<% if @predios.any? %>
+  <h2 align="left">Predios</h2>
+  <%= render 'predios/predio', obj: @user.predios %>
+<% else %>
+  <h2 class="text-center">Dar de alta nuevo
+    predio <%= link_to 'Crear predio', new_predio_path, class: 'btn btn-primary' %> </h2>
+<% end %>
