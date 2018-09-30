@@ -14,6 +14,7 @@
           <th>Precio</th>
           <th>Cantidad</th>
           <th>Total Invertido</th>
+          <th align="center">Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -23,8 +24,13 @@
             <td><%= material.price %></td>
             <td><%= material.quantity %></td>
             <td><%= material.price * material.quantity %></td>
-            <td><%= link_to 'Editar', edit_material_path(material) %></td>
-            <td><%= link_to 'Eliminar', material_path(material), method: :delete, data: {confirm: "Eliminar este producto?"}, class: 'pull-right' %> </td>
+
+            <td align="center">
+              <a rel="tooltip" title="Edit" class="btn btn-simple btn-warning btn-icon table-action edit" href="<%= edit_material_path(material) %>"><i class="glyphicon glyphicon-pencil"></i>
+              </a>
+              <a rel="tooltip" title="Delete" class="btn btn-simple btn-danger btn-icon table-action remove" rel="nofollow" data-method="delete" data-confirm="Dar de baja material" href="/materials/<%= material.id %>"><i class="glyphicon glyphicon-remove"></i>
+              </a>
+            </td>
           </tr>
         <% end %>
         </tbody>

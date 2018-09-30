@@ -123,6 +123,7 @@ h2 {
   margin-bottom: 20px;
   position: relative;
   z-index: auto;
+  padding:20px;
 }
 
 /* Add some padding inside the card container */
@@ -207,4 +208,30 @@ h3.lato {
 .hr-legend {
   margin: 0 0 10px 0;
   border-top: 2px solid #c8c7c7;
+}
+
+.full-width {
+  width: 100% !important;
+}
+
+.btn-sbt-dashboard {
+  padding: 13px !important;
+  border-radius: 5px !important;
+  margin: 10px 0 !important;
+  background-color: #4CAF50 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border-color: #4CAF50 !important;
+  font-size: 16px !important;
+}
+
+.btn-back {
+  padding: 10px !important;
+  border-radius: 5px !important;
+  margin: 10px 0 !important;
+}
+
+.form-horizontal .form-group {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
