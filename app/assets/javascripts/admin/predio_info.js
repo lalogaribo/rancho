@@ -88,44 +88,46 @@ window.Predio = (function($) {
      * Initialize Bootstrap table
      */
     function initBootstrapTable() {
-        $('#info-predio-table').bootstrapTable({
-            toolbar: ".toolbar",
-            clickToSelect: true,
-            showRefresh: false,
-            search: false,
-            showToggle: false,
-            showColumns: false,
-            pagination: true,
-            searchAlign: 'left',
-            pageSize: 10,
-            pageList: [],
-            formatRecordsPerPage: function (pageNumber) {
-                return pageNumber + " rows visible";
-            },
-            icons: {
-                refresh: 'fa fa-refresh',
-                toggle: 'fa fa-th-list',
-                columns: 'fa fa-columns',
-                detailOpen: 'fa fa-plus-circle',
-                detailClose: 'ti-close'
-            },
-            hideColumn: 'id'
-        });
+        if ($('#info-predio-table').length > 0) {
+            $('#info-predio-table').bootstrapTable({
+                toolbar: ".toolbar",
+                clickToSelect: true,
+                showRefresh: false,
+                search: false,
+                showToggle: false,
+                showColumns: false,
+                pagination: true,
+                searchAlign: 'left',
+                pageSize: 10,
+                pageList: [],
+                formatRecordsPerPage: function (pageNumber) {
+                    return pageNumber + " rows visible";
+                },
+                icons: {
+                    refresh: 'fa fa-refresh',
+                    toggle: 'fa fa-th-list',
+                    columns: 'fa fa-columns',
+                    detailOpen: 'fa fa-plus-circle',
+                    detailClose: 'ti-close'
+                },
+                hideColumn: 'id'
+            });
 
-        $('#info-predio-table').bootstrapTable('hideColumn', 'id');
-        $('#info-predio-table').bootstrapTable('hideColumn', 'predio_id');
+            $('#info-predio-table').bootstrapTable('hideColumn', 'id');
+            $('#info-predio-table').bootstrapTable('hideColumn', 'predio_id');
 
-        //icons operations
-        window.operateEventsEmail = {
-            'click .edit': function (e, value, row, index) {
-                EDIT_URL = EDIT_URL.replace('{:id}', row.id).replace('{:predio_id}', row.predio_id);
-                window.location = EDIT_URL;
-            },
-            'click .stat': function (e, value, row, index) {
-                STATS_URL = STATS_URL.replace('{:predio_id}', row.predio_id);
-                window.location = STATS_URL;
-            }
-        };
+            //icons operations
+            window.operateEventsEmail = {
+                'click .edit': function (e, value, row, index) {
+                    EDIT_URL = EDIT_URL.replace('{:id}', row.id).replace('{:predio_id}', row.predio_id);
+                    window.location = EDIT_URL;
+                },
+                'click .stat': function (e, value, row, index) {
+                    STATS_URL = STATS_URL.replace('{:predio_id}', row.predio_id);
+                    window.location = STATS_URL;
+                }
+            };
+        }
     }
 
     function onlyNumbers() {

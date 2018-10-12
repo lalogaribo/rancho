@@ -9,43 +9,45 @@ window.Chart = (function($) {
     self.init = function() {
         $(document).ready(function() {
             $('.alert').hide();
-            google.charts.load('current', {
-                'packages': ['corechart' ,'bar']
-            });
-            // Load if set the predio in URL
-            if (predioExist()) {
-                Chart.Summary.loadSummary(PREDIO_ID, '');
-                $('#filterDate').attr('disabled', false);
-            } else {
-                $('#filterDate').attr('disabled', true);
-            }
-            // Load by predio select
-            $(document).on('change', '#predio', function() {
-                fetchStatsPredio($(this));
-                if (!hasTokenChart()) {
-                    $("#addUtility").prop( "checked", false );
+            if ($('#barchart_earnings').length > 0) {
+                google.charts.load('current', {
+                    'packages': ['corechart' ,'bar']
+                });
+                // Load if set the predio in URL
+                if (predioExist()) {
+                    Chart.Summary.loadSummary(PREDIO_ID, '');
+                    $('#filterDate').attr('disabled', false);
+                } else {
+                    $('#filterDate').attr('disabled', true);
                 }
-                $('#filterDate').val(1);
-            });
-            // Load by date select
-            $(document).on('change', '#filterDate', function() {
-                fetchStatsPredioByDate($(this));
-            });
-            // Checkbox trigger modal
-            $(document).on('change', '#addUtility', function() {
-                var predioSelected = $('#predio').find(':selected').val();
-                if ($(this).is(':checked') && (predioExist() || predioSelected)) {
+                // Load by predio select
+                $(document).on('change', '#predio', function() {
+                    fetchStatsPredio($(this));
+                    if (!hasTokenChart()) {
+                        $("#addUtility").prop( "checked", false );
+                    }
                     $('#filterDate').val(1);
-                    $('#authenticationChart').modal('show');
-                }
-                else {
-                    $('#authenticationChart').modal('hide');
-                    TOKEN = undefined;
-                    EARNINGS = false;
-                }
-            });
-            // Validate token
-            $('#generate-chart').click(validateTokenChart);
+                });
+                // Load by date select
+                $(document).on('change', '#filterDate', function() {
+                    fetchStatsPredioByDate($(this));
+                });
+                // Checkbox trigger modal
+                $(document).on('change', '#addUtility', function() {
+                    var predioSelected = $('#predio').find(':selected').val();
+                    if ($(this).is(':checked') && (predioExist() || predioSelected)) {
+                        $('#filterDate').val(1);
+                        $('#authenticationChart').modal('show');
+                    }
+                    else {
+                        $('#authenticationChart').modal('hide');
+                        TOKEN = undefined;
+                        EARNINGS = false;
+                    }
+                });
+                // Validate token
+                $('#generate-chart').click(validateTokenChart);
+            }
         });
     };
 
