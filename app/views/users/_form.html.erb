@@ -1,49 +1,51 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-6 col-sm-6 col-md-offset-3 col-sm-offset-3">
-      <div class="card">
-        <div class="container-card">
-          <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="row">
             <div class="col-md-12" style="margin-top:15px">
-              <h3 class="text-center lato">Crear cuenta</h3>
               <%= form_for(@user, :html => {class: 'form-horizontal', role: 'form'}) do |f| %>
                 <div class="form-group">
-                  <div class="control-label col-md-4">
+                  <div class="col-md-10 col-md-offset-1">
                     <%= f.label :name, 'Nombre' %>
-                  </div>
-                  <div class="col-md-8">
-                    <%= f.text_field :name, class: 'form-control', placeholder: 'Ingresar nombre', autofocus: true %>
+                    <%= f.text_field :name, class: 'form-control full-width', placeholder: 'Nombre', autofocus: true %>
                   </div>
                 </div>
                 <div class="form-group">
-                  <div class="control-label col-md-4">
+                  <div class="col-md-10 col-md-offset-1">
+                    <%= f.label :name, 'Nombre' %>
+                    <%= f.text_field :name, class: 'form-control full-width', placeholder: 'Nombre', autofocus: true %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-10 col-md-offset-1">
                     <%= f.label :email %>
-                  </div>
-                  <div class="col-md-8">
-                    <%= f.email_field :email, class: 'form-control', placeholder: 'Ingresar correo electronico' %>
+                    <%= f.email_field :email, class: 'form-control full-width', placeholder: 'Ingresar correo electronico' %>
                   </div>
                 </div>
                 <div class="form-group">
-                  <div class="control-label col-md-4">
+                  <div class="col-md-10 col-md-offset-1">
                     <%= f.label :password, 'Contraseña' %>
-                  </div>
-                  <div class="col-md-8">
-                    <%= f.password_field :password, class: 'form-control', placeholder: 'Ingresar contraseña' %>
+                    <%= f.password_field :password, class: 'form-control full-width', placeholder: 'Ingresar contraseña' %>
                   </div>
                 </div>
                 <div class="form-group">
-                  <div class="control-label col-md-4">
+                  <div class="col-md-10 col-md-offset-1">
                     <%= f.label :password_confirmation, 'Confirmar contraseña' %>
-                  </div>
-                  <div class="col-md-8">
-                    <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirmar contraseña' %>
+                    <%= f.password_field :password_confirmation, class: 'form-control full-width', placeholder: 'Confirmar contraseña' %>
                   </div>
                 </div>
 
                 <div class="form-group">
-                  <div class="col-md-offset-2 col-md-8">
-                    <%= f.submit(@user.new_record? ? 'Crear cuenta' : 'Actualizar perfil',
-                                 class: 'btn btn-primary btn-lg btn-xlarge btn-block') %>
+                  <div class="col-md-10 col-md-offset-1">
+                    <div class="row">
+                      <div class="col-md-6  text-left">
+                        <%= link_to '<i class="fa fa-undo" aria-hidden="true"></i> Regresar al Inicio'.html_safe, user_path(current_user), class: 'btn btn-default btn-back' %>
+                      </div>
+                      <div class="col-md-6  text-right">
+                        <%= f.submit(@user.new_record? ? 'Crear cuenta' : 'Actualizar cuenta',
+                                     class: 'btn btn-primary btn-lg btn-xlarge btn-block btn-sbt-dashboard') %>
+                      </div>
+                    </div>
                   </div>
                 </div>
               <% end %>
@@ -54,8 +56,7 @@
               </div>
             <% end %>
           </div>
-        </div>
-      </div>
+
     </div>
   </div>
 </div>

@@ -1,27 +1,32 @@
 <%= render 'shared/page_title', title: 'Crear predio' %>
 <%= render 'shared/error', obj: @predio %>
 <div class="row">
-  <div class="col-md-10 col-md-offset-2">
+  <div class="col-md-10 col-md-offset-1">
     <%= form_for(@predio, :html => {class: 'form-horizontal', role: 'form'}) do |f| %>
       <div class="form-group">
-        <div class="control-label col-md-2">
+        <div class="col-md-10 col-md-offset-1">
           <%= f.label :name %>
-        </div>
-        <div class="col-md-6">
-          <%= f.text_field :name, class: 'form-control', placeholder: 'Nombre del predio', autofocus: true %>
+          <%= f.text_field :name, class: 'form-control full-width', placeholder: 'Nombre del predio', autofocus: true %>
         </div>
       </div>
       <div class="form-group">
-        <div class="control-label col-md-2">
+        <div class="col-md-10 col-md-offset-1">
           <%= f.label :no_hectareas %>
-        </div>
-        <div class="col-md-6">
-          <%= f.text_field :no_hectareas, class: 'form-control', placeholder: 'Ingresar numero de hectareas' %>
+          <%= f.text_field :no_hectareas, class: 'form-control full-width', placeholder: 'Ingresar numero de hectareas' %>
         </div>
       </div>
+
       <div class="form-group">
-        <div class="col-md-offset-2 col-md-6">
-          <%= f.submit 'Crear predio', class: 'btn btn-primary btn-block' %>
+        <div class="col-md-10 col-md-offset-1">
+          <div class="row">
+            <div class="col-md-6  text-left">
+              <%= link_to '<i class="fa fa-undo" aria-hidden="true"></i> Regresar al Inicio'.html_safe, user_path(current_user), class: 'btn btn-default btn-back' %>
+            </div>
+            <div class="col-md-6  text-right">
+              <%= f.submit(@predio.new_record? ? 'Crear Predio' : 'Actualizar Predio',
+                           class: 'btn btn-primary btn-lg btn-xlarge btn-block btn-sbt-dashboard') %>
+            </div>
+          </div>
         </div>
       </div>
     <% end %>

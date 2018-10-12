@@ -13,6 +13,7 @@
         <th>aplicacion</th>
         <th>Piloto</th>
         <th>Precio Vuelo</th>
+        <th align="center">Acciones</th>
       </tr>
       </thead>
       <tbody>
@@ -22,8 +23,12 @@
           <td><%= vuelo.aplicacion %></td>
           <td><%= vuelo.piloto %></td>
           <td><%= vuelo.precio_vuelo %></td>
-          <td><%= link_to 'Edit', edit_vuelo_path(vuelo) %></td>
-          <td><%= link_to 'Delete', vuelo_path(vuelo), method: :delete, data: {confirm: "Eliminar este vuelo"}, class: 'pull-right' %> </td>
+          <td align="center">
+            <a rel="tooltip" title="Edit" class="btn btn-simple btn-warning btn-icon table-action edit" href="<%= edit_vuelo_path(@vuelos) %>"><i class="glyphicon glyphicon-pencil"></i>
+            </a>
+            <a rel="tooltip" title="Delete" class="btn btn-simple btn-danger btn-icon table-action remove" rel="nofollow" data-method="delete" data-confirm="Dar de baja material" href="/materials/<%= material.id %>"><i class="glyphicon glyphicon-remove"></i>
+            </a>
+          </td>
         </tr>
       <% end %>
       </tbody>

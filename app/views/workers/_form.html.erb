@@ -1,16 +1,50 @@
-<div class="row">
-  <div class="col-md-8 col-md-offset-3">
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <div class="row">
+
+      </div>
+    </div>
+  </div>
+</div>
     <%= simple_form_for(@worker, :html => {class: 'form-horizontal', role: 'form'}) do |f| %>
       <div class="form-group">
-        <%= f.input :name, label: 'Nombre', placeholder: 'Ingresar Nombre', class: 'form-control ' %>
-        <%= f.input :last_name, label: 'Apellido', placeholder: 'Ingresar Apellido', class: 'form-control' %>
-        <%= f.input :phone_number, label: 'Numero celular', placeholder: 'Ingresar numero celular', class: 'form-control' %>
-        <%= f.input :worker_type_id, :collection => @workerTypes, :selected => @worker.worker_type_id, :label_method => :name, :value_method => :id,:label => "Tipo de Trabajador" ,:include_blank => true %>
+        <div class="col-md-10 col-md-offset-1">
+          <%= f.label :name, 'Nombre' %>
+          <%= f.text_field :name, class: 'form-control full-width', placeholder: 'Nombre del trabajador', autofocus: true %>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-10 col-md-offset-1">
+          <%= f.label :name, 'Apellido' %>
+          <%= f.text_field :last_name,  placeholder: 'Apellido del trabajador', class: 'form-control full-width', autofocus: true %>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-10 col-md-offset-1">
+          <%= f.label :phone_number, 'Numero celular' %>
+          <%= f.text_field :phone_number,  placeholder: 'Numero celular', class: 'form-control full-width', autofocus: true %>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-10 col-md-offset-1">
+          <%= f.label :name, 'Tipo de Trabajador' %>
+          <%= f.input :worker_type_id, :collection => @workerTypes, :selected => @worker.worker_type_id, :label_method => :name, :value_method => :id,:label => false ,:include_blank => true %>
+        </div>
       </div>
 
-      <div class="form-actions">
-        <%= f.button :submit, 'Crear Trabajador', class: 'btn btn-primary' %>
-        <%= link_to 'Regresar', workers_path, class: 'btn btn-warning' %>
+      <div class="form-group">
+        <div class="col-md-10 col-md-offset-1">
+          <div class="row">
+            <div class="col-md-6  text-left">
+              <%= link_to '<i class="fa fa-undo" aria-hidden="true"></i> Regresar a los trabajadores'.html_safe, workers_path, class: 'btn btn-default btn-back' %>
+            </div>
+            <div class="col-md-6  text-right">
+              <%= f.submit(@worker.new_record? ? 'Crear empleado' : 'Actualizar empleado',
+                           class: 'btn btn-primary btn-lg btn-xlarge btn-block btn-sbt-dashboard') %>
+            </div>
+          </div>
+        </div>
       </div>
     <% end %>
   </div>
