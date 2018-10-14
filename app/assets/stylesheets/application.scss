@@ -11,6 +11,7 @@
  * It is generally better to create a new file per style scope.
  *
  *= require dashboard
+ *= require font-awesome
  *= require_tree .
  *= require_self
  *= require bootstrap-datetimepicker
@@ -234,4 +235,11 @@ h3.lato {
 .form-horizontal .form-group {
   margin-left: 0 !important;
   margin-right: 0 !important;
+}
+
+.login-btn {
+  width: 450px !important;
+  height: 50px !important;
+  margin-left: -80px !important;
+  border-radius: 0px !important;
 }
