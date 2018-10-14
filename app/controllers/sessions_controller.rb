@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:session][:password])
       if user.email_confirmed
         session[:user_id] = user.id
-        flash[:success] = 'Bienvenido, haz iniciado sesion exitosamente!'
+        flash[:success] = "Bienvenido #{user.name}, haz iniciado sesion exitosamente! "
         redirect_to user
       else
         flash[:error] = 'Por favor activa tu cuenta, siguiendo las instrucciones en el correo de confirmacion que haz recibido.'

@@ -5,17 +5,17 @@
         <div class="container-card">
           <div class="row">
             <div class="col-md-12" style="margin-top:15px">
-              <h3 class="lato text-center">Crea un nuevo password</h3>
+              <h3 class="lato text-center">Solicitar nueva contraseña</h3>
+              <hr>
               <%= form_for(:password_reset, :html => {class: 'form-horizontal', role: 'form'}, url: password_resets_path) do |f| %>
                 <div class="form-group">
-                  <div class="col-md-8 col-md-offset-2">
-                    <%= f.label :email %>
-                    <%= f.email_field :email, class: 'form-control', placeholder: 'Ingresar Email' %>
+                  <div class="col-md-12">
+                    <%= f.email_field :email, class: 'form-control full-width', placeholder: 'Ingresar correo electronico' %>
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="col-md-8 col-md-offset-2">
-                    <%= f.submit 'Enviar Email', class: 'btn btn-primary btn-block' %>
+                    <%= f.button 'Enviar correo electronico', data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Enviando correo electronico..."}, class: 'btn btn-primary btn-block login-btn' %>
                   </div>
                 </div>
               <% end %>
