@@ -1,6 +1,7 @@
 class InfoPredioController < ApplicationController
   layout 'dashboard'
   before_action :set_info_predio, only: [:show, :update, :destroy]
+  before_action :same_user, only: [:show, :edit, :update, :destroy]
 
   def index
     @predio_id = params[:id]
@@ -225,5 +226,12 @@ class InfoPredioController < ApplicationController
 
   def set_info_predio
     @info_predio = InfoPredio.where(id: params[:id])
+  end
+
+  def same_user
+    if current_user != @info_predio.user
+      flash[:danger] = 'Solo puedes editar o borrar tu informacion'
+      redirect_to predios_path
+    end
   end
 end

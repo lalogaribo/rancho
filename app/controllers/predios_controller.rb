@@ -1,5 +1,6 @@
 class PrediosController < ApplicationController
   before_action :require_user, except: [:show]
+  before_action :same_user, only: [:show, :edit, :update, :destroy]
   layout 'dashboard'
 
   def index
@@ -40,5 +41,12 @@ class PrediosController < ApplicationController
 
   def current_date
     Time.now.strftime("%Y-%m-%d") # Week from monday to monday
+  end
+
+  def same_user
+    if current_user != @predio.user
+      flash[:danger] = 'Solo puedes editar o borrar tu informacion'
+      redirect_to predios_path
+    end
   end
 end
