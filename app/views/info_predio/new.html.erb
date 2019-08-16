@@ -48,7 +48,7 @@
                     <%= label_tag(:fecha_embarque, "Fecha Embarque") %>
                   </div>
                   <div class="col-md-8 text-left">
-                    <%= text_field_tag 'info_predio[fecha_embarque]', nil, class: 'form-control fecha_embarque required' %>
+                    <%= text_field_tag 'info_predio[fecha_embarque]', nil, class: 'form-control fecha_embarque required', placeholder: 'Seleccionar fecha de embarque' %>
                   </div>
                 </div>
                 <div class="row form-group">
@@ -67,7 +67,7 @@
                     <%= label_tag(:conteo_racimos, "Conteo racimos") %>
                   </div>
                   <div class="col-md-8 text-left">
-                    <%= text_field_tag 'info_predio[conteo_racimos]', nil, class: 'form-control required onlyNumbers' %>
+                    <%= text_field_tag 'info_predio[conteo_racimos]', nil, class: 'form-control required onlyNumbers', placeholder: 'Numero de racimos' %>
                   </div>
                 </div>
                 <div class="row form-group">
@@ -188,7 +188,7 @@
               <th data-field="semana" data-sortable="true" align="center">Semana</th>
               <th data-field="color_cinta" data-sortable="true">Color de cinta</th>
               <th data-field="conteo_racimos" data-sortable="true" align="center">Produccion Semanal</th>
-              <th data-field="actions" class="td-actions text-right" data-events="operateEventsEmail" data-formatter="operateFormatterEmail" align="center">Actions</th>
+              <th data-field="actions" class="td-actions text-right" data-events="operateEventsEmail" data-formatter="operateFormatterEmail" align="center">Acciones</th>
             </tr>
             </thead>
             <tbody>
@@ -230,12 +230,12 @@
       <form id="otroPago" onsubmit="return false;">
         <div class="modal-body">
           <div class="form-group">
-            <label for="recipient-name" class="control-label">Nombre:</label>
-            <input type="text" class="form-control" name="nombrePago" id="txtNombre">
+            <label for="recipient-name" class="control-label">Gasto:</label>
+            <input type="text" class="form-control" name="nombrePago" id="txtNombre" placeholder="Ingresar gasto">
           </div>
           <div class="form-group">
-            <label for="recipient-name" class="control-label">Precio:</label>
-            <input type="text" class="form-control" name="precioPago" id="txtPrecio">
+            <label for="recipient-name" class="control-label">Cantidad:</label>
+            <input type="text" class="form-control" name="precioPago" id="txtPrecio" placeholder="Ingresar cantidad">
           </div>
         </div>
         <div class="modal-footer">
@@ -260,7 +260,8 @@
           <div class="form-group">
             <label for="recipient-name" class="control-label">Trabajador:</label>
             <% unless workersUser.nil? %>
-              <select class="form-control required" name="worker_id" id="worker_id"><option value="">Selecciona un trabajador</option>
+              <select class="form-control required" name="worker_id" id="worker_id">
+                <option value="">Seleccionar trabajador</option>
                 <% workersUser.each do |worker| %>
                   <option data-worker-type="<% unless worker.worker_type.nil? %><%= worker.worker_type.name %><% end %>" value="<%= worker.id %>"><%= worker.fullname %></option>
                 <% end %>
@@ -268,8 +269,8 @@
             <% end %>
           </div>
           <div class="form-group">
-            <label for="recipient-name" class="control-label">Precio:</label>
-            <input type="text" class="form-control" name="precioPago" id="txtPrecio">
+            <label for="recipient-name" class="control-label">Cantidad:</label>
+            <input type="text" class="form-control" name="precioPago" id="txtPrecio" placeholder="$0.00">
           </div>
         </div>
         <div class="modal-footer">
