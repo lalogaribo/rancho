@@ -75,9 +75,7 @@
                     <%= label_tag(:color_cinta, "Color cinta") %>
                   </div>
                   <div class="col-md-8 col-sm-8 text-left">
-                    <%= select_tag "info_predio[color_cinta]", options_for_select(["Roja", "Verde", "Azul",
-                                                                                   "Naranja", "Gris", "Blanca", "Amarilla",
-                                                                                   "Negra", "Morada", "Cafe"], @info_predio.color_cinta),
+                    <%= select_tag "info_predio[color_cinta]", options_for_select(%w(Roja Verde Azul Naranja Gris Blanca Amarilla Negra Morada Cafe), @info_predio.color_cinta),
                                    multiple: false, class: 'form-control required', id: 'color_cinta' %>
                   </div>
                 </div>
