@@ -149,7 +149,7 @@ GEM
       mini_portile2 (~> 2.3.0)
     pg (1.0.0)
     public_suffix (3.0.2)
-    puma (3.11.3)
+    puma (3.12.4)
     rack (2.0.4)
     rack-protection (2.0.3)
       rack
@@ -273,7 +273,7 @@ DEPENDENCIES
   listen (>= 3.0.5, < 3.2)
   momentjs-rails (>= 2.9.0)
   pg
-  puma (~> 3.7)
+  puma (~> 3.12)
   rails (~> 5.1.5)
   sass-rails (~> 5.0)
   selenium-webdriver
